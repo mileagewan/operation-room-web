@@ -14,6 +14,7 @@ import {
   Sticky,
   Card,
   Sidebar,
+  Dialog,
   SidebarItem
 } from 'vant'
 const plugins = [
@@ -31,6 +32,7 @@ const plugins = [
   Sticky,
   Card,
   Sidebar,
+  Dialog,
   SidebarItem
 ]
 

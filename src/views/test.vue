@@ -7,12 +7,12 @@
 </template>
 <script lang="ts">
 
-import { Dialog } from 'vant'
+// import { Dialog } from 'vant'
 import { ref, defineComponent } from 'vue'
 export default defineComponent({
-  components: {
-    [Dialog.Component.name]: Dialog.Component
-  },
+  // components: {
+  //   [Dialog.Component.name]: Dialog.Component
+  // },
   setup () {
     const show = ref(true)
     return { show }
