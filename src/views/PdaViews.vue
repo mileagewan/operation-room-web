@@ -4,7 +4,14 @@
     <van-tabs v-model:active="active">
       <van-tab title="标签 1">
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
-          <TaskView />
+          <TaskView>
+           <template #header>
+             <div>title</div>
+           </template>
+           <template #content>
+             <div>content</div>
+           </template>
+          </TaskView>
 
         </van-pull-refresh>
       </van-tab>
