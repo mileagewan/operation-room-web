@@ -1,4 +1,4 @@
-import { VNode } from 'vue';
+import { VNode } from 'vue'
 
 export abstract class RequestQuery {
   static BASE_URL: string;
@@ -54,12 +54,11 @@ export interface SelectOption {
   dicName?: string;
 }
 
-
 export interface rule {
   required?: boolean;
   pattern?: string | RegExp;
-  message?: string | Function;
-  validator?: Function;
+  message?: any;
+  validator?: any;
   trigger: string;
   min?: number;
   max?: number;
@@ -87,4 +86,3 @@ export interface PaMessageOptions {
   showCancelButton?: boolean;
   customClass?: any;
 }
-

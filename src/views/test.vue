@@ -13,7 +13,7 @@ export default defineComponent({
   // components: {
   //   [Dialog.Component.name]: Dialog.Component
   // },
-  setup () {
+  setup() {
     const show = ref(true)
     return { show }
   }
