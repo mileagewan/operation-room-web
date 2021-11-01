@@ -5,11 +5,14 @@ import {
   Cell,
   Tabbar,
   TabbarItem,
+  PullRefresh,
   Swipe,
   SwipeItem,
   Grid,
   GridItem,
   NavBar,
+  Tab,
+  Tabs,
   Icon,
   Sticky,
   Card,
@@ -23,11 +26,14 @@ const plugins = [
   Cell,
   Tabbar,
   TabbarItem,
+  PullRefresh,
   Swipe,
   SwipeItem,
   Grid,
   GridItem,
   NavBar,
+  Tab,
+  Tabs,
   Icon,
   Sticky,
   Card,
@@ -37,7 +43,7 @@ const plugins = [
 ]
 
 export const vantPlugins = {
-  install: function (app: App) {
+  install: function(app: App) {
     plugins.forEach((item) => {
       // app.component(item.name, item);
       app.use(item)

@@ -1,0 +1,28 @@
+.pda-views {
+  background: linear-gradient(to bottom,#eff8fe 0%, #f3f8fb 190px ,#f8f8f8 210px,#f9f9f9 100%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  .nab-bar {
+    // background: linear-gradient(to bottom, #000000 0%,#ffffff 100%);
+  }
+
+  .van-tabs {
+    display: flex;
+    height: calc(100vh - 210px);
+    flex-direction: column;
+
+    .van-tabs__content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+
+      .van-tab__pane {
+        height: 100%;
+        .van-pull-refresh {
+          height: 100%;
+        }
+      }
+    }
+  }
+}

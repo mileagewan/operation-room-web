@@ -1,0 +1,41 @@
+.task-view {
+  display: flex;
+  flex-direction: column;
+  .task-view-header {
+    min-height: 200px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    position: relative;
+
+    .task-view-line {
+      height: 40px;
+      width: 100%;
+      position: absolute;
+      bottom: -30px;
+      .task-line-block-left {
+        position: absolute;
+        width: 20px;
+        height: 100%;
+        border-radius: 10px;
+        background-color: #fdfdfd;
+        box-shadow: 2px 2px 2px 2px #f6f6f6 ;
+        left: 15%;
+      }
+
+      .task-line-block-right {
+        @extend .task-line-block-left;
+        left: auto;
+        right: 15%;
+      }
+    }
+  }
+  .task-view-contet {
+    min-height: 200px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: #fff;
+    margin-bottom: 40px;
+  }
+}

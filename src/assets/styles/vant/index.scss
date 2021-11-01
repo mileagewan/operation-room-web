@@ -1,4 +1,16 @@
 /* 添加这段样式后，Primary Button 会变成红色 */
+@import "../var";
 :root {
   --van-button-primary-background-color: blue;
+}
+
+// navbar
+:root {
+  --van-nav-bar-background-color: var(--ihybrid--transparent--bg);
+}
+
+// tab/tabs
+:root {
+  --van-tabs-nav-background-color: var(--ihybrid--transparent--bg);
+  --van-tabs-bottom-bar-color: var(--ihybrid--primary-color);
 }
