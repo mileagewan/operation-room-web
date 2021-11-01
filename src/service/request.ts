@@ -8,6 +8,7 @@ import qs from 'qs';
 Axios.interceptors.request.use((config: AxiosRequestConfig) => {
   const token: string|null = localStorage.getItem('token') || '';
   const configs = config;
+  configs.headers={};
   configs.headers['Content-Type'] = 'application/json;charset=UTF-8';
   configs.headers['Cache-Control'] = 'no-cache';
   configs.headers.Pragma = 'no-cache';
