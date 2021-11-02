@@ -1,0 +1,29 @@
+.key-value {
+  * {
+    font-size: var(--ihybrid--default-font-size);
+  }
+
+  display: flex;
+  margin-bottom: 24px;
+  .key-value-label {
+    color: var(--ihybrid--default-label-color);
+    width: 208px;
+  }
+
+  .key-value-value {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    flex: 1;
+
+    &.is-danger {
+      color: var(--ihybrid--danger-color);
+    }
+
+    &.is-important {
+      font-weight: var(--ihybrid--important-weight);
+    }
+  }
+}

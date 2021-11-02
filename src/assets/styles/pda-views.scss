@@ -4,12 +4,14 @@
   display: flex;
   flex-direction: column;
   .nab-bar {
-    // background: linear-gradient(to bottom, #000000 0%,#ffffff 100%);
+    .van-nav-bar .van-icon {
+      color: var(--ihybrid--default-color);
+    }
   }
 
   .van-tabs {
     display: flex;
-    height: calc(100vh - 210px);
+    height: calc(100vh - 88px);
     flex-direction: column;
 
     .van-tabs__content {
@@ -21,6 +23,14 @@
         height: 100%;
         .van-pull-refresh {
           height: 100%;
+        }
+      }
+
+      .task-view-contet {
+        padding-top: 48px;
+
+        .van-pull-refresh__track {
+          overflow-y: auto;
         }
       }
     }

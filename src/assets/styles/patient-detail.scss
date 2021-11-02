@@ -1,0 +1,46 @@
+.patient-detail {
+  width: 100%;
+  padding: 36px 24px 48px 24px;
+
+  .patient-name {
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .patient-name-left {
+      * {
+        color: var(--ihybrid--default-color);
+      }
+    }
+    .patient-pesonal-name {
+      font-size: 48px;
+      line-height: 48px;
+    }
+    .patient-pesonal-sex,
+    .patient-pesonal-old {
+      font-size: 24px;
+      margin-left: 12px;
+    }
+  }
+
+  .patient-label {
+    height: 40px;
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+
+    .patient-label-title {
+      color: #333;
+      font-size: var(--ihybrid--default-font-size);
+      line-height: 40px;
+    }
+  }
+}
+
+.opration-tag {
+  height: 40px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
