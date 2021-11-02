@@ -28,6 +28,8 @@ export default defineComponent({
     :deep(.item) {
       padding: 12px 0;
       .title {
+        display: inline-block;
+        width: 96px;
         height: 24px;
         font-size: 24px;
         font-family: PingFangSC, PingFangSC-Regular;

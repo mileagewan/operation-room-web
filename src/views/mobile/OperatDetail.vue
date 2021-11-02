@@ -1,5 +1,5 @@
 <template>
-  <div class="operat-detail exclude-bar-height">
+  <div class="operat-detail exclude-bar-height page-bg-line page-padding">
     <nav-bar @goBack="goBack" :title="data.title" />
     <van-pull-refresh
       class="page-container"
@@ -9,13 +9,16 @@
     >
       <TaskView>
         <template #header>
-          <div class="oprat-room">手术-01间-01台</div>
           <div class="date-title">
             <div>10月20日(周五) 08:00-09:00</div>
             <div>胸腔镜下肺大泡切除术</div>
           </div>
           <oprat-info>
             <template #left-content>
+              <div class="item">
+                <span class="title">手术室</span>
+                <span class="text">二区域 - 手术室05</span>
+              </div>
               <div class="item">
                 <span class="title">主刀医生</span>
                 <span class="text">黄志浩</span>
@@ -89,17 +92,19 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .operat-detail {
-  .oprat-room {
-    font-size: 24px;
-    font-family: PingFangSC, PingFangSC-Medium;
-    font-weight: 500;
-    color: #333333;
-  }
   .date-title {
     font-size: 36px;
     font-family: PingFangSC, PingFangSC-Semibold;
     font-weight: 600;
     color: #000000;
+    margin-bottom: 24px;
+  }
+  :deep(.task-view-header) {
+    padding: 24px;
+    .info-content.info-right {
+      padding-top: 48px;
+      margin-left: 11px;
+    }
   }
 }
 </style>

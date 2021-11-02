@@ -1,5 +1,5 @@
 <template>
-  <div class="operat-room exclude-bar-height">
+  <div class="operat-room exclude-bar-height page-bg-line page-padding">
     <nav-bar @goBack="goBack" :title="data.title" />
     <van-pull-refresh
       v-model="loading"
