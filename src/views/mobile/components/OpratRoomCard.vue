@@ -12,8 +12,8 @@
           <div v-else-if="data.state == 3" class="bar not-start">未开始</div>
         </div>
       </div>
-      <div class="info-warp">
-        <div class="info-content info-left">
+      <oprat-info>
+        <template #left-content>
           <div class="item">
             <span class="title">主刀医生</span>
             <span class="text">黄志浩</span>
@@ -26,8 +26,8 @@
             <span class="title">患者性别</span>
             <span class="text">男</span>
           </div>
-        </div>
-        <div class="info-content info-right">
+        </template>
+        <template #right-content>
           <div class="item">
             <span class="title">巡回护士</span>
             <span class="text">杨森</span>
@@ -40,8 +40,8 @@
             <span class="title">患者年龄</span>
             <span class="text">55岁</span>
           </div>
-        </div>
-      </div>
+        </template>
+      </oprat-info>
     </div>
     <div class="footer" v-if="data.hasFooter">
       <div class="title">时间更新</div>
@@ -51,9 +51,12 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-
+import OpratInfo from './OpratInfo.vue'
 export default defineComponent({
   name: 'OpratRoomCard',
+  components: {
+    OpratInfo
+  },
   setup() {
     const data = reactive({
       state: 3,
@@ -74,7 +77,7 @@ export default defineComponent({
   overflow: hidden;
   .container {
     padding: 30px 24px 48px 24px;
-    &.hasFooter{
+    &.hasFooter {
       padding-bottom: 12px;
     }
     .title-warp {
@@ -113,34 +116,6 @@ export default defineComponent({
           &.not-start {
             background: #defaff;
             color: #5bc7f9;
-          }
-        }
-      }
-    }
-    .info-warp {
-      display: flex;
-      .info-content {
-        &.info-right {
-          margin-left: 160px;
-        }
-        .item {
-          padding: 12px 0;
-          .title {
-            height: 24px;
-            font-size: 24px;
-            font-family: PingFangSC, PingFangSC-Regular;
-            font-weight: 400;
-            color: #999999;
-            line-height: 24px;
-            margin-right: 24px;
-          }
-          .text {
-            height: 24px;
-            font-size: 24px;
-            font-family: PingFangSC, PingFangSC-Regular;
-            font-weight: 400;
-            color: #333333;
-            line-height: 24px;
           }
         }
       }

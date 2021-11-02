@@ -1,7 +1,12 @@
 <template>
-  <div class="operat-room">
+  <div class="operat-room exclude-bar-height">
     <nav-bar @goBack="goBack" :title="data.title" />
-    <van-pull-refresh v-model="loading" @refresh="onRefresh">
+    <van-pull-refresh
+      v-model="loading"
+      @refresh="onRefresh"
+      class="page-container"
+      :head-height="80"
+    >
       <oprat-room-card></oprat-room-card>
     </van-pull-refresh>
   </div>
@@ -10,9 +15,11 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
+
 export default defineComponent({
   components: {
-    OpratRoomCard
+    OpratRoomCard,
+
   },
   setup() {
     const loading = ref(false)
@@ -38,9 +45,4 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-::v-deep.operat-room{
-  .van-pull-refresh{
-    height: calc(100vh - 92px);
-  }
-}
 </style>

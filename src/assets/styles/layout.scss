@@ -1,0 +1,7 @@
+/* 整体布局相关的样式 */
+.exclude-bar-height{
+  //排除头部后撑满屏幕
+  .page-container{
+    height: calc(100vh - 92px);
+  }
+}
