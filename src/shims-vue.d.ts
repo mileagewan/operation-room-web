@@ -18,3 +18,5 @@ declare module 'lodash/cloneDeep'{
   const cloneDeep: any;
   export default cloneDeep;
 }
+
+declare const VConsole: any;
