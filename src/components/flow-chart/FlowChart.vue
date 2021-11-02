@@ -1,11 +1,14 @@
 <template>
   <div class="flow-chart">
-    <div class="flow-chart-item" v-for="(item, i) in flowDatas" :key="i">
+    <div :class="{
+      'flow-chart-item': true,
+      'is-current': item.current
+    }" v-for="(item, i) in flowDatas" :key="i">
       <span class="flow-chart-circle">
         <van-icon :name="item.icon" />
         <span class="flow-chart-line"></span>
       </span>
-      <span>{{ item.title }}</span>
+      <div class="flow-chart-item_title">{{ item.title }}</div>
     </div>
   </div>
 </template>

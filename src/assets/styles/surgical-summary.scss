@@ -1,0 +1,82 @@
+.surgical-summary {
+  display: flex;
+  flex-wrap: wrap;
+  .surgical-summary-item {
+    width: calc(33.3% - 8px);
+    height: 330px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 2px 2px 2px 2px #D9DCDD;
+    margin-bottom: 24px;
+    margin-left: 12px;
+    padding: 0 30px;
+
+    &:nth-child(3n -2) {
+      margin-left: 0;
+    }
+
+    .surgical-summary-item_title {
+      margin-top: 30px;
+      font-size: var(--ihybrid--default-font-size);
+    }
+
+    .surgical-summary-item_status {
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    .surgical-summary-item_number {
+      margin-top: 24px;
+      line-height: 72px;
+      height: 72px;
+      .surgical-summary-item_number_status {
+        font-size: 72px;
+      }
+      .surgical-summary-item_number_count {
+        color: var(--ihybrid--default-label-color);
+        font-size: 36px;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
+
+    .surgical-summary-item_label {
+      margin-top: 24px;
+      color: var(--ihybrid--default-label-color);
+      height: var(--ihybrid--default-font-size);
+      line-height: var(--ihybrid--default-font-size);
+      font-size: var(--ihybrid--default-font-size);
+    }
+
+    .surgical-summary-item_msg {
+      @extend .surgical-summary-item_label;
+      margin-top: 12px;
+      color: #333;
+    }
+  }
+}
+
+.refresh-option {
+  position: fixed;
+  right: 0;
+  top: 270px;
+  width: 87px;
+  height: 130px;
+  border: 1px solid #c0ebff;
+  border-radius: 12px 0px 0px 12px;
+  background: #C0EBFF;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #00ACF2;
+  opacity: 0.8;
+  i {
+    font-size: 30px;
+  }
+  .refresh-option-title {
+    width: 40px;
+    margin-top: 8px;
+  }
+}

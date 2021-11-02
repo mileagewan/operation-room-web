@@ -1,22 +1,57 @@
 .flow-chart {
-  .flow-chart-circle {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--ihybrid--flow-chart-icon-bg);
+  .flow-chart-item {
+    float: left;
+    .flow-chart-circle {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--ihybrid--flow-chart-icon-bg);
 
-    i {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      left: 50%;
-      top: 50%;
-      font-size: var(--ihybrid--default-font-size);
+      i {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+        font-size: var(--ihybrid--default-font-size);
+      }
+
+      .flow-chart-line {
+        height: 15px;
+        background: var(--ihybrid--flow-chart-icon-bg);
+        position: absolute;
+        width: 72px;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+      }
+    }
+    .flow-chart-item_title {
+      width: 48px;
+      font-size: 18px;
     }
 
-    .flow-chart-line {
-
+    &:last-child {
+      .flow-chart-line {
+        display: none;
+      }
     }
+
+    &.is-current {
+      .flow-chart-circle {
+        background: var(--ihybrid--flow-chart-icon-active-bg) ;
+      }
+      i {
+        color: #fff;
+      }
+      .flow-chart-item_title {
+        color: var(--ihybrid--active-color);
+      }
+    }
+  }
+
+  .flow-chart-item + .flow-chart-item {
+    margin-left: 72px;
   }
 }

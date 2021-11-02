@@ -1,5 +1,5 @@
 .pda-views {
-  background: linear-gradient(to bottom,#eff8fe 0%, #f3f8fb 190px ,#f8f8f8 210px,#f9f9f9 100%);
+  @extend .page-bg-line-bar;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,21 +17,21 @@
     .van-tabs__content {
       flex: 1;
       overflow-y: auto;
-      padding: 20px;
+      padding: 24px;
 
       .van-tab__pane {
         height: 100%;
         .van-pull-refresh {
           height: 100%;
+          overflow-y: auto;
         }
       }
 
       .task-view-contet {
         padding-top: 48px;
-
-        .van-pull-refresh__track {
-          overflow-y: auto;
-        }
+      }
+      .van-pull-refresh__track {
+        //overflow-y: auto;
       }
     }
   }

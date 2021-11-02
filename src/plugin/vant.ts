@@ -19,7 +19,7 @@ import {
   Card,
   Sidebar,
   Dialog,
-  SidebarItem
+  SidebarItem,
 } from 'vant'
 const plugins = [
   Button,

@@ -30,12 +30,11 @@
                        value="阿斯顿 13800138000" />
            </template>
           </TaskView>
-
         </van-pull-refresh>
       </van-tab>
       <van-tab title="手术汇总">
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
-          标签 1
+          <SurgicalSummary />
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -46,9 +45,13 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { TaskList } from '@/utils/mock-test-data'
+import SurgicalSummary from '@/views/Itinerant-nurse/SurgicalSummary.vue';
 
 export default defineComponent({
   name: 'PdaViews',
+  components: {
+    SurgicalSummary
+  },
   setup(props, { emit }) {
     const loading = ref<boolean>(false)
     const taskList = reactive(TaskList)
