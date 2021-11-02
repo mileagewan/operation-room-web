@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div class="operat-room">
     <nav-bar @goBack="goBack" :title="data.title" />
-    <oprat-room-card></oprat-room-card>
+    <van-pull-refresh v-model="loading" @refresh="onRefresh">
+      <oprat-room-card></oprat-room-card>
+    </van-pull-refresh>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 export default defineComponent({
@@ -13,6 +15,7 @@ export default defineComponent({
     OpratRoomCard
   },
   setup() {
+    const loading = ref(false)
     const data = reactive({
       title: '手术间01间'
     })
@@ -20,10 +23,24 @@ export default defineComponent({
     const goBack = (): void => {
       router.back()
     }
+    const onRefresh = () => {
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
+    }
     return {
+      loading,
+      onRefresh,
       goBack,
       data
     }
   },
 })
 </script>
+<style lang="scss" scoped>
+::v-deep.operat-room{
+  .van-pull-refresh{
+    height: calc(100vh - 92px);
+  }
+}
+</style>

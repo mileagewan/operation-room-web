@@ -17,7 +17,7 @@ module.exports = {
     'space-before-function-paren': 0,
     'no-trailing-spaces':'off',
     'comma-dangle':'off',
-    semi: ['error'],
+    semi: 0,
 
   }
 }
