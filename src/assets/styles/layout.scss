@@ -3,6 +3,11 @@
   //排除头部后撑满屏幕
   .page-container{
     height: calc(100vh - 92px);
+    padding-top: 24px;
+  }
+  .page-container-with-bar{
+    height: calc(100vh - 168px);
+    padding-top: 24px;
   }
 }
 .page-padding{

@@ -49,6 +49,7 @@
           </oprat-info>
         </template>
         <template #content>
+          <div class="title">手术进度</div>
           <surgical-progress />
         </template>
       </TaskView>
@@ -99,11 +100,24 @@ export default defineComponent({
     color: #000000;
     margin-bottom: 24px;
   }
-  :deep(.task-view-header) {
-    padding: 24px;
-    .info-content.info-right {
-      padding-top: 48px;
-      margin-left: 11px;
+  :deep(.task-view) {
+    .task-view-header {
+      padding: 24px;
+      .info-content.info-right {
+        padding-top: 48px;
+        margin-left: 11px;
+      }
+    }
+    .task-view-contet {
+      padding-top: 24px;
+      padding-bottom: 24px;
+      .title {
+        font-size: 30px;
+        font-family: PingFangSC, PingFangSC-Semibold;
+        font-weight: 600;
+        color: #000000;
+        padding: 10px 0 24px 0;
+      }
     }
   }
 }
