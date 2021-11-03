@@ -12,18 +12,8 @@ const home: ServiceItem[] = [
     method: 'post',
   },
   {
-    path: '/api/sso/getUserFunctionAndInfo',
-    key: 'getUser',
-    method: 'post',
-  },
-  {
     path: '/api/anonymous/web-init-params',
     key: 'getSso',
-    method: 'get',
-  },
-  {
-    path: '/homePageStatistics/listBy',
-    key: 'homePageStatisticsListBy',
     method: 'get',
   },
 ];

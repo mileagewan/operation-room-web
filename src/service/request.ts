@@ -63,10 +63,10 @@ class Request implements RequestQuery {
 
   static xhr(
     key: string,
-    data: any,
-    cfgTarget?: string,
+    data = {},
     paramsQuery?: string,
-    path?: string
+    path?: string,
+    cfgTarget?: string,
   ): any {
     let serviceList: Map<string, ServiceItem> = ListServiceMap
 
@@ -88,7 +88,7 @@ class Request implements RequestQuery {
         break
     }
     queryParams = Object.assign({
-      url: `${this.BASE_URL}/data-report${cfgService.path}${path || ''}${paramsQuery ? `?${paramsQuery}` : ''}`,
+      url: `${this.BASE_URL}${process.env.VUE_APP_SERVICE}${cfgService.path}${path || ''}${paramsQuery ? `?${paramsQuery}` : ''}`,
       method: cfgService.method
     }, queryParams)
     if (cfgService.type === 'blob') {
