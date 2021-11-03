@@ -14,32 +14,10 @@
       </div>
       <oprat-info>
         <template #left-content>
-          <div class="item">
-            <span class="title">主刀医生</span>
-            <span class="text">黄志浩</span>
-          </div>
-          <div class="item">
-            <span class="title">麻醉医生</span>
-            <span class="text">陈潜</span>
-          </div>
-          <div class="item">
-            <span class="title">患者性别</span>
-            <span class="text">男</span>
-          </div>
+          <slot name="left-content" />
         </template>
         <template #right-content>
-          <div class="item">
-            <span class="title">巡回护士</span>
-            <span class="text">杨森</span>
-          </div>
-          <div class="item">
-            <span class="title">器械护士</span>
-            <span class="text">陈涛</span>
-          </div>
-          <div class="item">
-            <span class="title">患者年龄</span>
-            <span class="text">55岁</span>
-          </div>
+          <slot name="right-content" />
         </template>
       </oprat-info>
     </div>
@@ -87,8 +65,9 @@ export default defineComponent({
       .title {
         display: flex;
         flex-direction: column;
+
         font-size: 36px;
-        font-family: PingFangSC, PingFangSC-Semibold;
+        //font-family: PingFangSC, PingFangSC-Semibold;
         font-weight: 600;
         color: #000000;
       }

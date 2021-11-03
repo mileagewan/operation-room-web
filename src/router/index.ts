@@ -13,17 +13,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/test',
     name: 'Test',
-    component: () => import(/* webpackChunkName: "about" */ '../views/test.vue')
+    component: () => import(/* webpackChunkName: "test" */ '../views/test.vue')
   },
   {
-    path: '/operatRoom',
-    name: 'OperatRoom',
-    component: () => import(/* webpackChunkName: "about" */ '../views/mobile/OperatRoom.vue')
+    path: '/operatingRoom',
+    name: 'OperatingRoom',
+    component: () => import(/* webpackChunkName: "operatingRoom" */ '../views/mobile/OperatingRoom.vue')
   },
   {
     path: '/operatDetail',
     name: 'OperatDetail',
-    component: () => import(/* webpackChunkName: "about" */ '../views/mobile/OperatDetail.vue')
+    component: () => import(/* webpackChunkName: "operatDetail" */ '../views/mobile/OperatDetail.vue')
+  },
+  {
+    path: '/operationRoom',
+    name: 'OperationRoom',
+    component: () => import(/* webpackChunkName: "operationRoom" */ '../views/mobile/OperationRoom.vue')
+  },
+  {
+    path: '/clearTask',
+    name: 'ClearTask',
+    component: () => import(/* webpackChunkName: "clearTask" */ '../views/mobile/ClearTask.vue')
   }
 ]
 
