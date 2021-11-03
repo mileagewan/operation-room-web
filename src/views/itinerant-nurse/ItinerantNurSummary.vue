@@ -39,19 +39,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.list {
-  .van-cell {
-    margin-bottom: 24px;
-    border-radius: 12px;
-    box-shadow: 0px 12px 24px 0px rgba(217, 220, 221, 0.5);
-    .expand-card {
-      margin-bottom: 0;
-    }
-    &::after {
-      display: none;
-    }
-  }
-}
-</style>

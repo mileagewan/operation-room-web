@@ -1,0 +1,20 @@
+.list {
+  .van-cell {
+    padding: 0 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    box-shadow: 0px 12px 24px 0px rgba(217, 220, 221, 0.5);
+    .expand-card {
+      margin-bottom: 0;
+      .patient-detail {
+        padding: 30px 0;
+      }
+      .expand-card-list{
+        padding: 0;
+      }
+    }
+    &::after {
+      display: none;
+    }
+  }
+}

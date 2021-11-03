@@ -76,3 +76,45 @@ export const FlowData: Array<{
     icon: 'todo-list-o'
   }
 ]
+
+export const FlowData2: Array<{
+  title: string,
+  current?: boolean,
+  icon: string,
+}> = [
+  {
+    title: '开始',
+    current: false,
+    icon: 'todo-list-o',
+  },
+  {
+    title: '转入核对',
+    current: true,
+    icon: 'todo-list-o'
+  },
+  {
+    title: '三方确认',
+    current: false,
+    icon: 'todo-list-o'
+  },
+  {
+    title: '三方确认',
+    current: false,
+    icon: 'todo-list-o'
+  },
+  {
+    title: '三方确认',
+    current: false,
+    icon: 'todo-list-o'
+  },
+  {
+    title: '三方确认',
+    current: false,
+    icon: 'todo-list-o'
+  },
+  {
+    title: '三方确认',
+    current: false,
+    icon: 'todo-list-o'
+  },
+]

@@ -1,0 +1,33 @@
+.key-value-block {
+  margin-bottom: 36px;
+  overflow: hidden;
+  zoom: 1;
+  .key-value-block-label {
+    float: left;
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    background: #e1f6fd;
+    width: 144px;
+    height: 100%;
+    color: var(--ihybrid--primary-color);
+  }
+  .key-value-block-value {
+    float: left;
+    width: calc(100% - 144px);
+    height: 100%;
+    background: #f0fafe;
+    color: var(--ihybrid--default-color);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+
+    div {
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+    }
+  }
+}

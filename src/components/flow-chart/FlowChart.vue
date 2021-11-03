@@ -14,20 +14,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue'
+import { defineComponent, reactive, } from 'vue'
 import { FlowData } from '@/utils/mock-test-data'
 export default defineComponent({
   name: 'FlowChart',
   props: {
     flowData: {
-      type: Array,
       default() {
         return []
-      },
+      }
     },
   },
-  setup() {
-    const flowDatas = reactive(FlowData)
+  setup(props) {
+    const { flowData } = props as any
+    const flowDatas = reactive(flowData.length ? flowData : FlowData)
     return {
       flowDatas,
     }
