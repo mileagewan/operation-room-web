@@ -9,7 +9,9 @@
           class="page-container-with-bar"
           :head-height="80"
         >
-          <van-list v-model:loading="loading2" :finished="finished" @load="onLoad"></van-list>
+          <van-list v-model:loading="loading2" :finished="finished" @load="onLoad">
+            <ClearCompletedCard />
+          </van-list>
         </van-pull-refresh>
       </van-tab>
       <van-tab title="已完成任务">
@@ -31,11 +33,13 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ClearTaskCard from './components/ClearTaskCard.vue'
+import ClearCompletedCard from './components/ClearCompletedCard.vue'
 
 export default defineComponent({
-  name:'ClearTask',
-  components:{
-    ClearTaskCard
+  name: 'ClearTask',
+  components: {
+    ClearTaskCard,
+    ClearCompletedCard
   },
   setup() {
     const loading1 = ref(false)
@@ -43,7 +47,7 @@ export default defineComponent({
     const list = ref<any>([]);
     const finished = ref(false);
     const refreshing = ref(false);
-    const active = ref(1)
+    const active = ref(0)
     const data = reactive({
       title: '手术室'
     })
@@ -94,4 +98,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
+:deep(.van-list) {
+  padding: 0 24px;
+}
 </style>
