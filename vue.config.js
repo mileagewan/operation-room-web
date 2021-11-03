@@ -80,7 +80,6 @@ module.exports = {
       errors: false,
     },
     open: true,
-    // host: 'localhost',
     host: '0.0.0.0',
     port: 8080,
     https: false,
@@ -98,8 +97,9 @@ module.exports = {
     //   },
     // },
     proxy: {
-      '/data-report': {
-        target: 'http://124.196.4.220:8088/',
+      '/beforeOp': {
+        //target: 'http://124.196.4.220:8088/',
+         target:'http://192.168.223.194:8080',
         // target: 'http://192.168.219.24:8089',
         changeOrigin: true,
       },

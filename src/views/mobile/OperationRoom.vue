@@ -1,8 +1,8 @@
 <template>
   <div class="operation-room exclude-bar-height page-bg-line">
     <nav-bar @goBack="goBack" :title="data.title" />
-    <van-tabs v-model:active="active">
-      <van-tab title="今日手术(4)">
+    <van-tabs v-model:active="active" @click-tab="onClickTab">
+      <van-tab title="今日手术(4)" name="TODAY">
         <van-pull-refresh
           v-model="loading1"
           @refresh="onRefresh"
@@ -47,7 +47,7 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
-      <van-tab title="明日手术(5)">
+      <van-tab title="明日手术(5)" name="TOMORROW">
         <van-pull-refresh
           v-model="loading1"
           @refresh="onRefresh"
@@ -99,6 +99,8 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
+import Request from '@/service/request';
+import { ReturnData } from '@/types/interface-model';
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -117,7 +119,13 @@ export default defineComponent({
     })
     const router = useRouter()
     const goBack = (): void => {
-      router.back()
+      console.log(window)
+      if (window.flutter_inappwebview) {
+        console.log(window.flutter_inappwebview)
+        window.flutter_inappwebview.callHandler('jsCallFlutter', 'goback')
+      } else {
+        // router.back()
+      }
     }
     const onLoad = () => {
       setTimeout(() => {
@@ -136,7 +144,23 @@ export default defineComponent({
         }
       }, 1000);
     };
+    const onClickTab = ({ name }: any) => {
+      console.log(name)
+    }
+    // 接口请求
+    try {
+      const params = {
+        dateType: 'TODAY',
+        pageNo: 1,
+        pageSize: 100,
+        // userId: 1
+      }
+      Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
+        console.log(r)
+      })
+    } catch (e) {
 
+    }
     const onRefresh = () => {
       // 清空列表数据
       finished.value = false;
@@ -156,7 +180,8 @@ export default defineComponent({
       refreshing,
       active,
       goBack,
-      data
+      data,
+      onClickTab
     }
   },
 })

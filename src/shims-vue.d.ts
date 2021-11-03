@@ -20,3 +20,6 @@ declare module 'lodash/cloneDeep'{
 }
 
 declare const VConsole: Function<T>;
+declare interface Window {
+  flutter_inappwebview:any;
+}
