@@ -1,14 +1,57 @@
 <template>
-  任务汇总
+  <!-- 任务汇总 -->
+  <van-list
+    v-model:loading="loading"
+    :finished="finished"
+    finished-text=""
+    @load="onLoad"
+    class="page-padding list"
+  >
+    <van-cell v-for="(item, index) in list" :key="index">
+      <ExpandCard />
+    </van-cell>
+  </van-list>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, reactive, ref, onUpdated, onMounted } from 'vue';
 export default defineComponent({
-  name: 'ItinerantNurSummary'
-})
+  name: 'ItinerantNurSummary',
+  setup() {
+    const loading = ref(false);
+    const finished = ref(true);
+    const list = ref([]);
+    list.value = new Array(10).fill('').map((item, index) => {
+      return {
+        name: 'user' + (index + 1),
+      };
+    });
+    // console.log(list);
+    const onLoad = () => {
+      console.log('onLoad');
+    };
+    return {
+      loading,
+      finished,
+      list,
+      onLoad,
+    };
+  },
+});
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.list {
+  .van-cell {
+    margin-bottom: 24px;
+    border-radius: 12px;
+    box-shadow: 0px 12px 24px 0px rgba(217, 220, 221, 0.5);
+    .expand-card {
+      margin-bottom: 0;
+    }
+    &::after {
+      display: none;
+    }
+  }
+}
 </style>

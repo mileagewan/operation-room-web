@@ -27,7 +27,7 @@ export default defineComponent({
     const loading = ref<boolean>(false)
     const active = ref<number>(0)
     const componentName = ref('SurgicalSummary')
-    const defaultRole = ref('6')
+    const defaultRole = ref('4')
 
     const router = useRouter()
     const goBack = ():void => {
