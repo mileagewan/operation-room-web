@@ -21,7 +21,7 @@
         height: 15px;
         background: var(--ihybrid--flow-chart-icon-bg);
         position: absolute;
-        width: 72px;
+        width: 36px;
         top: 50%;
         left: 100%;
         transform: translateY(-50%);
@@ -52,6 +52,6 @@
   }
 
   .flow-chart-item + .flow-chart-item {
-    margin-left: 72px;
+    margin-left: 36px;
   }
 }

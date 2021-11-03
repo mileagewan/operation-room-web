@@ -20,6 +20,10 @@ import {
   Sidebar,
   Dialog,
   SidebarItem,
+  Popup,
+  Toast,
+  Field,
+  Switch
 } from 'vant'
 const plugins = [
   Button,
@@ -41,7 +45,11 @@ const plugins = [
   Card,
   Sidebar,
   Dialog,
-  SidebarItem
+  SidebarItem,
+  Popup,
+  Toast,
+  Field,
+  Switch
 ]
 
 export const vantPlugins = {
