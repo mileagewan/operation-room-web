@@ -1,9 +1,9 @@
 import { ServiceItem } from '@/types/interface-model';
 
-const home: ServiceItem[] = [
+const mobile: ServiceItem[] = [
   {
-    path: '/api/sso/login',
-    key: 'getToken',
+    path: '/op/list',
+    key: 'getOperationRoom',
     method: 'post',
   },
   {
@@ -17,4 +17,4 @@ const home: ServiceItem[] = [
     method: 'get',
   },
 ];
-export { home };
+export { mobile };

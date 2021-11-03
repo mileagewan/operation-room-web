@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, computed } from 'vue'
 import { FlowData } from '@/utils/mock-test-data'
 export default defineComponent({
   name: 'FlowChart',

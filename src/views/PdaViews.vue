@@ -15,18 +15,17 @@
   </div>
 </template>
 <script lang="ts">
-import { defineAsyncComponent, defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { components, RoleModuleInject } from '@/views/role-module-inject';
-import { RoleModuleItem, RoleModuleMap } from '@/types/interface-model';
+import { RoleModuleItem } from '@/types/interface-model';
 export default defineComponent({
   name: 'PdaViews',
   components,
   setup(props, { emit }) {
     const loading = ref<boolean>(false)
     const active = ref<number>(0)
-    const componentName = ref('SurgicalSummary')
     const defaultRole = ref('4')
 
     const router = useRouter()

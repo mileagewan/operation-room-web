@@ -38,7 +38,7 @@ module.exports = {
     config.externals = cdn.externals;
     // 生产环境相关配置
     if (isProduction) {
-      //gzip压缩
+      // gzip压缩
       const productionGzipExtensions = ['html', 'js', 'css'];
       config.plugins.push(
         new CompressionWebpackPlugin({
@@ -55,19 +55,19 @@ module.exports = {
         // 分割代码块
         splitChunks: {
           cacheGroups: {
-            //公用模块抽离
+            // 公用模块抽离
             common: {
               chunks: 'initial',
-              minSize: 0, //大于0个字节
-              minChunks: 2, //抽离公共代码时，这个代码块最小被引用的次数
+              minSize: 0, // 大于0个字节
+              minChunks: 2, // 抽离公共代码时，这个代码块最小被引用的次数
             },
-            //第三方库抽离
+            // 第三方库抽离
             vendor: {
-              priority: 1, //权重
+              priority: 1, // 权重
               test: /node_modules/,
               chunks: 'initial',
-              minSize: 0, //大于0个字节
-              minChunks: 2, //在分割之前，这个代码块最小应该被引用的次数
+              minSize: 0, // 大于0个字节
+              minChunks: 2, // 在分割之前，这个代码块最小应该被引用的次数
             },
           },
         },
@@ -80,21 +80,28 @@ module.exports = {
       errors: false,
     },
     open: true,
-    // host: 'localhost',
     host: '0.0.0.0',
     port: 8080,
     https: false,
     hotOnly: true,
+    // proxy: {
+    //   '/api': {
+    //     // 代理地址
+    //     target: process.env.VUE_APP_API,
+    //     changeOrigin: true, // 是否跨域
+    //     secure: false,
+    //     pathRewrite: {
+    //       '^/api': '/api/ctrl', // 测试环境
+    //       // '/api': '', //需要rewrite重写的, //本地联调
+    //     },
+    //   },
+    // },
     proxy: {
-      '/api': {
-        // 代理地址
-        target: process.env.VUE_APP_API,
-        changeOrigin: true, // 是否跨域
-        secure: false,
-        pathRewrite: {
-          '^/api': '/api/ctrl', //测试环境
-          // '/api': '', //需要rewrite重写的, //本地联调
-        },
+      '/beforeOp': {
+        //target: 'http://124.196.4.220:8088/',
+         target:'http://192.168.223.194:8080',
+        // target: 'http://192.168.219.24:8089',
+        changeOrigin: true,
       },
     },
   }
