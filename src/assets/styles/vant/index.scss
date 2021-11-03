@@ -2,6 +2,7 @@
 @import "../var";
 :root {
   --van-button-primary-background-color: blue;
+  --van-button-default-color: var(--ihybrid--default-color);
 }
 
 // navbar
@@ -10,6 +11,7 @@
   --van-nav-bar-height: 84px;
   --van-nav-bar-title-font-size: 36px;
   --van-nav-bar-title-text-color: var(--ihybrid--default-color);
+  --van-nav-bar-icon-color: var(--ihybrid--default-color);
 }
 
 // tab/tabs
@@ -17,4 +19,27 @@
   --van-tabs-nav-background-color: var(--ihybrid--transparent--bg);
   --van-tabs-bottom-bar-color: var(--ihybrid--primary-color);
   --van-tab-active-text-color: var(--ihybrid--primary-color);
+}
+
+// dialog
+:root {
+  --van-dialog-width: 540px;
+  --van-dialog-header-padding-top: 34px;
+  --van-dialog-has-title-message-padding-top: 24px;
+  --van-dialog-message-padding: 24px;
+  --van-dialog-border-radius: 12px;
+  --van-dialog-has-title-message-text-color: var(--ihybrid--default-color);
+  --van-dialog-message-font-size: 30px;
+  --van-dialog-header-font-weight: 700;
+}
+
+.van-dialog__cancel {
+  color: var(--ihybrid--default-label-color);
+}
+.van-dialog__confirm,
+.van-dialog__confirm:active{
+  color: var(--ihybrid--primary-color);
+}
+.van-dialog__message {
+  padding: 24px 72px;
 }

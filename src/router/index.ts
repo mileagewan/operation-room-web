@@ -8,22 +8,27 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/pda-views',
     name: 'PdaViews',
-    component: () => import(/* webpackChunkName: "about" */ '../views/PdaViews.vue')
+    component: () => import(/* webpackChunkName: "PdaViews" */ '../views/PdaViews.vue')
+  },
+  {
+    path: '/room-detail',
+    name: 'RoomDetail',
+    component: () => import(/* webpackChunkName: "RoomDetail" */ '../views/chief-coordination-nurse/RoomDetail.vue')
   },
   {
     path: '/test',
     name: 'Test',
-    component: () => import(/* webpackChunkName: "about" */ '../views/test.vue')
+    component: () => import(/* webpackChunkName: "test" */ '../views/test.vue')
   },
   {
     path: '/operatRoom',
     name: 'OperatRoom',
-    component: () => import(/* webpackChunkName: "about" */ '../views/mobile/OperatRoom.vue')
+    component: () => import(/* webpackChunkName: "OperatRoom" */ '../views/mobile/OperatRoom.vue')
   },
   {
     path: '/operatDetail',
     name: 'OperatDetail',
-    component: () => import(/* webpackChunkName: "about" */ '../views/mobile/OperatDetail.vue')
+    component: () => import(/* webpackChunkName: "OperatDetail" */ '../views/mobile/OperatDetail.vue')
   }
 ]
 

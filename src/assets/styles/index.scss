@@ -2,8 +2,10 @@
 @import 'common';
 @import 'pda-views';
 @import 'task-view';
-@import 'patient-detail';
-@import 'key-value';
-@import 'flow-chart';
+@import 'component/patient-detail';
+@import 'component/key-value';
+@import 'component/flow-chart';
 @import 'surgical-summary';
 @import 'layout';
+@import "row-detail";
+@import "component/expand-card";

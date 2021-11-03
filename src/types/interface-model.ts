@@ -1,4 +1,3 @@
-import { VNode } from 'vue'
 
 export abstract class RequestQuery {
   static BASE_URL: string;
@@ -19,51 +18,6 @@ export interface Sso {
   'sso.system-code': string;
   'sso.user-center-url': string;
 }
-
-export interface StateUser {
-  user: any;
-  sso: Sso;
-}
-
-export interface Column {
-  width?: string | number;
-  label?: string;
-  title: string;
-  dataIndex?: string;
-  fixed?: string;
-  type?: string;
-  trueWidth?: string;
-  minWidth?: string;
-}
-
-export interface Pagination {
-  currentPage: number;
-  pageSize: number;
-  total?: number;
-  type?: string;
-}
-
-export interface SelectOption {
-  label?: string;
-  value?: string | number;
-  orgName?: string;
-  orgId?: string;
-  standardClassifyId?: string;
-  standardName?: string;
-  dicManagementId?: string;
-  dicName?: string;
-}
-
-export interface rule {
-  required?: boolean;
-  pattern?: string | RegExp;
-  message?: any;
-  validator?: any;
-  trigger: string;
-  min?: number;
-  max?: number;
-}
-
 export interface ReturnData {
   code: number;
   data: any;
@@ -77,12 +31,13 @@ export interface ReturnContent {
   msg: null | string | undefined;
 }
 
-export interface PaMessageOptions {
-  title: string;
-  message: VNode|string;
-  closable?: boolean;
-  confirmButtonText?: string;
-  cancelButtonText?: string;
-  showCancelButton?: boolean;
-  customClass?: any;
+export interface RoleModuleItem {
+  label: string;
+  component: any;
+}
+
+export interface RoleModuleMap {
+  role: string;
+  roleName?: string;
+  lists: RoleModuleItem[];
 }
