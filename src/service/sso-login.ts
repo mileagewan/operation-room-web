@@ -1,2 +1,2 @@
-export const goErrorPage = (options:Object)=>{}
-export const SsoLogin = ()=>{}
+export const goErrorPage = (options: any) => {};
+export const SsoLogin = () => {};
