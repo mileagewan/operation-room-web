@@ -1,15 +1,15 @@
 <template>
   <div class="operat-room-card">
-    <div class="container" :class="[data.hasFooter ? 'hasFooter' : '']">
+    <div class="container" :class="[hasFooter ? 'hasFooter' : '']">
       <div class="title-warp">
         <div class="title">
-          <span class="time">10月20日(周五) 08:00-09:00</span>
-          <span class="text">胸腔镜下肺大泡切除术</span>
+          <span class="time">{{ time }}</span>
+          <span class="text">{{ name }}</span>
         </div>
         <div class="state-bar">
-          <div v-if="data.state == 1" class="bar end">已结束</div>
-          <div v-else-if="data.state == 2" class="bar doing">进行中</div>
-          <div v-else-if="data.state == 3" class="bar not-start">未开始</div>
+          <div v-if="state == 1" class="bar end">已结束</div>
+          <div v-else-if="state == 2" class="bar doing">进行中</div>
+          <div v-else-if="state == 3" class="bar not-start">未开始</div>
         </div>
       </div>
       <oprat-info>
@@ -21,27 +21,39 @@
         </template>
       </oprat-info>
     </div>
-    <div class="footer" v-if="data.hasFooter">
+    <div class="footer" v-if="hasFooter">
       <div class="title">时间更新</div>
       <div class="text">手术预计结束时间更新</div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
 import OpratInfo from './OpratInfo.vue'
 export default defineComponent({
   name: 'OpratRoomCard',
   components: {
     OpratInfo
   },
-  setup() {
+  props: {
+    dateTime: {
+      type: String,
+      default: ''
+    },
+    name: {
+      type: String,
+      default: ''
+    }
+  },
+  setup(props) {
     const data = reactive({
+      time: props.dateTime,
+      name: props.name,
       state: 3,
       hasFooter: false
     })
     return {
-      data
+      ...toRefs(data),
     }
   },
 })

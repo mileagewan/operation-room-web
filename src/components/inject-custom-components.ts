@@ -26,6 +26,7 @@ export const inject = (app: App):void => {
           .replace(/\.\w+$/, '')
       )
     )
+
     // 全局注册组件
     app.component(
       componentName,

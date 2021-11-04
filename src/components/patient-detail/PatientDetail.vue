@@ -11,10 +11,14 @@
       </van-tag>
     </div>
     <div class="patient-label">
-      <span class="patient-label-title">手术-01间-01台</span>
-      <van-tag round class="opration-tag" type="primary">{{
-        option.type
-      }}</van-tag>
+      <span class="patient-label-title">{{ option.room }}</span>
+      <van-tag
+        round
+        class="opration-tag"
+        type="primary"
+        :class="[option.type === '急诊' ? 'emergency' : 'normal']"
+        >{{ option.type }}</van-tag
+      >
     </div>
   </div>
 </template>
@@ -32,6 +36,7 @@ export default defineComponent({
         age: '99',
         status: 16,
         type: '急诊',
+        room: '手术-01间-01台',
       }),
     },
   },

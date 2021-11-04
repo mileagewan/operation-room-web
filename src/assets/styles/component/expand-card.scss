@@ -4,7 +4,7 @@
   background: #fff;
   height: 460px;
   margin-bottom: 24px;
-  transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
 
   .expand-card-content {
     height: calc(100% - 72px);
@@ -17,12 +17,13 @@
 
   .expand-card-todo {
     height: 72px;
-    border-top: 2px solid #F2F2F2;
+    border-top: 2px solid #f2f2f2;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: var(--ihybrid--default-font-size);
-    >span {
+    color: #999;
+    > span {
       margin-right: 12px;
     }
   }
