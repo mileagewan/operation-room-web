@@ -8,13 +8,13 @@
     </template>
     <template #content>
       <KeyValue
-        v-for="(v, i) in taskList"
-        :value="v.value"
-        :danger="v.danger"
-        :key="i"
+        v-for="(vi, ii) in taskList"
+        :value="vi.value"
+        :danger="vi.danger"
+        :key="ii"
       >
         <template #label>
-          {{ v.label }}
+          {{ vi.label }}
         </template>
       </KeyValue>
       <div class="itinerant-flow-chart">
@@ -91,7 +91,6 @@
     round
     class="handle-overlay"
     position="bottom"
-    teleport=".itinerant-nur-current"
   >
     <div class="handle-overlay_title">
       请输入交接人工号
@@ -115,7 +114,6 @@
     v-model:show="resuscitationOverLay.show"
     round
     position="bottom"
-    teleport=".itinerant-nur-current"
   >
     <div class="itinerant-nur-to-resuscitation">
       <div class="select-title">
@@ -153,7 +151,7 @@
 
 <script lang="ts">
 import { TaskList, FlowData2 } from '@/utils/mock-test-data';
-import { defineComponent, onMounted, ref, reactive } from 'vue';
+import { defineComponent, onMounted, reactive } from 'vue';
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { Toast } from 'vant';
@@ -192,6 +190,10 @@ export default defineComponent({
       handleOverLay.show = true
     }
     const codeHandle = () => {
+      // window.flutter_inappwebview.callHandler('jsCallFlutter', 'getToken').then(function (result) {
+      //   // result 为请求返回结果
+      //   console.log('jsCallFlutter: ' + JSON.stringify(result));
+      // });
       const toast = Toast({
         duration: 0,
         overlay: true,

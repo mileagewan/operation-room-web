@@ -1,6 +1,9 @@
 .key-value-block {
   margin-bottom: 36px;
   overflow: hidden;
+  background: #e1f6fd;
+  display: flex;
+  align-items: center;
   zoom: 1;
   .key-value-block-label {
     float: left;

@@ -15,7 +15,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { components, RoleModuleInject } from '@/views/role-module-inject';
@@ -30,7 +30,7 @@ export default defineComponent({
 
     const router = useRouter()
     const goBack = ():void => {
-      router.back()
+      window.flutter_inappwebview.callHandler('jsCallFlutter', 'goback')
     }
     const onRefresh = (): void => {
       setTimeout(() => {
@@ -53,6 +53,8 @@ export default defineComponent({
     return {
       loading,
       active,
+      defaultRole,
+      getComponentsList,
       componentsList,
       goBack,
       onRefresh,

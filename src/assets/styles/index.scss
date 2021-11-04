@@ -7,8 +7,11 @@
 @import "component/key-value-block";
 @import 'component/flow-chart';
 @import "component/expand-card";
+@import "component/done-summary";
 @import 'surgical-summary';
 @import 'layout';
 @import "row-detail";
 @import "itinerant-nurse/itinerant-nurse-current";
+@import "itinerant-nurse/itinerant-nur-done";
+@import "itinerant-nurse/surgical-detail";
 @import 'itinerant-nur-summary';
