@@ -1,106 +1,72 @@
 <template>
   <div class="operation-room exclude-bar-height page-bg-line">
-    <nav-bar @goBack="goBack" :title="data.title" />
-    <van-tabs v-model:active="active" @click-tab="onClickTab">
-      <van-tab title="今日手术(4)" name="TODAY">
-        <van-pull-refresh
-          v-model="loading1"
-          @refresh="onRefresh"
-          class="page-container-with-bar"
-          :head-height="80"
+    <div class="header page-bg-line">
+      <nav-bar @goBack="goBack" :title="title" />
+      <van-tabs v-model:active="active" @click-tab="onClickTab">
+        <van-tab :title="`今日手术(${todayNum})`" name="TODAY" />
+        <van-tab :title="`明日手术(${tomorrowNum})`" name="TOMORROW" />
+      </van-tabs>
+    </div>
+    <div class="content">
+      <van-pull-refresh v-model="loadingRefresh" @refresh="onRefresh">
+        <van-list
+          v-model:loading="loadingList"
+          :finished="finishedList"
+          @load="onLoad"
+          finished-text="没有更多了"
         >
-          <van-list v-model:loading="loading2" :finished="finished" @load="onLoad">
-            <oprat-room-card>
-              <template #left-content>
-                <div class="item">
-                  <span class="title">手术室</span>
-                  <span class="text">二区域 - 手术室05</span>
-                </div>
-                <div class="item">
-                  <span class="title">主刀医生</span>
-                  <span class="text">黄志浩</span>
-                </div>
-                <div class="item">
-                  <span class="title">麻醉医生</span>
-                  <span class="text">陈潜</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者性别</span>
-                  <span class="text">男</span>
-                </div>
-              </template>
-              <template #right-content>
-                <div class="item">
-                  <span class="title">巡回护士</span>
-                  <span class="text">杨森</span>
-                </div>
-                <div class="item">
-                  <span class="title">器械护士</span>
-                  <span class="text">陈涛</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者年龄</span>
-                  <span class="text">55岁</span>
-                </div>
-              </template>
-            </oprat-room-card>
-          </van-list>
-        </van-pull-refresh>
-      </van-tab>
-      <van-tab title="明日手术(5)" name="TOMORROW">
-        <van-pull-refresh
-          v-model="loading1"
-          @refresh="onRefresh"
-          class="page-container-with-bar"
-          :head-height="80"
-        >
-          <van-list v-model:loading="loading2" :finished="finished" @load="onLoad">
-            <oprat-room-card>
-              <template #left-content>
-                <div class="item">
-                  <span class="title">手术室</span>
-                  <span class="text">二区域 - 手术室05</span>
-                </div>
-                <div class="item">
-                  <span class="title">主刀医生</span>
-                  <span class="text">黄志浩</span>
-                </div>
-                <div class="item">
-                  <span class="title">麻醉医生</span>
-                  <span class="text">陈潜</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者性别</span>
-                  <span class="text">男</span>
-                </div>
-              </template>
-              <template #right-content>
-                <div class="item">
-                  <span class="title">巡回护士</span>
-                  <span class="text">杨森</span>
-                </div>
-                <div class="item">
-                  <span class="title">器械护士</span>
-                  <span class="text">陈涛</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者年龄</span>
-                  <span class="text">55岁</span>
-                </div>
-              </template>
-            </oprat-room-card>
-          </van-list>
-        </van-pull-refresh>
-      </van-tab>
-    </van-tabs>
+          <oprat-room-card 
+          v-for="(item,index) in listData" 
+          :key="index" 
+          :dateTime="`${MonthDay(item.startDate)}${'('+item.week+')'} ${item.startTime+'-'+item.endTime}`"
+          :name="item.name"
+          
+          >
+            <template #left-content>
+              <div class="item">
+                <span class="title">手术室</span>
+                <span class="text">{{item.departmentWardName}} - {{item.oproomSubName}}</span>
+              </div>
+              <div class="item">
+                <span class="title">主刀医生</span>
+                <span class="text">{{item.surgeonName}}</span>
+              </div>
+              <div class="item">
+                <span class="title">麻醉医生</span>
+                <span class="text">{{item.anesthetistName}}</span>
+              </div>
+              <div class="item">
+                <span class="title">患者性别</span>
+                <span class="text">{{item.patientSex}}</span>
+              </div>
+            </template>
+            <template #right-content>
+              <div class="item">
+                <span class="title">巡回护士</span>
+                <span class="text">{{item.circulatingNurseName}}</span>
+              </div>
+              <div class="item">
+                <span class="title">器械护士</span>
+                <span class="text">{{item.instrumentNurseName}}</span>
+              </div>
+              <div class="item">
+                <span class="title">患者年龄</span>
+                <span class="text">{{item.patientAge+'岁'}}</span>
+              </div>
+            </template>
+          </oprat-room-card>
+        </van-list>
+      </van-pull-refresh>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
+import {MonthDay} from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -108,16 +74,19 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
-    const loading1 = ref(false)
-    const loading2 = ref(false)
-    const list = ref<any>([]);
-    const finished = ref(false);
-    const refreshing = ref(false);
-    const active = ref(0)
-    const data = reactive({
-      title: '手术室'
-    })
+   
     const router = useRouter()
+    const state = reactive({
+      title: '手术室',
+      active: 'TODAY',
+      todayNum:0,
+      tomorrowNum:0,
+      loadingRefresh: false,
+      loadingList: false,
+      finishedList: false
+    })
+    const listData = ref<any[]>([])
+    // 返回
     const goBack = (): void => {
       console.log(window)
       if (window.flutter_inappwebview) {
@@ -127,67 +96,88 @@ export default defineComponent({
         // router.back()
       }
     }
-    const onLoad = () => {
-      setTimeout(() => {
-        if (refreshing.value) {
-          list.value = [];
-          refreshing.value = false;
-        }
-
-        for (let i = 0; i < 10; i++) {
-          list.value.push(list.value.length + 1);
-        }
-        loading2.value = false;
-
-        if (list.value.length >= 40) {
-          finished.value = true;
-        }
-      }, 1000);
-    };
+    onBeforeMount(()=>{
+      // 获取今日数量
+      loadData('TODAY',true)
+      // 获取明日数量
+      loadData('TOMORROW',true)
+    })
+    // 加载更多
+    const onLoad = async () => {
+      console.log('加载更多')
+      await loadData(state.active)
+      state.loadingList = false
+      state.finishedList = true
+    }
+    // tab切换
     const onClickTab = ({ name }: any) => {
       console.log(name)
+      state.active = name;
+      loadData(name)
     }
     // 接口请求
-    try {
-      const params = {
-        dateType: 'TODAY',
-        pageNo: 1,
-        pageSize: 100,
-        // userId: 1
+    const loadData = async (dateType:String,getNum?:Boolean) => {
+      try {
+        const params = {
+          dateType: dateType,
+          pageNo: 1,
+          pageSize: 100,
+        }
+        await Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
+          if (r.code === 200) {
+            const data = r.data;
+            if(getNum){
+              dateType==='TODAY'?(state.todayNum = data.total):(
+                dateType==='TOMORROW'?(state.tomorrowNum = data.total):null
+              )   
+            }else{
+              listData.value = data.records
+            }          
+          }
+          console.log(r)
+        })
+      } catch (e) {
+
       }
-      Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
-        console.log(r)
-      })
-    } catch (e) {
-
     }
-    const onRefresh = () => {
-      // 清空列表数据
-      finished.value = false;
-
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      loading1.value = true;
-      onLoad();
+    // 下拉刷新
+    const onRefresh = async () => {
+      await loadData(state.active)
+      state.loadingRefresh = false
     };
     return {
-      list,
       onLoad,
-      loading1,
-      loading2,
-      finished,
       onRefresh,
-      refreshing,
-      active,
       goBack,
-      data,
-      onClickTab
+      listData,
+      ...toRefs(state),
+      onClickTab,
+      MonthDay
     }
   },
 })
 </script>
 <style lang="scss" scoped>
 .operation-room {
+  .header {
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+  }
+  .content {
+    margin-top: 168px;
+    height: calc(100vh - 168px);
+    background-color: #f9f9f9;
+    padding-top: 12px;
+    :deep(.operat-room-card) {
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+    .van-pull-refresh {
+      overflow: visible;
+    }
+  }
   :deep(.operat-room-card) {
     .oprat-info-warp {
       .info-content {
