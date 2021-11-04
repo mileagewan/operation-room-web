@@ -9,8 +9,8 @@ import { setupPlugins } from '@/plugin'
 import { inject } from '@/components/inject-custom-components'
 import '@/assets/styles/index.scss'
 
-const log = new VConsole();
-console.log(log)
+// const log = new VConsole();
+// console.log(log)
 
 const app = createApp(App)
 app.config.globalProperties.$filters = filters

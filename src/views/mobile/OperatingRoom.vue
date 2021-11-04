@@ -1,78 +1,163 @@
 <template>
-  <div class="operat-room exclude-bar-height page-bg-line page-padding">
-    <nav-bar @goBack="goBack" :title="data.title" />
-    <van-pull-refresh
-      v-model="loading"
-      @refresh="onRefresh"
-      class="page-container"
-      :head-height="80"
-    >
-      <oprat-room-card>
-        <template #left-content>
-          <div class="item">
-            <span class="title">主刀医生</span>
-            <span class="text">黄志浩</span>
-          </div>
-          <div class="item">
-            <span class="title">麻醉医生</span>
-            <span class="text">陈潜</span>
-          </div>
-          <div class="item">
-            <span class="title">患者性别</span>
-            <span class="text">男</span>
-          </div>
-        </template>
-        <template #right-content>
-          <div class="item">
-            <span class="title">巡回护士</span>
-            <span class="text">杨森</span>
-          </div>
-          <div class="item">
-            <span class="title">器械护士</span>
-            <span class="text">陈涛</span>
-          </div>
-          <div class="item">
-            <span class="title">患者年龄</span>
-            <span class="text">55岁</span>
-          </div>
-        </template>
-      </oprat-room-card>
-    </van-pull-refresh>
+  <div class="operating-room page-bg-line">
+    <div class="header page-bg-line">
+      <nav-bar @goBack="goBack" :title="title" />
+    </div>
+    <div class="content">
+      <van-pull-refresh v-model="loadingRefresh" @refresh="onRefresh">
+        <van-list
+          v-model:loading="loadingList"
+          :finished="finishedList"
+          @load="onLoad"
+          finished-text="没有更多了"
+        >
+          <oprat-room-card
+            v-for="(item,index) in listData"
+            :key="index"
+            :dateTime="`${item.startDate?MonthDay(item.startDate):''}
+            ${item.week?'(' + item.week + ')':''} ${item.startTime + '-' + item.endTime}`"
+            :name="item.name"
+          >
+            <template #left-content>
+              <div class="item">
+                <span class="title">手术室</span>
+                <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
+              </div>
+              <div class="item">
+                <span class="title">主刀医生</span>
+                <span class="text">{{ item.surgeonName }}</span>
+              </div>
+              <div class="item">
+                <span class="title">麻醉医生</span>
+                <span class="text">{{ item.anesthetistName }}</span>
+              </div>
+              <div class="item">
+                <span class="title">患者性别</span>
+                <span class="text">{{ item.patientSex }}</span>
+              </div>
+            </template>
+            <template #right-content>
+              <div class="item">
+                <span class="title">巡回护士</span>
+                <span class="text">{{ item.circulatingNurseName }}</span>
+              </div>
+              <div class="item">
+                <span class="title">器械护士</span>
+                <span class="text">{{ item.instrumentNurseName }}</span>
+              </div>
+              <div class="item">
+                <span class="title">患者年龄</span>
+                <span class="text">{{ item.patientAge?(item.patientAge + '岁'):'' }}</span>
+              </div>
+            </template>
+          </oprat-room-card>
+        </van-list>
+      </van-pull-refresh>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
+import Request from '@/service/request';
+import { ReturnData } from '@/types/interface-model';
+import { MonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'OperatingRoom',
   components: {
     OpratRoomCard,
-
   },
   setup() {
-    const loading = ref(false)
-    const data = reactive({
-      title: '手术间01间'
+    const state = reactive({
+      title: '手术间01间',
+      loadingRefresh: false,
+      loadingList: false,
+      finishedList: false
     })
-    const router = useRouter()
+    const listData = ref<any[]>([])
+    // 加载更多
+    const onLoad = async () => {
+      console.log('加载更多')
+      await loadData()
+      state.loadingList = false
+      state.finishedList = true
+    }
+    // 接口请求
+    const loadData = async () => {
+      try {
+        const params = {
+          subRoomId: 1,
+          pageNo: 1,
+          pageSize: 100,
+        }
+        await Request.xhr('getOperatingRoom', params).then((r: ReturnData) => {
+          if (r.code === 200) {
+            const data = r.data;
+            listData.value = data.records
+          }
+          console.log(r)
+        })
+      } catch (e) {
+
+      }
+    }
     const goBack = (): void => {
-      router.back()
+      // router.back()
     }
-    const onRefresh = () => {
-      setTimeout(() => {
-        loading.value = false;
-      }, 1000);
-    }
+    // 下拉刷新
+    const onRefresh = async () => {
+      await loadData()
+      state.loadingRefresh = false
+    };
     return {
-      loading,
       onRefresh,
       goBack,
-      data
+      onLoad,
+      ...toRefs(state),
+      listData,
+      MonthDay
     }
   },
 })
 </script>
 <style lang="scss" scoped>
+.operating-room {
+  .header {
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+  }
+  .content {
+    margin-top: 75px;
+    height: calc(100vh - 75px);
+    background-color: #f9f9f9;
+    padding-top: 12px;
+    :deep(.operat-room-card) {
+      margin-bottom: 12px;
+      margin-top: 12px;
+    }
+    .van-pull-refresh {
+      overflow: visible;
+    }
+  }
+  :deep(.operat-room-card) {
+    .oprat-info-warp {
+      .info-content {
+        &.info-left{
+          .item .text{
+            display: inline-block;
+            width:204px;
+          }
+        }
+        &.info-right {
+          margin-left: 12px;
+          padding-top: 54px;
+        }
+      }
+    }
+  }
+}
 </style>

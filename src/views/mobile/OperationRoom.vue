@@ -1,5 +1,5 @@
 <template>
-  <div class="operation-room exclude-bar-height page-bg-line">
+  <div class="operation-room page-bg-line">
     <div class="header page-bg-line">
       <nav-bar @goBack="goBack" :title="title" />
       <van-tabs v-model:active="active" @click-tab="onClickTab">
@@ -15,43 +15,42 @@
           @load="onLoad"
           finished-text="没有更多了"
         >
-          <oprat-room-card 
-          v-for="(item,index) in listData" 
-          :key="index" 
-          :dateTime="`${MonthDay(item.startDate)}${'('+item.week+')'} ${item.startTime+'-'+item.endTime}`"
-          :name="item.name"
-          
+          <oprat-room-card
+            v-for="(item,index) in listData"
+            :key="index"
+            :dateTime="`${MonthDay(item.startDate)}${'(' + item.week + ')'} ${item.startTime + '-' + item.endTime}`"
+            :name="item.name"
           >
             <template #left-content>
               <div class="item">
                 <span class="title">手术室</span>
-                <span class="text">{{item.departmentWardName}} - {{item.oproomSubName}}</span>
+                <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
               </div>
               <div class="item">
                 <span class="title">主刀医生</span>
-                <span class="text">{{item.surgeonName}}</span>
+                <span class="text">{{ item.surgeonName }}</span>
               </div>
               <div class="item">
                 <span class="title">麻醉医生</span>
-                <span class="text">{{item.anesthetistName}}</span>
+                <span class="text">{{ item.anesthetistName }}</span>
               </div>
               <div class="item">
                 <span class="title">患者性别</span>
-                <span class="text">{{item.patientSex}}</span>
+                <span class="text">{{ item.patientSex }}</span>
               </div>
             </template>
             <template #right-content>
               <div class="item">
                 <span class="title">巡回护士</span>
-                <span class="text">{{item.circulatingNurseName}}</span>
+                <span class="text">{{ item.circulatingNurseName }}</span>
               </div>
               <div class="item">
                 <span class="title">器械护士</span>
-                <span class="text">{{item.instrumentNurseName}}</span>
+                <span class="text">{{ item.instrumentNurseName }}</span>
               </div>
               <div class="item">
                 <span class="title">患者年龄</span>
-                <span class="text">{{item.patientAge+'岁'}}</span>
+                <span class="text">{{ item.patientAge + '岁' }}</span>
               </div>
             </template>
           </oprat-room-card>
@@ -66,7 +65,7 @@ import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
-import {MonthDay} from '@/utils/date-formt'
+import { MonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -74,13 +73,12 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
-   
     const router = useRouter()
     const state = reactive({
       title: '手术室',
       active: 'TODAY',
-      todayNum:0,
-      tomorrowNum:0,
+      todayNum: 0,
+      tomorrowNum: 0,
       loadingRefresh: false,
       loadingList: false,
       finishedList: false
@@ -96,11 +94,11 @@ export default defineComponent({
         // router.back()
       }
     }
-    onBeforeMount(()=>{
+    onBeforeMount(() => {
       // 获取今日数量
-      loadData('TODAY',true)
+      loadData('TODAY', true)
       // 获取明日数量
-      loadData('TOMORROW',true)
+      loadData('TOMORROW', true)
     })
     // 加载更多
     const onLoad = async () => {
@@ -116,7 +114,7 @@ export default defineComponent({
       loadData(name)
     }
     // 接口请求
-    const loadData = async (dateType:String,getNum?:Boolean) => {
+    const loadData = async (dateType: string, getNum?: boolean) => {
       try {
         const params = {
           dateType: dateType,
@@ -126,13 +124,15 @@ export default defineComponent({
         await Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            if(getNum){
-              dateType==='TODAY'?(state.todayNum = data.total):(
-                dateType==='TOMORROW'?(state.tomorrowNum = data.total):null
-              )   
-            }else{
+            if (getNum) {
+              if (dateType === 'TODAY') {
+                state.todayNum = data.total
+              } else if (dateType === 'TOMORROW') {
+                state.tomorrowNum = data.total
+              }
+            } else {
               listData.value = data.records
-            }          
+            }
           }
           console.log(r)
         })

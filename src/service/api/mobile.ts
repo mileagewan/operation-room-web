@@ -2,18 +2,18 @@ import { ServiceItem } from '@/types/interface-model';
 
 const mobile: ServiceItem[] = [
   {
-    path: '/op/list',
+    path: '/beforeOp/op/list',
     key: 'getOperationRoom',
     method: 'post',
   },
   {
-    path: '/api/sso/login/logout',
-    key: 'toLogout',
+    path: '/todayOp/oproom/list',
+    key: 'getOperatingRoom',
     method: 'post',
   },
   {
-    path: '/api/anonymous/web-init-params',
-    key: 'getSso',
+    path: '/todayOp/op/detail',
+    key: 'getOperatDetail',
     method: 'get',
   },
 ];
