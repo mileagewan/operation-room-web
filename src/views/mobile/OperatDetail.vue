@@ -8,8 +8,7 @@
         <TaskView>
           <template #header>
             <div class="date-title">
-              {{ dateTime }}
-              <div>10月20日(周五) 08:00-09:00</div>
+              <div>{{dateTime}}</div>
               <div>胸腔镜下肺大泡切除术</div>
             </div>
             <oprat-info>
@@ -60,7 +59,7 @@
 import SurgicalProgress from './components/SurgicalProgress.vue'
 import OpratInfo from './components/OpratInfo.vue'
 import { useRouter } from 'vue-router'
-import { defineComponent, reactive, toRefs, ref, computed } from 'vue'
+import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { MonthDay } from '@/utils/date-formt'
@@ -72,25 +71,15 @@ export default defineComponent({
     OpratInfo
   },
   setup() {
-    const loading = ref(false)
     const state = reactive({
       title: '手术详情',
       loadingRefresh: false,
-      loadingList: false,
-      finishedList: false
     })
-    const dateTimeRef = ref('')
-    const dateTime = computed((item) => {
-      console.log('---item---', item)
+    const patientInfo = ref<any>({})
+    // const listData = ref<any[]>([])
+    onMounted(()=>{
+      loadData()
     })
-    const listData = ref<any[]>([])
-    // 加载更多
-    const onLoad = async () => {
-      console.log('加载更多')
-      await loadData()
-      state.loadingList = false
-      state.finishedList = true
-    }
     // 接口请求
     const loadData = async () => {
       try {
@@ -98,7 +87,8 @@ export default defineComponent({
         await Request.xhr('getOperatDetail', {}, params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            listData.value = data.records
+            patientInfo.value = data
+            // console.log(patientInfo.value)
           }
           console.log(r)
         })
@@ -106,6 +96,13 @@ export default defineComponent({
 
       }
     }
+    const dateTime = computed(() => {
+      let _MonthDay = patientInfo.value.startDate?MonthDay(patientInfo.value.startDate):''
+      let _week = patientInfo.value.week?('('+patientInfo.value.week+')'):''
+      let _startTime = patientInfo.value.startTime?patientInfo.value.startTime:''
+      let _endTime = patientInfo.value.endTime?patientInfo.value.endTime:''
+      return _MonthDay+_week+_startTime+'-'+_endTime
+    })
     const router = useRouter()
     const goBack = (): void => {
       router.back()
@@ -116,10 +113,10 @@ export default defineComponent({
       state.loadingRefresh = false
     };
     return {
-      onLoad,
       onRefresh,
       goBack,
       ...toRefs(state),
+      patientInfo,
       MonthDay,
       dateTime
     }

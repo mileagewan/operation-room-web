@@ -2,20 +2,20 @@
   <div class="pda-views">
     <nav-bar @goBack="goBack" />
     <van-tabs v-model:active="active">
-      <van-tab v-for="cmponentItem in componentsList"
-               :key="cmponentItem.component"
-               :title="cmponentItem.label">
+      <van-tab
+        v-for="cmponentItem in componentsList"
+        :key="cmponentItem.component"
+        :title="cmponentItem.label"
+      >
         <van-pull-refresh v-model="loading" @refresh="onRefresh">
-
           <component :is="cmponentItem.component"></component>
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
-
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive, ref } from 'vue';
 
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
@@ -24,18 +24,18 @@ export default defineComponent({
   name: 'PdaViews',
   components,
   setup() {
-    const loading = ref<boolean>(false)
-    const active = ref<number>(0)
-    const defaultRole = ref('3')
+    const loading = ref<boolean>(false);
+    const active = ref<number>(0);
+    const defaultRole = ref('3');
 
-    const goBack = ():void => {
-      JsToFlutter.goback()
-    }
+    const goBack = (): void => {
+      JsToFlutter.goback();
+    };
     const onRefresh = (): void => {
       setTimeout(() => {
-        loading.value = false
-      }, 1000)
-    }
+        loading.value = false;
+      }, 1000);
+    };
 
     const getComponentsList = (defaultRole: string) => {
       const map = new Map<string, RoleModuleItem[]>();
@@ -44,8 +44,8 @@ export default defineComponent({
       }
 
       const lists = map.get(defaultRole);
-      return lists || []
-    }
+      return lists || [];
+    };
 
     const componentsList = reactive(getComponentsList(defaultRole.value));
 
@@ -57,7 +57,7 @@ export default defineComponent({
       componentsList,
       goBack,
       onRefresh,
-    }
-  }
-})
+    };
+  },
+});
 </script>

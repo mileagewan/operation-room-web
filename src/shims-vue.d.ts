@@ -18,6 +18,9 @@ declare module 'lodash/cloneDeep'{
   const cloneDeep: any;
   export default cloneDeep;
 }
+declare module 'lodash'
+
+
 
 declare const VConsole: Function<T>;
 declare interface Window {
