@@ -3,7 +3,7 @@
     <div class="task-item">
       <div class="flex flex-between header">
         <div class="flex-main">
-          <span class="name">江杨子正</span>
+          <span class="name">{{task.name}}</span>
           <span>男 25岁</span>
         </div>
         <span class="status">准点完成</span>

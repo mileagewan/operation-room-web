@@ -1,7 +1,7 @@
 <template>
   <ul class="task-list">
-    <li v-for="(item, index) in list" :key="index">
-      <TaskListItem />
+    <li v-for="(item, index) in taskList" :key="index">
+      <TaskListItem :task="item" />
     </li>
   </ul>
 </template>
@@ -10,8 +10,14 @@
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'TaskList',
+  props: {
+    taskList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   setup() {
-    // TODO list 可以用prop传进来，也可以封闭到本组件内部去请求后端数据
+    // TODO list 用prop传进来的数据
     const list: any = ref([]);
     list.value = new Array(10).fill('').map((item, index) => {
       return {
