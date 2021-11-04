@@ -86,30 +86,9 @@
       </template>
     </template>
   </TaskView>
-  <van-popup
-    v-model:show="handleOverLay.show"
-    round
-    class="handle-overlay"
-    position="bottom"
-  >
-    <div class="handle-overlay_title">
-      请输入交接人工号
-    </div>
-    <van-field v-model="handleOverLay.value" />
-    <div class="ihybrid-button-group" >
-      <van-button round
-                  @click="manualHandle"
-                  class="default-button"
-                  color="#f0fafe">
-        取消
-      </van-button>
-      <van-button @click="codeHandle"
-                  round
-                  color="linear-gradient(to right, #00D6FA, #00ACF2)">
-        确定
-      </van-button>
-    </div>
-  </van-popup>
+  <HandleOverLay v-model:visible="handleOverLay.show"
+                 @ok="manualOk"
+                 v-model="handleOverLay.value"/>
   <van-popup
     v-model:show="resuscitationOverLay.show"
     round
@@ -189,6 +168,10 @@ export default defineComponent({
     const manualHandle = () => {
       handleOverLay.show = true
     }
+    const manualOk = () => {
+      console.log(handleOverLay)
+      handleOverLay.show = false
+    }
     const codeHandle = () => {
       // window.flutter_inappwebview.callHandler('jsCallFlutter', 'getToken').then(function (result) {
       //   // result 为请求返回结果
@@ -229,6 +212,7 @@ export default defineComponent({
       flowData,
       code,
       manualHandle,
+      manualOk,
       resuscitationHandle,
       codeHandle,
       roomSelect,
