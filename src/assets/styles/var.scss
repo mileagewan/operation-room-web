@@ -1,15 +1,15 @@
 :root {
   // bg
   --ihybrid--transparent--bg: transparent;
-  --ihybrid--flow-chart-icon-bg: #EEF7FF;
-  --ihybrid--flow-chart-icon-active-bg: #05DD00;
+  --ihybrid--flow-chart-icon-bg: #eef7ff;
+  --ihybrid--flow-chart-icon-active-bg: #05dd00;
 
   // color
   --ihybrid--primary-color: #49abec;
   --ihybrid--default-color: #333;
   --ihybrid--default-label-color: #999;
-  --ihybrid--danger-color: #FF0000;
-  --ihybrid--active-color: #05DD00;
+  --ihybrid--danger-color: #ff0000;
+  --ihybrid--active-color: #05dd00;
 
   // size
   --ihybrid--default-font-size: 24px;
@@ -17,10 +17,22 @@
 }
 
 .page-bg-line-bar {
-  background: linear-gradient(to bottom,#eff8fe 0%, #f3f8fb 190px ,#f8f8f8 210px,#f9f9f9 100%);
+  background: linear-gradient(
+    to bottom,
+    #eff8fe 0%,
+    #f3f8fb 190px,
+    #f8f8f8 210px,
+    #f9f9f9 100%
+  );
 }
 .page-bg-line {
-  background: linear-gradient(to bottom,#eff8fe 0%, #f3f8fb 100px ,#f8f8f8 120px,#f9f9f9 100%);
+  background: linear-gradient(
+    to bottom,
+    #eff8fe 0%,
+    #f3f8fb 100px,
+    #f8f8f8 120px,
+    #f9f9f9 100%
+  );
 }
 
 .flex-100-persent {
@@ -46,10 +58,20 @@
 
     &.cancel-btn {
       border: 2px solid #aaa;
-      color: var(--ihybrid--desfault-label-color)!important;
+      color: var(--ihybrid--desfault-label-color) !important;
     }
   }
   button + button {
     margin-left: 24px;
+  }
+}
+
+.ihybrid-button-center {
+  margin-bottom: 36px;
+  display: flex;
+  justify-content: center;
+  button {
+    width: 300px;
+    height: 90px;
   }
 }

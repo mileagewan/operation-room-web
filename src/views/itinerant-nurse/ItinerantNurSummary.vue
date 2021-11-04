@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, onUpdated, onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'ItinerantNurSummary',
   setup() {

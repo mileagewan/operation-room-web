@@ -1,11 +1,15 @@
 <template>
-  <div class="key-value-block">
+  <div
+    :class="{
+        'key-value-block' : true,
+        'is-clear': clear
+        }">
     <div class="key-value-block-label">
-      <slot name="label">{{label}}</slot>
+      <slot name="label">{{ label }}</slot>
     </div>
     <div class="key-value-block-value">
       <div>
-        <slot name="value">{{value}}</slot>
+        <slot name="value">{{ value }}</slot>
       </div>
     </div>
   </div>
@@ -18,19 +22,21 @@ export default defineComponent({
   props: {
     label: {
       type: String,
-      default: '未知'
+      default: '任务描述',
     },
     value: {
       type: String,
-      default: ''
+      default: '无',
+    },
+    clear: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
-    return {}
-  }
-})
+    return {};
+  },
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

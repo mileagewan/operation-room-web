@@ -12,7 +12,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
       },
       {
         label: '手术汇总',
-        component: 'ItinerantNurSummary'
+        component: 'WardNurSummary'
       },
       {
         label: '已完成任务',

@@ -118,3 +118,49 @@ export const FlowData2: Array<{
     icon: 'todo-list-o'
   },
 ]
+
+export const curentData: Array<{
+  opInfo?: Array<{
+    label: string,
+    value: string,
+    danger?: boolean
+  }>,
+  operatingStatusList?: Array<{
+    title: string,
+    current?: boolean,
+    icon: string,
+  }>,
+  currentOperatingStatus: string,
+  code: number
+}> = [
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 3
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 4
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 14
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 2
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 15
+  },
+]

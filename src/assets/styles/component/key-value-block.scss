@@ -1,5 +1,14 @@
 .key-value-block {
-  margin-bottom: 36px;
+
+  &.is-clear {
+    background: #fff;
+
+    .key-value-block-label,
+    .key-value-block-value {
+      background: #fff;
+    }
+  }
+  margin:0 -24px 36px -24px;
   overflow: hidden;
   background: #e1f6fd;
   display: flex;
