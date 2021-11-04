@@ -1,2 +1,5 @@
-export const goErrorPage = (options: any) => {};
-export const SsoLogin = () => {};
+import JsToFlutter from '@/utils/js-to-flutter';
+
+export const SsoLogin = () => {
+  JsToFlutter.logout();
+};

@@ -1,7 +1,7 @@
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosStatic } from 'axios'
 import { ListServiceMap, TargetServiceMap } from '@/service/cfg'
 import { RequestQuery, ServiceItem } from '@/types/interface-model'
-import { goErrorPage, SsoLogin } from '@/service/sso-login'
+import { SsoLogin } from '@/service/sso-login'
 import qs from 'qs'
 
 Axios.interceptors.request.use((config: AxiosRequestConfig) => {
@@ -37,15 +37,7 @@ Axios.interceptors.response.use((response: AxiosResponse) => {
       break
     case 401:
     case 403:
-      // 移除token
-      localStorage.removeItem('token')
       SsoLogin()
-      break
-    case 407:
-    // 白名单
-      goErrorPage({
-        message: response.data.data
-      })
       break
     default:
       result = response.data

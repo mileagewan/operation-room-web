@@ -20,6 +20,7 @@ import { useRouter } from 'vue-router'
 
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
+import JsToFlutter from '@/utils/js-to-flutter';
 export default defineComponent({
   name: 'PdaViews',
   components,
@@ -30,7 +31,7 @@ export default defineComponent({
 
     const router = useRouter()
     const goBack = ():void => {
-      window.flutter_inappwebview.callHandler('jsCallFlutter', 'goback')
+      JsToFlutter.goback()
     }
     const onRefresh = (): void => {
       setTimeout(() => {
