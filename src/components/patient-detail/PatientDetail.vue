@@ -12,9 +12,13 @@
     </div>
     <div class="patient-label">
       <span class="patient-label-title">{{ option.room }}</span>
-      <van-tag round class="opration-tag" type="primary">{{
-        option.type
-      }}</van-tag>
+      <van-tag
+        round
+        class="opration-tag"
+        type="primary"
+        :class="[option.type === '急诊' ? 'emergency' : 'normal']"
+        >{{ option.type }}</van-tag
+      >
     </div>
   </div>
 </template>
