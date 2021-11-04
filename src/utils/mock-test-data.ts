@@ -137,6 +137,18 @@ export const curentData: Array<{
     opInfo: TaskList,
     operatingStatusList: FlowData,
     currentOperatingStatus: '2',
+    code: 1
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 2
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
     code: 3
   },
   {
@@ -149,13 +161,61 @@ export const curentData: Array<{
     opInfo: TaskList,
     operatingStatusList: FlowData,
     currentOperatingStatus: '2',
-    code: 14
+    code: 5
   },
   {
     opInfo: TaskList,
     operatingStatusList: FlowData,
     currentOperatingStatus: '2',
-    code: 2
+    code: 6
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 7
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 8
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 9
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 10
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 11
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 12
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 13
+  },
+  {
+    opInfo: TaskList,
+    operatingStatusList: FlowData,
+    currentOperatingStatus: '2',
+    code: 14
   },
   {
     opInfo: TaskList,

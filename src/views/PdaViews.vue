@@ -15,8 +15,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, reactive, ref } from 'vue'
 
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
@@ -24,12 +23,11 @@ import JsToFlutter from '@/utils/js-to-flutter';
 export default defineComponent({
   name: 'PdaViews',
   components,
-  setup(props, { emit }) {
+  setup() {
     const loading = ref<boolean>(false)
     const active = ref<number>(0)
-    const defaultRole = ref('1')
+    const defaultRole = ref('3')
 
-    const router = useRouter()
     const goBack = ():void => {
       JsToFlutter.goback()
     }

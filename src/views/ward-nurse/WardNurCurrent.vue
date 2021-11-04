@@ -74,7 +74,9 @@ export default defineComponent({
       value: ''
     });
 
-    const current = reactive(curentData)
+    const current = reactive(curentData.filter(c => {
+      return [2, 3, 4, 14, 15].includes(c.code)
+    }))
     const manualHandle = () => {
       handleOverLay.show = true
     }
