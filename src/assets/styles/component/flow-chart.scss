@@ -1,56 +1,100 @@
 .flow-chart {
   display: flex;
+  padding: 60px 36px 12px 0;
+  margin-left: -24px;
   .flow-chart-item {
-    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    overflow: visible;
+    height: 48px;
+    &:not(:first-child) {
+      flex: auto;
+      .flow-chart-item_title {
+        margin-right: -50%;
+      }
+    }
     .flow-chart-circle {
-      position: relative;
+      position: absolute;
+      right: -24px;
+      bottom: 100%;
       display: inline-block;
       width: 48px;
       height: 48px;
       border-radius: 50%;
       background: var(--ihybrid--flow-chart-icon-bg);
       z-index: 2;
-      i {
+      .iconfont {
         position: absolute;
         transform: translate(-50%, -50%);
         left: 50%;
         top: 50%;
+        color: #b6ddff;
         font-size: var(--ihybrid--default-font-size);
       }
-
-      .flow-chart-line {
-        height: 15px;
-        background: var(--ihybrid--flow-chart-icon-bg);
-        position: absolute;
-        width: 100%;
-        top: 50%;
-        right: 100%;
-        transform: translateY(-50%);
-        z-index: 1;
+    }
+    .flow-chart-line {
+      height: 16px;
+      background: var(--ihybrid--flow-chart-icon-bg);
+      position: absolute;
+      width: 100%;
+      bottom: 100%;
+      left: 0;
+      transform: translateY(-16px);
+      z-index: 1;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .iconfont {
+        color: #b6ddff;
+        font-size: 8px;
+        line-height: 1;
       }
     }
     .flow-chart-item_title {
-      width: 48px;
+      // position: absolute;
+      // top: 100%;
+      // left: 100%;
+      margin-right: -50%;
+      padding: 12px 6px;
+      width: 100%;
+      min-width: 48px;
       font-size: 18px;
+      color: #999;
+      text-align: center;
     }
 
     &:first-child {
+      .flow-chart-item_title {
+        padding: 12px 0;
+      }
       .flow-chart-line {
         display: none;
       }
     }
-
+    &.is-todo {
+      .flow-chart-circle {
+        .iconfont {
+          color: #5bc7f9;
+        }
+      }
+    }
     &.is-current {
       .flow-chart-circle {
-        background: var(--ihybrid--flow-chart-icon-active-bg) ;
+        background: var(--ihybrid--flow-chart-icon-active-bg);
+        .iconfont {
+          color: #fff;
+        }
       }
-      i {
-        color: #fff;
+      .flow-chart-line {
+        .iconfont {
+          color: var(--ihybrid--active-color);
+        }
       }
       .flow-chart-item_title {
         color: var(--ihybrid--active-color);
       }
     }
   }
-
 }

@@ -9,9 +9,13 @@
         'is-todo': isTodo(i),
       }"
     >
+      <span class="flow-chart-line">
+        <IconFont icon="icon-jindujiantou" />
+
+      </span>
       <span class="flow-chart-circle">
-        <van-icon :name="item.icon" />
-        <span class="flow-chart-line"></span>
+        <!-- <van-icon :name="item.icon" /> -->
+        <IconFont icon="icon-kaishi" />
       </span>
       <div class="flow-chart-item_title">{{ item.title }}</div>
     </div>
