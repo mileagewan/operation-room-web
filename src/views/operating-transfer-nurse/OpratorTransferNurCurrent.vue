@@ -25,6 +25,9 @@
       </KeyValueBlock>
 
       <template v-if="c.code === 5">
+        <KeyValueBlock clear
+                       label="对接人"
+                       value="力度 13800138000" />
         <div class="ihybrid-button-group" >
           <van-button round
                       @click="manualHandle"
@@ -49,13 +52,11 @@
       </template>
 
       <template v-if="c.code === 10">
-        <div class="ihybrid-button-group" >
-          <van-button round
-                      @click="manualHandle"
-                      class="default-button"
-                      color="#f0fafe">
-            人工交接
-          </van-button>
+        <KeyValueBlock clear
+                       label="对接人"
+                       value="力度 13800138000" />
+        <div class="ihybrid-button-center" >
+
           <van-button icon="scan"
                       @click="codeHandle"
                       round
@@ -68,8 +69,17 @@
 
       <template v-if="c.code === 12">
         <KeyValueBlock clear
-                       label="交接人"
+                       label="对接人"
                        value="力度 13800138000" />
+        <div class="ihybrid-button-center" >
+
+          <van-button icon="scan"
+                      @click="codeHandle"
+                      round
+                      color="linear-gradient(to right, #00D6FA, #00ACF2)">
+            扫码交接
+          </van-button>
+        </div>
       </template>
 
       <template v-if="c.code === 14">

@@ -2,10 +2,13 @@
 
   &.is-clear {
     background: #fff;
-
-    .key-value-block-label,
+    margin-bottom: 30px;
+    .key-value-block-label {
+      background: #fff;
+    }
     .key-value-block-value {
       background: #fff;
+      padding: 0 16px;
     }
   }
   margin:0 -24px 36px -24px;
