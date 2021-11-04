@@ -27,7 +27,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const loading = ref<boolean>(false)
     const active = ref<number>(0)
-    const defaultRole = ref('1')
+    const defaultRole = ref('4')
 
     const router = useRouter()
     const goBack = ():void => {

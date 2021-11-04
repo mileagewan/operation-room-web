@@ -1,6 +1,7 @@
 .flow-chart {
+  display: flex;
   .flow-chart-item {
-    float: left;
+    flex: 1;
     .flow-chart-circle {
       position: relative;
       display: inline-block;
@@ -8,7 +9,7 @@
       height: 48px;
       border-radius: 50%;
       background: var(--ihybrid--flow-chart-icon-bg);
-
+      z-index: 2;
       i {
         position: absolute;
         transform: translate(-50%, -50%);
@@ -21,10 +22,11 @@
         height: 15px;
         background: var(--ihybrid--flow-chart-icon-bg);
         position: absolute;
-        width: 36px;
+        width: 100%;
         top: 50%;
-        left: 100%;
+        right: 100%;
         transform: translateY(-50%);
+        z-index: 1;
       }
     }
     .flow-chart-item_title {
@@ -32,7 +34,7 @@
       font-size: 18px;
     }
 
-    &:last-child {
+    &:first-child {
       .flow-chart-line {
         display: none;
       }
@@ -51,7 +53,4 @@
     }
   }
 
-  .flow-chart-item + .flow-chart-item {
-    margin-left: 36px;
-  }
 }
