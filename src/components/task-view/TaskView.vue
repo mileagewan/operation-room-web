@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../assets/styles/task-view.scss">
+<link rel="stylesheet" href="src/assets/styles/component/task-view.scss">
 <template>
   <div class="task-view">
     <div class="task-view-header">

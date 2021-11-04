@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="src/assets/styles/surgical-summary.scss">
+<link rel="stylesheet" href="src/assets/styles/chief-coordination-nurse/surgical-summary.scss">
 <template>
   <div class="surgical-summary">
     <div class="surgical-summary-item" v-for="i in 10" :key="i" @click="next({})">
