@@ -4,7 +4,14 @@
             :key="index"
   >
     <template #header>
-      <PatientDetail :option="{status: c.code}" />
+      <PatientDetail :option="{
+        status: c.code,
+        name: '四个名字',
+        sex: '男',
+        age: '99',
+        type: '急诊',
+        room: '手术-01间-01台',
+      }" />
     </template>
     <template #content>
       <KeyValue
