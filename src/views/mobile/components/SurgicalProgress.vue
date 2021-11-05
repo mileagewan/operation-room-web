@@ -3,7 +3,7 @@
     <div class="progress-warp" v-for="(item,index) in data" :key="index">
       <div class="arrow" v-if="index != 0">
         <div class="bar">
-          <IconFont icon="icon-jindujiantou" :class="[1 ? 'icons-current-select-color' : '']" />
+          <IconFont icon="icon-jindujiantou" :class="[1 ? 'icons-current-select-green' : '']" />
         </div>
       </div>
       <div class="item">
@@ -11,9 +11,9 @@
           <span class="date">{{ getMonthDays(item.startDate) }}</span>
           <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
         </div>
-        <div class="icon-warp" :class="[1?'icons-current-select-bg':'']">
+        <div class="icon-warp" :class="[0?'icons-current-select-green-bg':'']">
           <IconFont v-if="0" icon="icon-yiwancheng icons-default-color" :class="[item.doing?'icons-end':'']" />
-          <IconFont icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select':'']" />
+          <IconFont v-if="1" icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select-white':'']" />
           <IconFont v-if="0" icon="icon-daikaishi icons-default-color" :class="[item.doing?'icons-not-start':'']" />
         </div>
         <div class="text-warp">
@@ -41,12 +41,12 @@ export default defineComponent({
     const currentSelect = ref(true)
     const getMonthDays = (item: string) => {
       if (!item) return ''
-      let _s = item.substring(5, 10)
+      const _s = item.substring(5, 10)
       return _s
     }
     const getMinuteSeconds = (item: string) => {
       if (!item) return ''
-      let _s = item.substring(11, 16)
+      const _s = item.substring(11, 16)
       return _s
     }
     return {
@@ -134,17 +134,17 @@ export default defineComponent({
       }
     }
   }
-  .icons-current-select {
+  .icons-current-select-white {
     color: rgba(255,255,255,1) !important;
   }
-  .icons-current-select-bg{
+  .icons-current-select-green-bg{
     background-color: rgba(59,220,55,1) !important;
   }
-  .icons-current-select-color{
+  .icons-current-select-green{
     color: rgba(59,220,55,1) !important;
   }
   .icons-not-start{
-    color: rgba(91,199,249,1);
+    color: rgba(91,199,249);
   }
   .icons-end{
     color: rgba(182,221,255,1);
