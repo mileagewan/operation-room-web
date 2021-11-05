@@ -11,11 +11,9 @@
     >
       <span class="flow-chart-line">
         <IconFont icon="icon-jindujiantou" />
-
       </span>
       <span class="flow-chart-circle">
-        <!-- <van-icon :name="item.icon" /> -->
-        <IconFont icon="icon-kaishi" />
+        <IconFont :icon="iconMap[i+1]" />
       </span>
       <div class="flow-chart-item_title">{{ item.title }}</div>
     </div>
@@ -42,6 +40,22 @@ export default defineComponent({
     return {
       flowDatas,
       currentIndex,
+    };
+  },
+  data() {
+    return {
+      iconMap: {
+        1: 'icon-kaishi', // 接单
+        2: 'icon-kaishi', // 开始
+        3: 'icon-jieshu', // 结束
+        4: 'icon-shoushukaishi', // 手术开始
+        5: 'icon-shoushujieshu', // 手术完成
+        6: 'icon-saomajiaojie', // 扫码交接
+        7: 'icon-zhuanchuhedui', // 转出核对
+        8: 'icon-hedui', // 三方确认
+        9: 'icon-mazui', // 麻醉
+        10: 'icon-suxing', // 患者苏醒
+      }
     };
   },
   methods: {

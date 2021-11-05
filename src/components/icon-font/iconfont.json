@@ -6,6 +6,20 @@
   "description": "项目icon",
   "glyphs": [
     {
+      "icon_id": "25499306",
+      "name": "扫码交接",
+      "font_class": "saomajiaojie",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "25497909",
+      "name": "三方确认",
+      "font_class": "sanfangqueren",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
       "icon_id": "25474664",
       "name": "关于",
       "font_class": "guanyu",

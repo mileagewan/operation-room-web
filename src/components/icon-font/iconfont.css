@@ -1,9 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2869754 */
-  src: url('iconfont.woff2?t=1636026613827') format('woff2'),
-       url('iconfont.woff?t=1636026613827') format('woff'),
-       url('iconfont.ttf?t=1636026613827') format('truetype'),
-       url('iconfont.svg?t=1636026613827#iconfont') format('svg');
+  src: url('iconfont.woff2?t=1636103641667') format('woff2'),
+       url('iconfont.woff?t=1636103641667') format('woff'),
+       url('iconfont.ttf?t=1636103641667') format('truetype'),
+       url('iconfont.svg?t=1636103641667#iconfont') format('svg');
 }
 
 .iconfont {
@@ -12,6 +12,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-saomajiaojie:before {
+  content: "\e73a";
+}
+
+.icon-sanfangqueren:before {
+  content: "\e739";
 }
 
 .icon-guanyu:before {
