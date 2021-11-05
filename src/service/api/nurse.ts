@@ -7,5 +7,11 @@ const nurse: ServiceItem[] = [
     method: 'post',
   },
 
+  {
+    path: '/itinerantnurse/gettotaltask',
+    key: 'itinerGettotaltask',
+    method: 'post',
+  },
+
 ];
 export { nurse };

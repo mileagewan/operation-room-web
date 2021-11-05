@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue';
+import { defineComponent, onMounted, ref, reactive } from 'vue';
 import { curentData } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
@@ -81,9 +81,7 @@ export default defineComponent({
       value: ''
     });
 
-    const current = reactive(curentData.filter(c => {
-      return [2, 3, 4, 14, 15].includes(c.code)
-    }))
+    const current = ref([])
     const manualHandle = () => {
       handleOverLay.show = true
     }
@@ -118,6 +116,11 @@ export default defineComponent({
       Request.xhr('getSso').then((r: ReturnData) => {
         console.log(r)
       })
+      setTimeout(() => {
+        current.value = curentData.filter(c => {
+          return [2, 3, 4, 14, 15].includes(c.code)
+        }) as any
+      }, 1000)
     })
     return {
       current,

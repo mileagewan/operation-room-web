@@ -125,37 +125,37 @@ export const components = {
 
   // 手术室接送护工
   OpratorTransferNurCurrent: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/operating-transfer-nurse/OpratorTransferNurCurrent.vue'
+    /* webpackChunkName: "OpratorTransferNurCurrent" */ '@/views/operating-transfer-nurse/OpratorTransferNurCurrent.vue'
   )),
   OpratorTransferNurDone: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/operating-transfer-nurse/OpratorTransferNurDone.vue'
+    /* webpackChunkName: "OpratorTransferNurDone" */ '@/views/operating-transfer-nurse/OpratorTransferNurDone.vue'
   )),
 
   // 巡回护士
   ItinerantNurCurrent: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/itinerant-nurse/ItinerantNurCurrent.vue'
+    /* webpackChunkName: "ItinerantNurCurrent" */ '@/views/itinerant-nurse/ItinerantNurCurrent.vue'
   )),
   ItinerantNurSummary: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/itinerant-nurse/ItinerantNurSummary.vue'
+    /* webpackChunkName: "ItinerantNurSummary" */ '@/views/itinerant-nurse/ItinerantNurSummary.vue'
   )),
   ItinerantNurDone: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/itinerant-nurse/ItinerantNurDone.vue'
+    /* webpackChunkName: "ItinerantNurDone" */ '@/views/itinerant-nurse/ItinerantNurDone.vue'
   )),
 
   // 复苏室护士
   ResuscitationNurCurrent: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/resuscitation-nurse/ResuscitationNurCurrent.vue'
+    /* webpackChunkName: "ResuscitationNurCurrent" */ '@/views/resuscitation-nurse/ResuscitationNurCurrent.vue'
   )),
   ResuscitationNurDone: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/resuscitation-nurse/ResuscitationNurDone.vue'
+    /* webpackChunkName: "ResuscitationNurDone" */ '@/views/resuscitation-nurse/ResuscitationNurDone.vue'
   )),
 
   // 总协调护士
   ChiefNurCurrent: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/chief-coordination-nurse/ChiefNurCurrent.vue'
+    /* webpackChunkName: "ChiefNurCurrent" */ '@/views/chief-coordination-nurse/ChiefNurCurrent.vue'
   )),
   SurgicalSummary: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/chief-coordination-nurse/SurgicalSummary.vue'
+    /* webpackChunkName: "SurgicalSummary" */ '@/views/chief-coordination-nurse/SurgicalSummary.vue'
   )),
 
 }

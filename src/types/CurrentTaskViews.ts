@@ -14,7 +14,7 @@ interface OpInfo {
   oproomName: string;
   oproomSubId: number;
   oproomSubName: string;
-  opSectionCode: string;
+  opSectionCode: string | number;
   opSectionName: string;
   code: string;
   name: string;
@@ -65,7 +65,7 @@ interface Patient {
 interface OpTask{
   id: number;
   opCode:string
-  opSectionCode:string
+  opSectionCode:string|number;
   responsibilityUserId: number;
   handoverUserId: number;
   type: number;
@@ -81,8 +81,9 @@ interface OpTask{
   updateName:string;
   createTime:string;
   lastUpdateTime:string;
+  taskTipContent?: string;
 }
-interface TaskViewItem {
+export interface TaskViewItem {
   opInfo: OpInfo;
   patient: Patient;
   opTask: OpTask;

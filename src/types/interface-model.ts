@@ -41,3 +41,10 @@ export interface RoleModuleMap {
   roleName?: string;
   lists: RoleModuleItem[];
 }
+
+export interface Task {
+  key: string;
+  label: string;
+  value: string;
+  danger?:boolean;
+}

@@ -16,15 +16,15 @@
         round
         class="opration-tag"
         type="primary"
-        :class="[option.type === '急诊' ? 'emergency' : 'normal']"
-        >{{ option.type }}</van-tag
+        :class="[option.type === 2 ? 'emergency' : 'normal']"
+        >{{ option.type === 2 ? '急诊' : '平珍' }}</van-tag
       >
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'PatientDetail',
   props: {
@@ -35,7 +35,7 @@ export default defineComponent({
         sex: '男',
         age: '99',
         status: 16,
-        type: '急诊',
+        type: 2,
         room: '手术-01间-01台',
       }),
     },
@@ -47,17 +47,17 @@ export default defineComponent({
         return '';
       }
       // 未开始
-      const style1: any[] = [2];
+      const style1: number[] = [2];
       if (style1.includes(status)) {
         return 'before';
       }
       // 进行中
-      const style2: any[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+      const style2: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
       if (style2.includes(status)) {
         return 'progress';
       }
       // 结束
-      const style3: any[] = [16, -99];
+      const style3: number[] = [16, -99];
       if (style3.includes(status)) {
         return 'end';
       }

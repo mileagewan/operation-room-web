@@ -1,20 +1,27 @@
 <template>
   <TaskView class="itinerant-nur-current"
-            v-for="c in code"
-            :key="c"
+            v-for="(taskView, index) in taskViewsList"
+            :key="index"
   >
     <template #header>
-      <PatientDetail />
+      <PatientDetail :option="{
+        status: taskView.opInfo.opSectionCode,
+        name: taskView.patient.name,
+        sex: '男',
+        age: '99',
+        type: taskView.patient.type,
+        room: taskView.opInfo.oproomSubName,
+      }"/>
     </template>
     <template #content>
       <KeyValue
-        v-for="(vi, ii) in taskList"
-        :value="vi.value"
-        :danger="vi.danger"
-        :key="ii"
+        v-for="(item, i) in taskView.taskList"
+        :value="item.value"
+        :danger="item.danger"
+        :key="i"
       >
         <template #label>
-          {{ vi.label }}
+          {{ item.label }}
         </template>
       </KeyValue>
       <div class="itinerant-flow-chart">
@@ -22,18 +29,11 @@
       </div>
       <key-value-block>
         <template #value>
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
-          阿水淀粉阿水淀粉阿水淀粉阿水淀粉
+          {{taskView.opInfo.taskTipContent || '无'}}
         </template>
       </key-value-block>
-      <div class="ihybrid-button-group" >
-        <template v-if="c === 6">
+      <div class="ihybrid-button-group">
+        <template v-if="taskView.opInfo.opSectionCode === 6">
           <van-button round
                       @click="manualHandle"
                       class="default-button"
@@ -47,25 +47,25 @@
             扫码交接
           </van-button>
         </template>
-        <template v-else-if="c === 7">
+        <template v-else-if="taskView.opInfo.opSectionCode === 7">
           <van-button icon="passed"
-                      @click="codeHandle"
+                      @click="thirdPartyConfirm(taskView)"
                       round
                       color="linear-gradient(to right, #00D6FA, #00ACF2)">
             三方确认
           </van-button>
         </template>
-        <template v-else-if="c === 8">
+        <template v-else-if="taskView.opInfo.opSectionCode === 8">
           <van-button icon="pause-circle-o"
-                      @click="codeHandle"
+                      @click="operationBegan(taskView)"
                       round
                       color="linear-gradient(to right, #00D6FA, #00ACF2)">
             手术开始
           </van-button>
         </template>
-        <template v-else-if="c === 9">
+        <template v-else-if="taskView.opInfo.opSectionCode === 9">
           <van-button round
-                      @click="manualHandle"
+                      @click="noticeNext(taskView)"
                       class="default-button"
                       color="#f0fafe">
             通知下一台术前准备
@@ -78,10 +78,10 @@
           </van-button>
         </template>
       </div>
-      <template v-if="c === 10">
+      <template v-if="taskView.opInfo.opSectionCode === 10">
         <key-value label="交接人" value="接送护士"></key-value>
       </template>
-      <template v-if="c === 11">
+      <template v-if="taskView.opInfo.opSectionCode === 11">
         <key-value label="交接人" value="复苏室护士"></key-value>
       </template>
     </template>
@@ -97,7 +97,7 @@
     <div class="itinerant-nur-to-resuscitation">
       <div class="select-title">
         <span>是否送至复苏室</span>
-        <van-switch v-model="resuscitationOverLay.checked"  size="24px"/>
+        <van-switch v-model="resuscitationOverLay.checked" size="24px"/>
       </div>
       <div class="select-address">
         请选择患者术后地点
@@ -109,10 +109,10 @@
                'is-active': room.value === resuscitationOverLay.active
              }"
              @click="roomSelect(room)">
-          {{room.label}}
+          {{ room.label }}
         </div>
       </div>
-      <div class="ihybrid-button-group" >
+      <div class="ihybrid-button-group">
         <van-button round
                     class="cancel-btn"
                     color="#FAFAFA">
@@ -129,14 +129,29 @@
 </template>
 
 <script lang="ts">
-import { TaskList, FlowData2 } from '@/utils/mock-test-data';
-import { defineComponent, onMounted, reactive } from 'vue';
+import { testdata, FlowData2 } from '@/utils/mock-test-data';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { Toast } from 'vant';
-import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
+import useTaskMixins, {
+  opInfoCode,
+  hospitalCode,
+  departmentName,
+  surgeonName,
+  circulatingNurseName,
+  anesthetistName,
+  anesthesiaDicCode,
+  infectType,
+  opInfoName,
+  beforeDiseaseName
+} from '@/utils/task-mixins';
+import { Task } from '@/types/interface-model';
+
 export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
+    const { formatTask } = useTaskMixins()
     const handleOverLay = reactive({
       show: false,
       value: ''
@@ -160,11 +175,21 @@ export default defineComponent({
       ],
       active: 1
     })
-    const taskList = reactive(TaskList);
+    const taskList:Task[] = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName()
+    ];
     const flowData = reactive(FlowData2);
-    const code = reactive([
-      6, 7, 8, 9, 10, 11
-    ])
+    const taskViewsList = ref([])
+
     const manualHandle = () => {
       handleOverLay.show = true
     }
@@ -173,10 +198,6 @@ export default defineComponent({
       handleOverLay.show = false
     }
     const codeHandle = () => {
-      // window.flutter_inappwebview.callHandler('jsCallFlutter', 'getToken').then(function (result) {
-      //   // result 为请求返回结果
-      //   console.log('jsCallFlutter: ' + JSON.stringify(result));
-      // });
       const toast = Toast({
         duration: 0,
         overlay: true,
@@ -194,6 +215,22 @@ export default defineComponent({
         }
       }, 1000);
     }
+
+    const thirdPartyConfirm = (taskView: TaskViewItem) => {
+      console.log(taskView)
+      Toast('三方确认')
+    }
+
+    const operationBegan = (taskView: TaskViewItem) => {
+      console.log(taskView)
+      Toast('手术开始')
+    }
+
+    const noticeNext = (taskView: TaskViewItem) => {
+      console.log(taskView)
+      Toast('通知下一台术前准备')
+    }
+
     const resuscitationHandle = () => {
       resuscitationOverLay.show = true
     }
@@ -204,7 +241,21 @@ export default defineComponent({
     const getData = () => {
       // eslint-disable-next-line no-undef
       Request.xhr('itinerGetcurrenttask').then((r: CurrentTaskViews) => {
-        console.log(r)
+        // const { code, data } = r;
+        // if (code === 200) {
+        //   const taskViews = data.map((d) => {
+        //     return {
+        //       ...d,
+        //       taskList: formatTask(data, taskList)
+        //     }
+        //   })
+        // }
+        taskViewsList.value = testdata.map((d) => {
+          return {
+            ...d,
+            taskList: formatTask(testdata, taskList)
+          }
+        }) as any;
       })
     }
     onMounted(() => {
@@ -213,14 +264,16 @@ export default defineComponent({
     return {
       handleOverLay,
       resuscitationOverLay,
-      taskList,
       flowData,
-      code,
+      taskViewsList,
       manualHandle,
       manualOk,
       resuscitationHandle,
       codeHandle,
       roomSelect,
+      thirdPartyConfirm,
+      operationBegan,
+      noticeNext,
       onMounted
     };
   },
