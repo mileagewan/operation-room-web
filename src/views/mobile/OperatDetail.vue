@@ -8,7 +8,7 @@
         <TaskView>
           <template #header>
             <div class="date-title">
-              <div>{{dateTime}}</div>
+              <div>{{ dateTime }}</div>
               <div>胸腔镜下肺大泡切除术</div>
             </div>
             <oprat-info>
@@ -77,7 +77,7 @@ export default defineComponent({
     })
     const patientInfo = ref<any>({})
     // const listData = ref<any[]>([])
-    onMounted(()=>{
+    onMounted(() => {
       loadData()
     })
     // 接口请求
@@ -97,11 +97,11 @@ export default defineComponent({
       }
     }
     const dateTime = computed(() => {
-      let _MonthDay = patientInfo.value.startDate?MonthDay(patientInfo.value.startDate):''
-      let _week = patientInfo.value.week?('('+patientInfo.value.week+')'):''
-      let _startTime = patientInfo.value.startTime?patientInfo.value.startTime:''
-      let _endTime = patientInfo.value.endTime?patientInfo.value.endTime:''
-      return _MonthDay+_week+_startTime+'-'+_endTime
+      const _MonthDay = patientInfo.value.startDate ? MonthDay(patientInfo.value.startDate) : ''
+      const _week = patientInfo.value.week ? ('(' + patientInfo.value.week + ')') : ''
+      const _startTime = patientInfo.value.startTime ? patientInfo.value.startTime : ''
+      const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
+      return _MonthDay + _week + _startTime + '-' + _endTime
     })
     const router = useRouter()
     const goBack = (): void => {
