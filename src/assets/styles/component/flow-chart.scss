@@ -30,7 +30,7 @@
         left: 50%;
         top: 50%;
         color: #b6ddff;
-        font-size: var(--ihybrid--default-font-size);
+        font-size: 28px;
       }
     }
     .flow-chart-line {
@@ -78,6 +78,9 @@
         .iconfont {
           color: #5bc7f9;
         }
+      }
+      .flow-chart-item_title {
+        color: #333;
       }
     }
     &.is-current {
