@@ -1,4 +1,4 @@
-export default (code: number): string => {
+export default (code: string): string => {
   let result = '';
   // const codeMap = {}
   const codeMap: any = {

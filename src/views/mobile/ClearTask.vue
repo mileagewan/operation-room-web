@@ -49,7 +49,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref,toRefs } from 'vue'
+import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import ClearTaskCard from './components/ClearTaskCard.vue'
 import ClearCompletedCard from './components/ClearCompletedCard.vue'
@@ -101,7 +101,7 @@ export default defineComponent({
     const onClickTab = ({ name }: any) => {
       console.log(name)
       state.active = name;
-     // loadData(name)
+      // loadData(name)
     }
     const onRefresh = () => {
       // 清空列表数据
