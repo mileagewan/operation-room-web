@@ -45,7 +45,7 @@ export default defineComponent({
   padding-bottom: 24px;
   .btn-group {
     padding: 24px;
-    text-align: right;
+    text-align: center;
     :deep(.van-button) {
       width: 300px;
       height: 90px;
