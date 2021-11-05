@@ -8,34 +8,49 @@
       <div class="item">
         <div class="title">手术名称</div>
         <div class="text">
-          <span>10月20日(周五) 08:00-09:00</span>
-          <span>胸腔镜下肺大泡切除术</span>
+          <span>{{ dateTime }}</span>
+          <span>{{ info.opName }}</span>
         </div>
       </div>
       <div class="item">
         <div class="title">任务发起人</div>
-        <div class="text">林宇</div>
+        <div class="text">{{ info.initiatorUserName }}</div>
       </div>
       <div class="item">
         <div class="title">清洁护工</div>
-        <div class="text">刘爱莲</div>
+        <div class="text">{{ info.receiveUserName }}</div>
       </div>
       <div class="item">
         <div class="title">完成时间</div>
-        <div class="text">09:00</div>
+        <div class="text">{{ info.taskEndTime }}</div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { getMonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'ClearTaskCard',
-  setup() {
-    const data = ref(false)
+  props: {
+    data: {
+      type: Object,
+      default: () => { }
+    }
+  },
+  setup(props) {
+    const info = ref<any>(props.data)
+    const dateTime = computed(() => {
+      const _MonthDay = info.value.startDate ? getMonthDay(info.value.startDate) : ''
+      const _week = info.value.week ? ('(' + info.value.week + ')') : ''
+      const _startTime = info.value.startTime ? info.value.startTime : ''
+      const _endTime = info.value.endTime ? info.value.endTime : ''
+      return _MonthDay + _week + _startTime + '-' + _endTime
+    })
     return {
-      data
+      dateTime,
+      info
     }
   },
 })

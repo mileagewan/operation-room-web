@@ -1,13 +1,17 @@
 <template>
   <div class="clear-completed-card">
-    <ClearTaskCard />
+    <ClearTaskCard :data="clearTaskCardData" />
     <div class="btn-group">
-      <van-button type="primary" color="linear-gradient(47deg,#00d6fa 8%, #00acf2 90%)">已完成</van-button>
+      <van-button
+        type="primary"
+        color="linear-gradient(47deg,#00d6fa 8%, #00acf2 90%)"
+        @click="btnClick"
+      >已完成</van-button>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import ClearTaskCard from './ClearTaskCard.vue'
 
 export default defineComponent({
@@ -15,8 +19,22 @@ export default defineComponent({
   components: {
     ClearTaskCard
   },
-  setup() {
-
+  emits: ['btnclick'],
+  props: {
+    data: {
+      type: Object,
+      default: () => { }
+    }
+  },
+  setup(props, ctx) {
+    const clearTaskCardData = ref<any>(props.data)
+    const btnClick = () => {
+      ctx.emit('btnclick', clearTaskCardData.value.id)
+    }
+    return {
+      btnClick,
+      clearTaskCardData
+    }
   },
 })
 </script>

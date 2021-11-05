@@ -61,7 +61,6 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -73,7 +72,6 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
-    const router = useRouter()
     const state = reactive({
       title: '手术室',
       active: 'TODAY',
