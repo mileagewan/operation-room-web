@@ -1,38 +1,60 @@
 <template>
   <div class="surgical-progress">
-    <div class="item-warp" v-for="(item,index) in itemList" :key="index">
-      <div class="arrow" v-if="index !=0">
-        <van-icon name="down" :class="[currentSelect?'icon-current-select':'']" />
+    <div class="progress-warp" v-for="(item,index) in data" :key="index">
+      <div class="arrow" v-if="index != 0">
+        <div class="bar">
+          <IconFont icon="icon-jindujiantou" :class="[1 ? 'icons-current-select-color' : '']" />
+        </div>
       </div>
       <div class="item">
         <div class="time-warp">
-          <span class="date">09-20</span>
-          <span class="time">15:35</span>
+          <span class="date">{{ getMonthDays(item.startDate) }}</span>
+          <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
         </div>
-        <div class="icon-warp">
-          <van-icon name="checked" :class="[currentSelect?'icon-current-select':'']" />
+        <div class="icon-warp" :class="[1?'icons-current-select-bg':'']">
+          <IconFont v-if="0" icon="icon-yiwancheng icons-default-color" :class="[item.doing?'icons-end':'']" />
+          <IconFont icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select':'']" />
+          <IconFont v-if="0" icon="icon-daikaishi icons-default-color" :class="[item.doing?'icons-not-start':'']" />
         </div>
         <div class="text-warp">
-          <span class="title">手术排台</span>
-          <span class="name">护士长</span>
+          <span class="title">{{ item.sectionName }}</span>
+          <span class="name">{{ item.receiveUserName }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, PropType, computed } from 'vue'
 
 export default defineComponent({
   name: 'SurgicalProgress',
+  props: {
+    data: {
+      type: Array as PropType<any[]>,
+      default: () => []
+    }
+  },
   setup() {
     const aa = '1'
     const itemList = ref(['1', '2', '2', '2', '2'])
     const currentSelect = ref(true)
+    const getMonthDays = (item: string) => {
+      if (!item) return ''
+      let _s = item.substring(5, 10)
+      return _s
+    }
+    const getMinuteSeconds = (item: string) => {
+      if (!item) return ''
+      let _s = item.substring(11, 16)
+      return _s
+    }
     return {
       aa,
       itemList,
-      currentSelect
+      currentSelect,
+      getMonthDays,
+      getMinuteSeconds
     }
   },
 })
@@ -40,26 +62,37 @@ export default defineComponent({
 <style lang="scss" scoped>
 .surgical-progress {
   position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    width: 15px;
-    background: rgba(25, 143, 247, 0.08);
-    top: 40px;
-    height: calc(100% - 80px);
-    left: 102px;
-  }
-  .item-warp {
-    .arrow{
-      padding-left: 98px;
+  .progress-warp {
+    .arrow {
+      padding-left: 109px;
+      height: 48px;
+      position: relative;
+      .bar {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(238, 247, 255);
+        width: 15px;
+        height: calc(100% + 16px);
+        transform: translateY(-8px);
+      }
+      .icon-jindujiantou {
+        display: inline-block;
+        transform: rotate(90deg) scale(0.4);
+        color: #b6ddff;
+      }
     }
     .item {
       display: flex;
       align-items: center;
+      height: 48px;
       .time-warp {
         display: flex;
         flex-direction: column;
         margin-right: 19px;
+        width: 73px;
+        align-items: center;
         .date {
           font-size: 24px;
           font-family: PingFangSC, PingFangSC-Regular;
@@ -74,8 +107,11 @@ export default defineComponent({
         }
       }
       .icon-warp {
-        //background: rgba(25, 143, 247,);
+        background: rgba(238, 247, 255);
+        opacity: 1;
         border-radius: 48px;
+        position: relative;
+        z-index: 4;
         i {
           font-size: 48px;
         }
@@ -98,8 +134,23 @@ export default defineComponent({
       }
     }
   }
-  .icon-current-select{
-    color: green;
+  .icons-current-select {
+    color: rgba(255,255,255,1) !important;
+  }
+  .icons-current-select-bg{
+    background-color: rgba(59,220,55,1) !important;
+  }
+  .icons-current-select-color{
+    color: rgba(59,220,55,1) !important;
+  }
+  .icons-not-start{
+    color: rgba(91,199,249,1);
+  }
+  .icons-end{
+    color: rgba(182,221,255,1);
+  }
+  .icons-default-color{
+    color: rgba(182,221,255,1);
   }
 }
 </style>

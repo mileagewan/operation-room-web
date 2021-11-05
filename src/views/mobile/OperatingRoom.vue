@@ -14,7 +14,7 @@
           <oprat-room-card
             v-for="(item,index) in listData"
             :key="index"
-            :dateTime="`${item.startDate?MonthDay(item.startDate):''}
+            :dateTime="`${item.startDate?getMonthDay(item.startDate):''}
             ${item.week?'(' + item.week + ')':''} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
           >
@@ -62,7 +62,7 @@ import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
-import { MonthDay } from '@/utils/date-formt'
+import { getMonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'OperatingRoom',
@@ -117,7 +117,7 @@ export default defineComponent({
       onLoad,
       ...toRefs(state),
       listData,
-      MonthDay
+      getMonthDay
     }
   },
 })

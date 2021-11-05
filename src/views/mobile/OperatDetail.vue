@@ -9,46 +9,46 @@
           <template #header>
             <div class="date-title">
               <div>{{ dateTime }}</div>
-              <div>胸腔镜下肺大泡切除术</div>
+              <div>{{patientInfo.name}}</div>
             </div>
             <oprat-info>
               <template #left-content>
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text">二区域 - 手术室05</span>
+                  <span class="text">{{ patientInfo.departmentWardName }} - {{ patientInfo.oproomSubName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">主刀医生</span>
-                  <span class="text">黄志浩</span>
+                  <span class="text">{{patientInfo.surgeonName}}</span>
                 </div>
                 <div class="item">
                   <span class="title">麻醉医生</span>
-                  <span class="text">陈潜</span>
+                  <span class="text">{{patientInfo.anesthetistName}}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span class="text">男</span>
+                  <span class="text">{{patientInfo.patientSex}}</span>
                 </div>
               </template>
               <template #right-content>
                 <div class="item">
                   <span class="title">巡回护士</span>
-                  <span class="text">杨森</span>
+                  <span class="text">{{patientInfo.circulatingNurseName}}</span>
                 </div>
                 <div class="item">
                   <span class="title">器械护士</span>
-                  <span class="text">陈涛</span>
+                  <span class="text">{{patientInfo.instrumentNurseName}}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
-                  <span class="text">55岁</span>
+                  <span class="text">{{patientInfo.patientAge?(patientInfo.patientAge + '岁'):'' }}</span>
                 </div>
               </template>
             </oprat-info>
           </template>
           <template #content>
             <div class="title">手术进度</div>
-            <surgical-progress />
+            <surgical-progress :data="surgicalProgressData" />
           </template>
         </TaskView>
       </van-pull-refresh>
@@ -62,7 +62,7 @@ import { useRouter } from 'vue-router'
 import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
-import { MonthDay } from '@/utils/date-formt'
+import { getMonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
   name: 'OperatDetail',
@@ -76,7 +76,7 @@ export default defineComponent({
       loadingRefresh: false,
     })
     const patientInfo = ref<any>({})
-    // const listData = ref<any[]>([])
+    const surgicalProgressData = ref<any[]>([])
     onMounted(() => {
       loadData()
     })
@@ -89,6 +89,7 @@ export default defineComponent({
             const data = r.data;
             patientInfo.value = data
             // console.log(patientInfo.value)
+            surgicalProgressData.value = data.sectionVoList
           }
           console.log(r)
         })
@@ -97,7 +98,7 @@ export default defineComponent({
       }
     }
     const dateTime = computed(() => {
-      const _MonthDay = patientInfo.value.startDate ? MonthDay(patientInfo.value.startDate) : ''
+      const _MonthDay = patientInfo.value.startDate ? getMonthDay(patientInfo.value.startDate) : ''
       const _week = patientInfo.value.week ? ('(' + patientInfo.value.week + ')') : ''
       const _startTime = patientInfo.value.startTime ? patientInfo.value.startTime : ''
       const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
@@ -117,8 +118,9 @@ export default defineComponent({
       goBack,
       ...toRefs(state),
       patientInfo,
-      MonthDay,
-      dateTime
+      getMonthDay,
+      dateTime,
+      surgicalProgressData
     }
   },
 })
