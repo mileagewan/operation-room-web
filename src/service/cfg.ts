@@ -1,10 +1,12 @@
 import { ServiceItem } from '@/types/interface-model';
 import { home } from '@/service/api/home';
 import { mobile } from '@/service/api/mobile';
+import { nurse } from '@/service/api/nurse';
 
 const ServiceEntries = {
   Home: home,
-  Mobile: mobile
+  Mobile: mobile,
+  Nurse: nurse
 };
 const TargetServiceMap: Map<string, Map<string, ServiceItem>> = new Map();
 

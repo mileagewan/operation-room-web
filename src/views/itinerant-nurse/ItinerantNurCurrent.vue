@@ -132,8 +132,8 @@
 import { TaskList, FlowData2 } from '@/utils/mock-test-data';
 import { defineComponent, onMounted, reactive } from 'vue';
 import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
 import { Toast } from 'vant';
+import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
@@ -200,10 +200,15 @@ export default defineComponent({
     const roomSelect = (room: any) => {
       resuscitationOverLay.active = room.value
     }
-    onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
+
+    const getData = () => {
+      // eslint-disable-next-line no-undef
+      Request.xhr('itinerGetcurrenttask').then((r: CurrentTaskViews) => {
         console.log(r)
       })
+    }
+    onMounted(() => {
+      getData()
     })
     return {
       handleOverLay,

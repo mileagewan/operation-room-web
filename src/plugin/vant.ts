@@ -23,7 +23,8 @@ import {
   Popup,
   Toast,
   Field,
-  Switch
+  Switch,
+  Loading
 } from 'vant'
 const plugins = [
   Button,
@@ -49,11 +50,13 @@ const plugins = [
   Popup,
   Toast,
   Field,
-  Switch
+  Switch,
+  Loading
 ]
 
 export const vantPlugins = {
-  install: function(app: App) {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  install(app: App) {
     plugins.forEach((item) => {
       // app.component(item.name, item);
       app.use(item)

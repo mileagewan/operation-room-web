@@ -1,0 +1,1 @@
+export const SET_USER_INFO_ACTION = 'SET_USER_INFO_ACTION'

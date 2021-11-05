@@ -1,3 +1,7 @@
+.app-isReady {
+  @extend .position-center;
+  background: #fff;
+}
 .pda-views {
   @extend .page-bg-line-bar;
   height: 100vh;

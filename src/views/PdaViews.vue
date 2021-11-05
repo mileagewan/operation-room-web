@@ -3,11 +3,11 @@
     <nav-bar @goBack="goBack" />
     <van-tabs v-model:active="active">
       <van-tab
-        v-for="cmponentItem in componentsList"
+        v-for="(cmponentItem,index) in componentsList"
         :key="cmponentItem.component"
         :title="cmponentItem.label"
       >
-        <van-pull-refresh v-model="loading" @refresh="onRefresh">
+        <van-pull-refresh v-model="loading" @refresh="onRefresh"  v-if="active === index">
           <component :is="cmponentItem.component"></component>
         </van-pull-refresh>
       </van-tab>
@@ -15,8 +15,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-
+import { computed, defineComponent, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
@@ -24,9 +24,11 @@ export default defineComponent({
   name: 'PdaViews',
   components,
   setup() {
+    const store = useStore();
+
     const loading = ref<boolean>(false);
     const active = ref<number>(0);
-    const defaultRole = ref('3');
+    const defaultRole = computed(() => store.state.userInfo.userId);
 
     const goBack = (): void => {
       JsToFlutter.goback();
