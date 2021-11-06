@@ -13,5 +13,12 @@ const nurse: ServiceItem[] = [
     method: 'post',
   },
 
+  //    查询当前任务卡片列表
+  {
+    path: '/nurse/queryCurrentTaskList',
+    key: 'queryCurrentTaskList',
+    method: 'post',
+  },
+
 ];
 export { nurse };

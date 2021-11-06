@@ -81,6 +81,7 @@ import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
+import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
@@ -106,23 +107,6 @@ export default defineComponent({
         message: '患者匹配成功，交接完成',
         seconds: 3,
       });
-      // const second = ref(3);
-      // const message = computed(() => `患者匹配成功，交接完成${second.value}s`);
-      // const toast = Toast({
-      //   duration: 0,
-      //   overlay: true,
-      //   message: message.value,
-      // });
-      // const timer = setInterval(() => {
-      //   second.value--;
-      //   if (second.value) {
-      //     // toast.message = `患者匹配成功，交接完成${second.value}s`;
-      //     toast.message = message.value;
-      //   } else {
-      //     clearInterval(timer);
-      //     Toast.clear();
-      //   }
-      // }, 1000);
     };
 
     const callNurse = () => {
@@ -139,7 +123,30 @@ export default defineComponent({
         }) as any;
       }, 1000);
     });
+    const getData = () => {
+      // eslint-disable-next-line no-undef
+      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        // const { code, data } = r;
+        // if (code === 200) {
+        //   const taskViews = data.map((d) => {
+        //     return {
+        //       ...d,
+        //       taskList: formatTask(data, taskList)
+        //     }
+        //   })
+        // }
+        console.log(r)
+        // taskViewsList.value = testdata.map((d) => {
+        //   return {
+        //     ...d,
+        //     taskList: formatTask(d, taskList)
+        //   }
+        // }) as any;
+      })
+    }
+    getData()
     return {
+      getData,
       current,
       handleOverLay,
       manualHandle,
