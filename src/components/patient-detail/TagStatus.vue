@@ -1,5 +1,11 @@
 <template>
-  <van-tag round class="status" :class="[statusClass]" type="primary">
+  <van-tag
+    v-show="code"
+    round
+    class="status"
+    :class="[statusClass]"
+    type="primary"
+  >
     {{ $filters.status(code) }}
   </van-tag>
 </template>
