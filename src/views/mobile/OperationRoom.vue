@@ -20,6 +20,8 @@
             :key="index"
             :dateTime="`${getMonthDay(item.startDate)}${'(' + item.week + ')'} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
+            :tagCode="item.opSectionCode"
+            @click-title="cardTitleClick(item)"
           >
             <template #left-content>
               <div class="item">
@@ -60,11 +62,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
+import { defineComponent, reactive, toRefs, ref,Ref, onBeforeMount } from 'vue'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -72,6 +75,7 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
+    const router = useRouter()
     const state = reactive({
       title: '手术室',
       active: 'TODAY',
@@ -157,6 +161,15 @@ export default defineComponent({
       state.pageNo = 1
       onLoad()
     };
+    const cardTitleClick = (item:any)=>{
+      console.log('--id--',item.code)
+      router.push({
+        path:'/operatDetail',
+        query:{
+          id:item.code
+        }
+      })
+    }
     return {
       onLoad,
       onRefresh,
@@ -164,7 +177,8 @@ export default defineComponent({
       listData,
       ...toRefs(state),
       onClickTab,
-      getMonthDay
+      getMonthDay,
+      cardTitleClick
     }
   },
 })

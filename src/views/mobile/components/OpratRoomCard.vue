@@ -2,12 +2,12 @@
   <div class="operat-room-card">
     <div class="container" :class="[hasFooter ? 'hasFooter' : '']">
       <div class="title-warp">
-        <div class="title">
+        <div class="title" @click.prevent="clickTitle">
           <span class="time">{{ time }}</span>
           <span class="text">{{ name }}</span>
         </div>
         <div class="state-bar">
-          <TagStatus :code="tagStatus" />
+          <TagStatus v-if="tagStatus" :code="tagStatus" />
         </div>
       </div>
       <oprat-info>
@@ -47,16 +47,21 @@ export default defineComponent({
       default: ''
     }
   },
-  setup(props) {
+  emits: ['clickTitle'],
+  setup(props, ctx) {
     const data = reactive({
       time: props.dateTime,
       name: props.name,
       state: 3,
-      tagStatus:props.tagCode,
+      tagStatus: props.tagCode,
       hasFooter: false
     })
+    const clickTitle = () => {
+      ctx.emit('clickTitle')
+    }
     return {
       ...toRefs(data),
+      clickTitle
     }
   },
 })
