@@ -43,6 +43,7 @@ import ClearCompletedCard from './components/ClearCompletedCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
+import { Toast } from 'vant'
 
 export default defineComponent({
   name: 'ClearTask',
@@ -84,7 +85,7 @@ export default defineComponent({
       loadData(state.active, state.pageNo, state.pageSize)
     }
     // 接口请求
-    const loadData = async (taskStatus: string, pageNo: number, pageSize: number, getNum?: boolean) => {
+    const loadData = async (taskStatus: string, pageNo: number, pageSize: number) => {
       try {
         const params = {
           taskStatus: taskStatus,
@@ -130,13 +131,15 @@ export default defineComponent({
     const updateData = async (id: number) => {
       try {
         const params = `id=${id}`
+        Toast.loading({ message: '加载中...', forbidClick: true });
         await Request.xhr('getClearTaskUpdate', {}, params).then((r: ReturnData) => {
           if (r.code === 200) {
+            Toast.clear()
             onRefresh()
           }
         })
       } catch (e) {
-
+        Toast.clear()
       }
     }
     return {
