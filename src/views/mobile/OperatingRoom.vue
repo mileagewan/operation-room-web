@@ -17,6 +17,7 @@
             :dateTime="`${item.startDate?getMonthDay(item.startDate):''}
             ${item.week?'(' + item.week + ')':''} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
+            :tagCode="item.opSectionCode"
           >
             <template #left-content>
               <div class="item">
@@ -58,7 +59,6 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -82,10 +82,6 @@ export default defineComponent({
     const listData = ref<any[]>([])
     // 加载更多
     const onLoad = async () => {
-      // console.log('加载更多')
-      // await loadData()
-      // state.loadingList = false
-      // state.finishedList = true
       if (!state.refreshing && state.pageNo < state.totalPage) {
         console.log('加载更多')
         state.pageNo = state.pageNo + 1
@@ -125,8 +121,6 @@ export default defineComponent({
     }
     // 下拉刷新
     const onRefresh = async () => {
-      // await loadData()
-      // state.loadingRefresh = false
       state.refreshing = true
       state.finishedList = false
       state.loadingList = true
