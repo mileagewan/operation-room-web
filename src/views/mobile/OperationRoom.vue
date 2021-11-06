@@ -52,7 +52,7 @@
               </div>
               <div class="item">
                 <span class="title">患者年龄</span>
-                <span class="text">{{ item.patientAge?(item.patientAge + '岁'):'' }}</span>
+                <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
               </div>
             </template>
           </oprat-room-card>
@@ -62,12 +62,13 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, Ref, onBeforeMount } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import JsToFlutter from '@/utils/js-to-flutter';
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -76,6 +77,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
     const state = reactive({
       title: '手术室',
       active: 'TODAY',
@@ -91,15 +93,13 @@ export default defineComponent({
     const listData = ref<any[]>([])
     // 返回
     const goBack = (): void => {
-      console.log(window)
-      if (window.flutter_inappwebview) {
-        console.log(window.flutter_inappwebview)
-        window.flutter_inappwebview.callHandler('jsCallFlutter', 'goback')
-      } else {
-        // router.back()
-      }
+      JsToFlutter.goback();
     }
     onBeforeMount(() => {
+      if (route.query?.dateType) {
+        const _dateType: any = route.query.dateType
+        state.active = _dateType
+      }
       // 获取今日数量
       loadData('TODAY', 1, 1, true)
       // 获取明日数量
@@ -161,10 +161,15 @@ export default defineComponent({
       state.pageNo = 1
       onLoad()
     };
-    const cardTitleClick = (item:any) => {
-      console.log('--id--', item.code)
+    // 点击跳转
+    const cardTitleClick = (item: any) => {
+      let path = '/operatDetail'
+      const _opSectionCode: number = item?.opSectionCode
+      if (_opSectionCode < 3) {
+        path = '/operatingRoom'
+      }
       router.push({
-        path: '/operatDetail',
+        path: path,
         query: {
           id: item.code
         }

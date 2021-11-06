@@ -74,14 +74,7 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  reactive,
-  computed,
-  getCurrentInstance,
-} from 'vue';
+import { defineComponent, onMounted, ref, reactive } from 'vue';
 import { curentData } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
@@ -91,7 +84,6 @@ import ToastCountdown from '@/utils/toast-countdown';
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
-    const hospitalCode = ref('')
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -147,17 +139,7 @@ export default defineComponent({
         }) as any;
       }, 1000);
     });
-    const { appContext }: any = getCurrentInstance();
-    const emitter: any = appContext.config.globalProperties.emitter;
-    emitter.on('scan-code-success', (data: any) => {
-      console.log(data);
-      if (data) {
-        // TODO 过滤列表
-        hospitalCode.value = data
-      }
-    });
     return {
-      emitter,
       current,
       handleOverLay,
       manualHandle,

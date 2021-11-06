@@ -14,15 +14,15 @@
           <oprat-room-card
             v-for="(item,index) in listData"
             :key="index"
-            :dateTime="`${item.startDate?getMonthDay(item.startDate):''}
-            ${item.week?'(' + item.week + ')':''} ${item.startTime + '-' + item.endTime}`"
+            :dateTime="`${item.startDate ? getMonthDay(item.startDate) : ''}
+            ${item.week ? '(' + item.week + ')' : ''} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
-            :tagCode="item.opSectionCode"
+            :tagCode="item.opSectioode"
           >
             <template #left-content>
               <div class="item">
                 <span class="title">手术室</span>
-                <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
+                <span class="text">{{ item.departmentardName }} - {{ item.oproomSubName }}</span>
               </div>
               <div class="item">
                 <span class="title">主刀医生</span>
@@ -48,7 +48,7 @@
               </div>
               <div class="item">
                 <span class="title">患者年龄</span>
-                <span class="text">{{ item.patientAge?(item.patientAge + '岁'):'' }}</span>
+                <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
               </div>
             </template>
           </oprat-room-card>
@@ -58,11 +58,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'OperatingRoom',
@@ -70,16 +71,24 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
+    const router = useRouter()
+    const route = useRoute()
     const state = reactive({
-      title: '手术间01间',
+      title: '手术间',
       refreshing: false,
       loadingList: false,
       finishedList: false,
       totalPage: 0,
       pageNo: 1,
       pageSize: 3,
+      subRoomId: 0
     })
     const listData = ref<any[]>([])
+    onBeforeMount(() => {
+      if (route.query?.id) {
+        state.subRoomId = route.query.id as any
+      }
+    })
     // 加载更多
     const onLoad = async () => {
       if (!state.refreshing && state.pageNo < state.totalPage) {
@@ -98,7 +107,7 @@ export default defineComponent({
     const loadData = async () => {
       try {
         const params = {
-          subRoomId: 1,
+          subRoomId: state.subRoomId,
           pageNo: state.pageNo,
           pageSize: state.pageSize,
         }
@@ -106,6 +115,9 @@ export default defineComponent({
           if (r.code === 200) {
             const data = r.data;
             listData.value = listData.value.concat(data.records)
+            if (listData?.value[0]) {
+              state.title = listData?.value[0]?.oproomSubName ?? '手术间1'
+            }
             state.totalPage = Math.ceil(data.total / state.pageSize)
             state.loadingList = false;
             if (state.pageNo >= state.totalPage) state.finishedList = true
@@ -117,7 +129,7 @@ export default defineComponent({
       }
     }
     const goBack = (): void => {
-      // router.back()
+      router.back()
     }
     // 下拉刷新
     const onRefresh = async () => {
@@ -162,10 +174,10 @@ export default defineComponent({
   :deep(.operat-room-card) {
     .oprat-info-warp {
       .info-content {
-        &.info-left{
-          .item .text{
+        &.info-left {
+          .item .text {
             display: inline-block;
-            width:204px;
+            width: 204px;
           }
         }
         &.info-right {

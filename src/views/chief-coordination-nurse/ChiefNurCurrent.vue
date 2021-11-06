@@ -1,17 +1,27 @@
 <template>
-  <TaskView>
+  <TaskView class="chiefnur-current"
+            v-for="(taskView, index) in taskViewsList"
+            :key="index"
+  >
     <template #header>
-      <PatientDetail />
+      <PatientDetail :option="{
+        status: taskView.opInfo.opSectionCode,
+        name: taskView.patient.name,
+        sex: '男',
+        age: '99',
+        type: taskView.opInfo.type,
+        room: taskView.opInfo.oproomSubName,
+      }"/>
     </template>
     <template #content>
       <KeyValue
-        v-for="(v, i) in taskList"
-        :value="v.value"
-        :danger="v.danger"
+        v-for="(item, i) in taskView.taskList"
+        :value="item.value"
+        :danger="item.danger"
         :key="i"
       >
         <template #label>
-          {{ v.label }}
+          {{ item.label }}
         </template>
       </KeyValue>
       <KeyValue label="状态节点">
@@ -25,17 +35,71 @@
   </TaskView>
 </template>
 
-<script>
-import { TaskList } from '@/utils/mock-test-data'
-import { defineComponent, reactive } from 'vue';
+<script lang="ts">
+import { FlowData2, testdata } from '@/utils/mock-test-data'
+import { defineComponent, onMounted, reactive, ref } from 'vue';
+import useTaskMixins, {
+  anesthesiaDicCode,
+  anesthetistName, beforeDiseaseName,
+  circulatingNurseName,
+  departmentName,
+  hospitalCode, infectType,
+  opInfoCode, opInfoName,
+  surgeonName
+} from '../../utils/task-mixins';
+import { Task } from '@/types/interface-model';
+import { CurrentTaskViews, } from '@/types/CurrentTaskViews';
+import Request from '../../service/request';
 export default defineComponent({
   name: 'ChiefNurCurrent',
   setup() {
-    const taskList = reactive(TaskList)
-    return {
-      taskList
+    const { formatTask } = useTaskMixins()
+    const taskList:Task[] = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName()
+    ];
+    const flowData = reactive(FlowData2);
+    const taskViewsList = ref([])
+
+    const getData = () => {
+      // eslint-disable-next-line no-undef
+      Request.xhr('itinerGetcurrenttask').then((r: CurrentTaskViews) => {
+        // const { code, data } = r;
+        // if (code === 200) {
+        //   const taskViews = data.map((d) => {
+        //     return {
+        //       ...d,
+        //       taskList: formatTask(data, taskList)
+        //     }
+        //   })
+        // }
+        console.log(r)
+        taskViewsList.value = testdata.map((d) => {
+          return {
+            ...d,
+            taskList: formatTask(d, taskList)
+          }
+        }) as any;
+        console.log(taskViewsList.value)
+      })
     }
-  }
+    onMounted(() => {
+      getData()
+    })
+    return {
+      flowData,
+      taskViewsList,
+      onMounted
+    };
+  },
 });
 </script>
 

@@ -38,11 +38,12 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'
 import ClearTaskCard from './components/ClearTaskCard.vue'
 import ClearCompletedCard from './components/ClearCompletedCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
+import JsToFlutter from '@/utils/js-to-flutter';
+import { Toast } from 'vant'
 
 export default defineComponent({
   name: 'ClearTask',
@@ -63,9 +64,8 @@ export default defineComponent({
       pageSize: 3,
     })
     const listData = ref<any[]>([])
-    const router = useRouter()
     const goBack = (): void => {
-      router.back()
+      JsToFlutter.goback();
     }
     onBeforeMount(() => {
       // 获取当前任务数量
@@ -85,7 +85,7 @@ export default defineComponent({
       loadData(state.active, state.pageNo, state.pageSize)
     }
     // 接口请求
-    const loadData = async (taskStatus: string, pageNo: number, pageSize: number, getNum?: boolean) => {
+    const loadData = async (taskStatus: string, pageNo: number, pageSize: number) => {
       try {
         const params = {
           taskStatus: taskStatus,
@@ -95,13 +95,6 @@ export default defineComponent({
         await Request.xhr('getClearTask', params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            // if (getNum) {
-            //   if (taskStatus === 'UNDO') {
-            //     state.todayNum = data.total
-            //   }
-            // } else {
-
-            // }
             if (taskStatus === 'UNDO') {
               state.todayNum = data.total
             }
@@ -138,13 +131,15 @@ export default defineComponent({
     const updateData = async (id: number) => {
       try {
         const params = `id=${id}`
+        Toast.loading({ message: '加载中...', forbidClick: true });
         await Request.xhr('getClearTaskUpdate', {}, params).then((r: ReturnData) => {
           if (r.code === 200) {
+            Toast.clear()
             onRefresh()
           }
         })
       } catch (e) {
-
+        Toast.clear()
       }
     }
     return {
