@@ -9,7 +9,7 @@
         name: taskView.patient.name,
         sex: '男',
         age: '99',
-        type: taskView.patient.type,
+        type: taskView.opInfo.type,
         room: taskView.opInfo.oproomSubName,
       }"/>
     </template>
@@ -250,6 +250,7 @@ export default defineComponent({
         //     }
         //   })
         // }
+        console.log(r)
         taskViewsList.value = testdata.map((d) => {
           return {
             ...d,

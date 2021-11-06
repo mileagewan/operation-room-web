@@ -797,7 +797,7 @@ export const testCompleteTotal = {
           oproomId: 0,
           oproomName: '',
           oproomSubId: 0,
-          oproomSubName: '',
+          oproomSubName: 'adsfasdf',
           opSectionCode: '',
           opSectionName: '',
           code: '',

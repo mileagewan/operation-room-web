@@ -1,4 +1,9 @@
 .surgical-detail {
   @extend .page-bg-line;
   padding: 24px;
+  height: 100vh;
+
+  .task-view-contet {
+    padding-top: 24px;
+  }
 }

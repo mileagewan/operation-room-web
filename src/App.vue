@@ -6,7 +6,7 @@
                color="#1989fa" />
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { useStore } from 'vuex';
 import { SET_USER_INFO_ACTION } from '@/store/action-types';
 
@@ -24,9 +24,7 @@ export default defineComponent({
         })
       }, 2000)
     };
-    onMounted(() => {
-      beforeEach()
-    })
+    beforeEach()
     return {
       isReady
     }

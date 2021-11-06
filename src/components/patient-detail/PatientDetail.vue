@@ -6,7 +6,11 @@
         <span class="patient-pesonal-sex">{{ option.sex }}</span>
         <span class="patient-pesonal-old">{{ option.age }}</span>
       </div>
-      <van-tag round class="status" :class="[statusClass]" type="primary">
+      <van-tag round
+               v-if="showRight"
+               class="status"
+               :class="[statusClass]"
+               type="primary">
         {{ $filters.status(option.status) }}
       </van-tag>
     </div>
@@ -16,6 +20,7 @@
         round
         class="opration-tag"
         type="primary"
+        v-if="showRight"
         :class="[option.type === 2 ? 'emergency' : 'normal']"
         >{{ option.type === 2 ? '急诊' : '平珍' }}</van-tag
       >
@@ -39,6 +44,10 @@ export default defineComponent({
         room: '手术-01间-01台',
       }),
     },
+    showRight: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     statusClass(): string {
