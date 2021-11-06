@@ -20,5 +20,17 @@ const nurse: ServiceItem[] = [
     method: 'post',
   },
 
+  {
+    path: '/operationroom/getcurrenttask',
+    key: 'roomGettotaltask',
+    method: 'post',
+  },
+
+  {
+    path: '/operationroom/getoproomlist',
+    key: 'itinerGetoproomlist',
+    method: 'post',
+  },
+
 ];
 export { nurse };

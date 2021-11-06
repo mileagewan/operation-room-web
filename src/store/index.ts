@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 import { SET_USER_INFO_MUTATION } from '@/store/mutation-types';
 import { SET_USER_INFO_ACTION } from '@/store/action-types';
 import { itinerantNur } from '@/store/itinerant-nur';
+import { chiefNur } from '@/store/chief-nur';
 import { task } from '@/store/task';
 
 export default createStore({
@@ -23,5 +24,6 @@ export default createStore({
   modules: {
     task,
     itinerantNur,
-  },
-});
+    chiefNur
+  }
+})

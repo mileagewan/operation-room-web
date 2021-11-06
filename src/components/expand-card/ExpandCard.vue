@@ -1,15 +1,10 @@
 <template>
   <div class="expand-card" ref="expandCardRef">
     <div class="expand-card-content" ref="expandContentRef">
-      <PatientDetail />
+      <PatientDetail :option="option"/>
 
       <div class="expand-card-list">
-        <KeyValue
-          v-for="i in 10"
-          :key="i"
-          label="手术号"
-          value="213123123123"
-        />
+       <slot></slot>
       </div>
     </div>
     <div
@@ -30,7 +25,15 @@ import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'ExpandCard',
-  setup() {
+  props: {
+    option: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  setup(props) {
     const expandStatus = ref<boolean>(false);
     const expandContentRef = ref<HTMLElement | null>(null);
     const expandCardRef = ref<HTMLElement | null>(null);

@@ -7,10 +7,10 @@
       <PatientDetail :option="{
         status: taskView.opInfo.opSectionCode,
         name: taskView.patient.name,
-        sex: '男',
-        age: '99',
+        sex: taskView.patient.sex === 1 ? '男' : '女',
+        age: taskView.age,
         type: taskView.opInfo.type,
-        room: taskView.opInfo.oproomSubName,
+        room: taskView.opInfo. oproomName,
       }"/>
     </template>
     <template #content>
@@ -29,18 +29,23 @@
           <FlowChart></FlowChart>
         </template>
       </KeyValue>
-      <KeyValue label="手术室接送护士" important value="阿斯顿 13800138000" />
-      <KeyValue label="巡回护士电话" important value="阿斯顿 13800138000" />
+      <KeyValue label="手术室接送护士"
+                important
+                :value="`${taskView.handoverPerson.name} ${taskView.handoverPerson.phone}`" />
+      <KeyValue label="巡回护士电话"
+                important
+                :value="`${taskView.responsiblePerson.name} ${taskView.responsiblePerson.phone}`" />
     </template>
   </TaskView>
 </template>
 
 <script lang="ts">
-import { FlowData2, testdata } from '@/utils/mock-test-data'
+import { FlowData2 } from '@/utils/mock-test-data'
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import useTaskMixins, {
   anesthesiaDicCode,
-  anesthetistName, beforeDiseaseName,
+  anesthetistName,
+  beforeDiseaseName,
   circulatingNurseName,
   departmentName,
   hospitalCode, infectType,
@@ -61,7 +66,7 @@ export default defineComponent({
       surgeonName(),
       circulatingNurseName(),
       anesthetistName(),
-      anesthesiaDicCode(),
+      anesthesiaDicCode('anesthesiaName'),
       infectType(),
       opInfoName(),
       beforeDiseaseName()
@@ -71,23 +76,19 @@ export default defineComponent({
 
     const getData = () => {
       // eslint-disable-next-line no-undef
-      Request.xhr('itinerGetcurrenttask').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
-        // if (code === 200) {
-        //   const taskViews = data.map((d) => {
-        //     return {
-        //       ...d,
-        //       taskList: formatTask(data, taskList)
-        //     }
-        //   })
-        // }
-        console.log(r)
-        taskViewsList.value = testdata.map((d) => {
-          return {
-            ...d,
-            taskList: formatTask(d, taskList)
-          }
-        }) as any;
+      Request.xhr('roomGettotaltask', {
+        pageNo: 1,
+        pageSize: 300
+      }).then((r: CurrentTaskViews) => {
+        const { code, data } = r;
+        if (code === 200) {
+          taskViewsList.value = data.map((d) => {
+            return {
+              ...d,
+              taskList: formatTask(d, taskList)
+            }
+          }) as any
+        }
         console.log(taskViewsList.value)
       })
     }

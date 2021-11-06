@@ -47,4 +47,5 @@ export interface Task {
   label: string;
   value: string;
   danger?:boolean;
+  format?:(v:any) => any;
 }
