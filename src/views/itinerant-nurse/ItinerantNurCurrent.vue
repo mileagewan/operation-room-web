@@ -253,9 +253,10 @@ export default defineComponent({
         taskViewsList.value = testdata.map((d) => {
           return {
             ...d,
-            taskList: formatTask(testdata, taskList)
+            taskList: formatTask(d, taskList)
           }
         }) as any;
+        console.log(taskViewsList.value)
       })
     }
     onMounted(() => {

@@ -36,7 +36,7 @@ interface OpInfo {
   beforeDiseaseName: string;
   afterDiseaseId: number;
   afterDiseaseName: string;
-  infectType: number;
+  infectType: any;
   cancel: number;
   deleted: number;
   createName: string;
