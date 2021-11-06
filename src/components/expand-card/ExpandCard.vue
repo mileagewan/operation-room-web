@@ -12,10 +12,15 @@
         />
       </div>
     </div>
-    <div class="expand-card-todo" @click="expandStatus = !expandStatus">
+    <div
+      class="expand-card-todo"
+      :class="{ opened: expandStatus }"
+      @click="expandStatus = !expandStatus"
+    >
       <span>{{ `${expandStatus ? "收起" : "展开"}详情` }}</span>
-      <van-icon v-if="!expandStatus" name="arrow-down" />
-      <van-icon v-else name="arrow-up" />
+      <!-- <van-icon v-if="!expandStatus" name="arrow-down" />
+      <van-icon v-else name="arrow-up" /> -->
+      <IconFont icon="icon-zhankaixiangqing" />
     </div>
   </div>
 </template>

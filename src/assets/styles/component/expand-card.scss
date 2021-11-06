@@ -23,8 +23,16 @@
     justify-content: center;
     font-size: var(--ihybrid--default-font-size);
     color: #999;
+    .iconfont {
+      font-size: inherit;
+    }
     > span {
       margin-right: 12px;
+    }
+    &.opened {
+      .iconfont {
+        transform: rotate(180deg);
+      }
     }
   }
 }
