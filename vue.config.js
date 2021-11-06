@@ -98,8 +98,7 @@ module.exports = {
     // },
     proxy: {
       '/comom': {
-        //target: 'http://124.196.4.220:8088/',
-        target: 'http://192.168.223.194:8080',
+        target: 'http://192.168.201.99:7311',
         // target: 'http://192.168.219.24:8089',
         changeOrigin: true,
         pathRewrite: {

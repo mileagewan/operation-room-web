@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref, getCurrentInstance } from 'vue';
 export default defineComponent({
   name: 'WardNurDone',
   setup() {
@@ -25,6 +25,16 @@ export default defineComponent({
       return {
         name: 'user' + (index + 1),
       };
+    });
+    const hospitalCode = ref('');
+    const { appContext }: any = getCurrentInstance();
+    const emitter: any = appContext.config.globalProperties.emitter;
+    emitter.on('scan-code-success', (data: any) => {
+      console.log(data);
+      if (data) {
+        // TODO 过滤列表
+        hospitalCode.value = data;
+      }
     });
     return {
       options,
