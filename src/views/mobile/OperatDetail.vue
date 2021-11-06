@@ -58,7 +58,7 @@
 <script lang="ts">
 import SurgicalProgress from './components/SurgicalProgress.vue'
 import OpratInfo from './components/OpratInfo.vue'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -71,6 +71,8 @@ export default defineComponent({
     OpratInfo
   },
   setup() {
+    const router = useRouter(),route = useRoute()
+    console.log(route.query)
     const state = reactive({
       title: '手术详情',
       loadingRefresh: false,
@@ -78,12 +80,14 @@ export default defineComponent({
     const patientInfo = ref<any>({})
     const surgicalProgressData = ref<any[]>([])
     onMounted(() => {
-      loadData()
+      if(route.query?.id){
+        loadData(route.query.id)
+      } 
     })
     // 接口请求
-    const loadData = async () => {
+    const loadData = async (id:any) => {
       try {
-        const params = `opCode=${'002'}`
+        const params = `opCode=${'001'}`
         await Request.xhr('getOperatDetail', {}, params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
@@ -104,13 +108,13 @@ export default defineComponent({
       const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
       return _MonthDay + _week + _startTime + '-' + _endTime
     })
-    const router = useRouter()
+    
     const goBack = (): void => {
       router.back()
     }
     // 下拉刷新
     const onRefresh = async () => {
-      await loadData()
+      await loadData(route.query.id)
       state.loadingRefresh = false
     };
     return {

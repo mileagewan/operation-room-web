@@ -3,7 +3,7 @@
     <div class="progress-warp" v-for="(item,index) in data" :key="index">
       <div class="arrow" v-if="index != 0">
         <div class="bar">
-          <IconFont icon="icon-jindujiantou" :class="[1 ? 'icons-current-select-green' : '']" />
+          <IconFont icon="icon-jindujiantou" :class="[item.status==2? 'icons-current-select-green' : '']" />
         </div>
       </div>
       <div class="item">
@@ -11,10 +11,10 @@
           <span class="date">{{ getMonthDays(item.startDate) }}</span>
           <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
         </div>
-        <div class="icon-warp" :class="[0?'icons-current-select-green-bg':'']">
-          <IconFont v-if="0" icon="icon-yiwancheng icons-default-color" :class="[item.doing?'icons-end':'']" />
-          <IconFont v-if="1" icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select-white':'']" />
-          <IconFont v-if="0" icon="icon-daikaishi icons-default-color" :class="[item.doing?'icons-not-start':'']" />
+        <div class="icon-warp" :class="[item.status==2?'icons-current-select-green-bg':'']">
+          <IconFont v-if="item.status==3" icon="icon-yiwancheng icons-default-color" :class="[item.doing?'icons-end':'']" />
+          <IconFont v-if="item.status==2" icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select-white':'']" />
+          <IconFont v-if="(item.status==null||item.status==1)" icon="icon-daikaishi icons-default-color" :class="[item.doing?'icons-not-start':'']" />
         </div>
         <div class="text-warp">
           <span class="title">{{ item.sectionName }}</span>
