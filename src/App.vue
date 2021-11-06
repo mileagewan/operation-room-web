@@ -20,9 +20,9 @@ export default defineComponent({
       setTimeout(() => {
         isReady.value = true
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '4'
+          userId: '6'
         })
-      }, 2000)
+      }, 500)
     };
     beforeEach()
     return {

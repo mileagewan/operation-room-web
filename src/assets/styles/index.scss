@@ -1,6 +1,8 @@
 @import './vant/index.scss';
 @import 'common';
 @import 'pda-views';
+@import 'layout';
+@import 'flex';
 @import 'component/task-view';
 @import 'component/patient-detail';
 @import 'component/key-value';
@@ -9,10 +11,10 @@
 @import "component/expand-card";
 @import "component/done-summary";
 @import "component/handle-overLay";
+@import "chief-coordination-nurse/chiefnur-current";
 @import 'chief-coordination-nurse/surgical-summary';
-@import 'layout';
-@import 'flex';
 @import "chief-coordination-nurse/row-detail";
+
 @import "itinerant-nurse/itinerant-nurse-current";
 @import "itinerant-nurse/itinerant-nur-done";
 @import "itinerant-nurse/surgical-detail";
