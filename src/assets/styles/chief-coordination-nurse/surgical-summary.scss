@@ -1,6 +1,7 @@
 .surgical-summary {
   display: flex;
   flex-wrap: wrap;
+  padding: 0 24px;
   .surgical-summary-item {
     &:active {
       background: rgba(0,0,0,0.4);
@@ -54,7 +55,7 @@
     .surgical-summary-item_msg {
       @extend .surgical-summary-item_label;
       margin-top: 12px;
-      color: #333;
+      color: #3BDC37;
     }
   }
 }

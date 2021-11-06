@@ -6,7 +6,7 @@ export default function TaskMixins () {
     return task.map(t => {
       return {
         ...t,
-        value: get(targetObj, t.key),
+        value: t.format ? t.format(get(targetObj, t.key)) : get(targetObj, t.key),
       }
     })
   }
@@ -61,7 +61,7 @@ export const anesthesiaDicCode = (key = 'opInfo.anesthesiaDicCode'): Task => {
   return {
     key: key,
     label: '麻醉方式',
-    value: ''
+    value: '',
   }
 }
 export const infectType = (key = 'opInfo.infectType'): Task => {
@@ -69,7 +69,24 @@ export const infectType = (key = 'opInfo.infectType'): Task => {
     key: key,
     label: '传染性感染',
     value: '',
-    danger: true
+    format(v:any) {
+      switch (v) {
+        case 1:
+          return '未见异常';
+        case 2:
+          return '艾滋病毒'
+        case 3:
+          return '梅毒'
+        case 4:
+          return '乙肝'
+        case 5:
+          return '丙肝'
+        case 6:
+          return '新冠病毒 '
+        case 7:
+          return '结果未回(急诊)'
+      }
+    }
   }
 }
 export const opInfoName = (key = 'opInfo.name'): Task => {
