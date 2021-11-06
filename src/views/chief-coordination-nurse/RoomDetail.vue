@@ -24,6 +24,16 @@
               {{ item.label }}
             </template>
           </KeyValue>
+          <template v-if="isOnOperation.indexOf(list.opInfo.opSectionCode) > -1">
+            <KeyValue label="状态节点">
+              <template #value>
+                <FlowChart></FlowChart>
+              </template>
+            </KeyValue>
+          </template>
+          <template v-if="list.opInfo.opSectionCode === '16'">
+            <KeyValue label="患者返回" :value="list.opInfo.departmentName"></KeyValue>
+          </template>
         </ExpandCard>
       </van-pull-refresh>
 
@@ -65,13 +75,20 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ]
+    const isOnOperation = ref<string[]>([
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11'
+    ])
     const row = reactive({
       title: '手术间01间'
     })
     const loading = ref<boolean>(false)
     const roomList = computed(() => {
       const room = store.state.chiefNur.room
-      debugger
       const formatDtoList = room.dtoList.map((d:any) => {
         return {
           ...d,
@@ -98,6 +115,7 @@ export default defineComponent({
     return {
       isReady,
       row,
+      isOnOperation,
       loading,
       roomList,
       onRefresh,
