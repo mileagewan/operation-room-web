@@ -22,7 +22,7 @@ export default defineComponent({
   },
   computed: {
     statusClass(): string {
-      const status: string = this.code;
+      const status: string = this.code?.toString();
       if (!status) {
         return '';
       }
