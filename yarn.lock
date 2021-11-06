@@ -9109,6 +9109,11 @@
   "resolved" "https://registry.nlark.com/timsort/download/timsort-0.3.0.tgz"
   "version" "0.3.0"
 
+"tiny-emitter@^2.1.0":
+  "integrity" "sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q=="
+  "resolved" "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz"
+  "version" "2.1.0"
+
 "tmp@^0.0.33":
   "integrity" "sha1-bTQzWIl2jSGyvNoKonfO07G/rfk="
   "resolved" "https://registry.nlark.com/tmp/download/tmp-0.0.33.tgz"

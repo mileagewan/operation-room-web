@@ -19,6 +19,7 @@ declare module 'lodash/cloneDeep'{
   export default cloneDeep;
 }
 declare module 'lodash'
+declare module 'tiny-emitter'
 
 
 

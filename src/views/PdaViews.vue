@@ -50,7 +50,11 @@ export default defineComponent({
     };
 
     const componentsList = reactive(getComponentsList(defaultRole.value));
-
+    // TODO store 保存各项任务数据
+    // console.log(componentsList);
+    // componentsList.forEach((item:RoleModuleItem) => {
+    //   console.log(item.component);
+    // })
     return {
       loading,
       active,
