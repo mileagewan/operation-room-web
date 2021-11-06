@@ -68,7 +68,8 @@ export const infectType = (key = 'opInfo.infectType'): Task => {
   return {
     key: key,
     label: '传染性感染',
-    value: ''
+    value: '',
+    danger: true
   }
 }
 export const opInfoName = (key = 'opInfo.name'): Task => {

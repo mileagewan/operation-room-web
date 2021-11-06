@@ -47,7 +47,7 @@ export default defineComponent({
       await new Promise((resolve) => {
         setTimeout(() => {
           resolve(true)
-        }, 2000)
+        }, 200)
       })
       const ret = testCompleteTotal.data;
       pageData.options = [
