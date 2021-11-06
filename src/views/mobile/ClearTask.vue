@@ -38,11 +38,11 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, onBeforeMount } from 'vue'
-import { useRouter } from 'vue-router'
 import ClearTaskCard from './components/ClearTaskCard.vue'
 import ClearCompletedCard from './components/ClearCompletedCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
+import JsToFlutter from '@/utils/js-to-flutter';
 
 export default defineComponent({
   name: 'ClearTask',
@@ -63,9 +63,8 @@ export default defineComponent({
       pageSize: 3,
     })
     const listData = ref<any[]>([])
-    const router = useRouter()
     const goBack = (): void => {
-      router.back()
+      JsToFlutter.goback();
     }
     onBeforeMount(() => {
       // 获取当前任务数量
@@ -95,13 +94,6 @@ export default defineComponent({
         await Request.xhr('getClearTask', params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            // if (getNum) {
-            //   if (taskStatus === 'UNDO') {
-            //     state.todayNum = data.total
-            //   }
-            // } else {
-
-            // }
             if (taskStatus === 'UNDO') {
               state.todayNum = data.total
             }

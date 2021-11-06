@@ -77,7 +77,6 @@ export default defineComponent({
   setup() {
     const router = useRouter()
     const route = useRoute()
-    console.log(route.query)
     const state = reactive({
       title: '手术详情',
       loadingRefresh: false,
