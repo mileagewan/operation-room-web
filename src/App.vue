@@ -1,9 +1,11 @@
 <template>
   <router-view v-if="isReady" />
-  <van-loading v-if="!isReady"
-               class="app-isReady"
-               type="spinner"
-               color="#1989fa" />
+  <van-loading
+    v-if="!isReady"
+    class="app-isReady"
+    type="spinner"
+    color="#1989fa"
+  />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
@@ -15,19 +17,19 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const isReady = ref<boolean>(false)
+    const isReady = ref<boolean>(false);
     const beforeEach = () => {
       setTimeout(() => {
-        isReady.value = true
+        isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '6'
-        })
-      }, 500)
+          userId: '6',
+        });
+      }, 500);
     };
-    beforeEach()
+    beforeEach();
     return {
-      isReady
-    }
-  }
-})
+      isReady,
+    };
+  },
+});
 </script>

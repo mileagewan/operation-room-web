@@ -6,13 +6,7 @@
         <span class="patient-pesonal-sex">{{ option.sex }}</span>
         <span class="patient-pesonal-old">{{ option.age }}</span>
       </div>
-      <van-tag round
-               v-if="showRight"
-               class="status"
-               :class="[statusClass]"
-               type="primary">
-        {{ $filters.status(option.status) }}
-      </van-tag>
+      <TagStatus :code="option.status" />
     </div>
     <div class="patient-label">
       <span class="patient-label-title">{{ option.room }}</span>
@@ -22,7 +16,7 @@
         type="primary"
         v-if="showRight"
         :class="[option.type === 2 ? 'emergency' : 'normal']"
-        >{{ option.type === 2 ? '急诊' : '平珍' }}</van-tag
+        >{{ option.type === 2 ? "急诊" : "平珍" }}</van-tag
       >
     </div>
   </div>
@@ -49,30 +43,7 @@ export default defineComponent({
       default: true
     }
   },
-  computed: {
-    statusClass(): string {
-      const { status } = this.option;
-      if (!status) {
-        return '';
-      }
-      // 未开始
-      const style1: number[] = [2];
-      if (style1.includes(status)) {
-        return 'before';
-      }
-      // 进行中
-      const style2: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-      if (style2.includes(status)) {
-        return 'progress';
-      }
-      // 结束
-      const style3: number[] = [16, -99];
-      if (style3.includes(status)) {
-        return 'end';
-      }
-      return '';
-    },
-  },
+
   setup() {
     return {};
   },

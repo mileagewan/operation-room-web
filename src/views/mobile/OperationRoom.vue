@@ -8,7 +8,7 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh v-model="loadingRefresh" @refresh="onRefresh">
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
@@ -20,6 +20,8 @@
             :key="index"
             :dateTime="`${getMonthDay(item.startDate)}${'(' + item.week + ')'} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
+            :tagCode="item.opSectionCode"
+            @click-title="cardTitleClick(item)"
           >
             <template #left-content>
               <div class="item">
@@ -50,7 +52,7 @@
               </div>
               <div class="item">
                 <span class="title">患者年龄</span>
-                <span class="text">{{ item.patientAge + '岁' }}</span>
+                <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
               </div>
             </template>
           </oprat-room-card>
@@ -65,6 +67,7 @@ import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -72,14 +75,18 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
+    const router = useRouter()
     const state = reactive({
       title: '手术室',
       active: 'TODAY',
       todayNum: 0,
       tomorrowNum: 0,
-      loadingRefresh: false,
+      refreshing: false,
       loadingList: false,
-      finishedList: false
+      finishedList: false,
+      totalPage: 0,
+      pageNo: 1,
+      pageSize: 3,
     })
     const listData = ref<any[]>([])
     // 返回
@@ -94,30 +101,35 @@ export default defineComponent({
     }
     onBeforeMount(() => {
       // 获取今日数量
-      loadData('TODAY', true)
+      loadData('TODAY', 1, 1, true)
       // 获取明日数量
-      loadData('TOMORROW', true)
+      loadData('TOMORROW', 1, 1, true)
     })
     // 加载更多
     const onLoad = async () => {
-      console.log('加载更多')
-      await loadData(state.active)
-      state.loadingList = false
-      state.finishedList = true
+      if (!state.refreshing && state.pageNo < state.totalPage) {
+        console.log('加载更多')
+        state.pageNo = state.pageNo + 1
+      }
+      if (state.refreshing) {
+        console.log('----refreshing---')
+        listData.value = [];
+        state.refreshing = false;
+      }
+      loadData(state.active, state.pageNo, state.pageSize)
     }
     // tab切换
     const onClickTab = ({ name }: any) => {
-      console.log(name)
       state.active = name;
-      loadData(name)
+      onRefresh()
     }
     // 接口请求
-    const loadData = async (dateType: string, getNum?: boolean) => {
+    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean) => {
       try {
         const params = {
           dateType: dateType,
-          pageNo: 1,
-          pageSize: 100,
+          pageNo: pageNo,
+          pageSize: pageSize,
         }
         await Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
           if (r.code === 200) {
@@ -129,7 +141,10 @@ export default defineComponent({
                 state.tomorrowNum = data.total
               }
             } else {
-              listData.value = data.records
+              listData.value = listData.value.concat(data.records)
+              state.totalPage = Math.ceil(data.total / state.pageSize)
+              state.loadingList = false;
+              if (state.pageNo >= state.totalPage) state.finishedList = true
             }
           }
           console.log(r)
@@ -140,9 +155,20 @@ export default defineComponent({
     }
     // 下拉刷新
     const onRefresh = async () => {
-      await loadData(state.active)
-      state.loadingRefresh = false
+      state.refreshing = true
+      state.finishedList = false
+      state.loadingList = true
+      state.pageNo = 1
+      onLoad()
     };
+    const cardTitleClick = (item: any) => {
+      router.push({
+        path: '/operatDetail',
+        query: {
+          id: item.code
+        }
+      })
+    }
     return {
       onLoad,
       onRefresh,
@@ -150,7 +176,8 @@ export default defineComponent({
       listData,
       ...toRefs(state),
       onClickTab,
-      getMonthDay
+      getMonthDay,
+      cardTitleClick
     }
   },
 })
@@ -168,6 +195,7 @@ export default defineComponent({
     height: calc(100vh - 168px);
     background-color: #f9f9f9;
     padding-top: 12px;
+    overflow-y: scroll;
     :deep(.operat-room-card) {
       margin-bottom: 12px;
       margin-top: 12px;

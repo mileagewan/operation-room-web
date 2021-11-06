@@ -1,8 +1,8 @@
 <template>
   <div class="clear-task-card">
     <div class="card-title">
-      <span>09:20清洁任务</span>
-      <span>二区域-手术间05</span>
+      <span>{{info.taskStartTime}}清洁任务</span>
+      <span>{{info.departmentWardName}}-{{info.oproomSubName}}</span>
     </div>
     <div class="item-warp">
       <div class="item">

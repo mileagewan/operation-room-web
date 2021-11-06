@@ -4,7 +4,7 @@
       <nav-bar @goBack="goBack" :title="title" />
     </div>
     <div class="content">
-      <van-pull-refresh v-model="loadingRefresh" @refresh="onRefresh">
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
@@ -17,6 +17,7 @@
             :dateTime="`${item.startDate?getMonthDay(item.startDate):''}
             ${item.week?'(' + item.week + ')':''} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
+            :tagCode="item.opSectionCode"
           >
             <template #left-content>
               <div class="item">
@@ -58,7 +59,6 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -72,30 +72,43 @@ export default defineComponent({
   setup() {
     const state = reactive({
       title: '手术间01间',
-      loadingRefresh: false,
+      refreshing: false,
       loadingList: false,
-      finishedList: false
+      finishedList: false,
+      totalPage: 0,
+      pageNo: 1,
+      pageSize: 3,
     })
     const listData = ref<any[]>([])
     // 加载更多
     const onLoad = async () => {
-      console.log('加载更多')
-      await loadData()
-      state.loadingList = false
-      state.finishedList = true
+      if (!state.refreshing && state.pageNo < state.totalPage) {
+        console.log('加载更多')
+        state.pageNo = state.pageNo + 1
+      }
+      if (state.refreshing) {
+        console.log('----refreshing---')
+        listData.value = [];
+        state.refreshing = false;
+      }
+      console.log('加载更12多')
+      loadData()
     }
     // 接口请求
     const loadData = async () => {
       try {
         const params = {
           subRoomId: 1,
-          pageNo: 1,
-          pageSize: 100,
+          pageNo: state.pageNo,
+          pageSize: state.pageSize,
         }
         await Request.xhr('getOperatingRoom', params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            listData.value = data.records
+            listData.value = listData.value.concat(data.records)
+            state.totalPage = Math.ceil(data.total / state.pageSize)
+            state.loadingList = false;
+            if (state.pageNo >= state.totalPage) state.finishedList = true
           }
           console.log(r)
         })
@@ -108,8 +121,11 @@ export default defineComponent({
     }
     // 下拉刷新
     const onRefresh = async () => {
-      await loadData()
-      state.loadingRefresh = false
+      state.refreshing = true
+      state.finishedList = false
+      state.loadingList = true
+      state.pageNo = 1
+      onLoad()
     };
     return {
       onRefresh,

@@ -3,14 +3,14 @@
     <div class="task-item">
       <div class="flex flex-between header">
         <div class="flex-main">
-          <span class="name">{{task.name}}</span>
+          <span class="name">{{ task.name }}</span>
           <span>男 25岁</span>
         </div>
-        <span class="status">准点完成</span>
+        <span class="task">送病人</span>
       </div>
       <div class="flex">
         <div class="flex-main">手术-01间-01台</div>
-        <span class="task">送病人</span>
+        <span class="to-department">ICU</span>
       </div>
       <div class="flex info">
         <div class="info-item">
@@ -53,12 +53,12 @@ export default defineComponent({
       font-size: 36px;
       color: #000;
     }
-    .status {
-      color: #3bdc37;
+    .task {
+      color: #999999;
     }
   }
-  .task {
-    color: #999999;
+  .to-department {
+    color: #999;
   }
   .info {
     margin-top: 48px;

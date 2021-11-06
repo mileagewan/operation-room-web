@@ -2,14 +2,12 @@
   <div class="operat-room-card">
     <div class="container" :class="[hasFooter ? 'hasFooter' : '']">
       <div class="title-warp">
-        <div class="title">
+        <div class="title" @click.prevent="clickTitle">
           <span class="time">{{ time }}</span>
           <span class="text">{{ name }}</span>
         </div>
         <div class="state-bar">
-          <div v-if="state == 1" class="bar end">已结束</div>
-          <div v-else-if="state == 2" class="bar doing">进行中</div>
-          <div v-else-if="state == 3" class="bar not-start">未开始</div>
+          <TagStatus v-if="tagStatus" :code="tagStatus" />
         </div>
       </div>
       <oprat-info>
@@ -43,17 +41,27 @@ export default defineComponent({
     name: {
       type: String,
       default: ''
+    },
+    tagCode: {
+      type: [String, Number],
+      default: ''
     }
   },
-  setup(props) {
+  emits: ['clickTitle'],
+  setup(props, ctx) {
     const data = reactive({
       time: props.dateTime,
       name: props.name,
       state: 3,
+      tagStatus: props.tagCode,
       hasFooter: false
     })
+    const clickTitle = () => {
+      ctx.emit('clickTitle')
+    }
     return {
       ...toRefs(data),
+      clickTitle
     }
   },
 })
@@ -79,36 +87,11 @@ export default defineComponent({
         flex-direction: column;
 
         font-size: 36px;
-        //font-family: PingFangSC, PingFangSC-Semibold;
         font-weight: 600;
         color: #000000;
       }
       .state-bar {
         padding-top: 6px;
-        .bar {
-          width: 96px;
-          height: 40px;
-
-          font-size: 24px;
-          font-family: PingFangSC, PingFangSC-Medium;
-          font-weight: 500;
-          border-radius: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          &.end {
-            background: #fafafa;
-            color: #dddddd;
-          }
-          &.doing {
-            background: #e5ffe6;
-            color: #3bdc37;
-          }
-          &.not-start {
-            background: #defaff;
-            color: #5bc7f9;
-          }
-        }
       }
     }
   }
