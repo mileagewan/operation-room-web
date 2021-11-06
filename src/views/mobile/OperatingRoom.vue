@@ -16,13 +16,13 @@
             :key="index"
             :dateTime="`${item.startDate ? getMonthDay(item.startDate) : ''}
             ${item.week ? '(' + item.week + ')' : ''} ${item.startTime + '-' + item.endTime}`"
-            :name="item.  name"
-            :tagCode="item.  opSectionCode"
+            :name="item.name"
+            :tagCode="item.opSectioode"
           >
             <template #left-content>
               <div class="item">
                 <span class="title">手术室</span>
-                <span class="text">{{ item  .departmentWardName }} - {{ item.oproomSubName }}</span>
+                <span class="text">{{ item.departmentardName }} - {{ item.oproomSubName }}</span>
               </div>
               <div class="item">
                 <span class="title">主刀医生</span>
@@ -74,7 +74,7 @@ export default defineComponent({
     const router = useRouter()
     const route = useRoute()
     const state = reactive({
-      title: '手术间01间',
+      title: '手术间',
       refreshing: false,
       loadingList: false,
       finishedList: false,
@@ -115,6 +115,9 @@ export default defineComponent({
           if (r.code === 200) {
             const data = r.data;
             listData.value = listData.value.concat(data.records)
+            if (listData?.value[0]) {
+              state.title = listData?.value[0]?.oproomSubName ?? '手术间1'
+            }
             state.totalPage = Math.ceil(data.total / state.pageSize)
             state.loadingList = false;
             if (state.pageNo >= state.totalPage) state.finishedList = true
