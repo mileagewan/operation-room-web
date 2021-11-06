@@ -9,39 +9,43 @@
           <template #header>
             <div class="date-title">
               <div>{{ dateTime }}</div>
-              <div>{{patientInfo.name}}</div>
+              <div>{{ patientInfo.name }}</div>
             </div>
             <oprat-info>
               <template #left-content>
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text">{{ patientInfo.departmentWardName }} - {{ patientInfo.oproomSubName }}</span>
+                  <span
+                    class="text"
+                  >{{ patientInfo.departmentWardName }} - {{ patientInfo.oproomSubName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">主刀医生</span>
-                  <span class="text">{{patientInfo.surgeonName}}</span>
+                  <span class="text">{{ patientInfo.surgeonName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">麻醉医生</span>
-                  <span class="text">{{patientInfo.anesthetistName}}</span>
+                  <span class="text">{{ patientInfo.anesthetistName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span class="text">{{patientInfo.patientSex}}</span>
+                  <span class="text">{{ patientInfo.patientSex }}</span>
                 </div>
               </template>
               <template #right-content>
                 <div class="item">
                   <span class="title">巡回护士</span>
-                  <span class="text">{{patientInfo.circulatingNurseName}}</span>
+                  <span class="text">{{ patientInfo.circulatingNurseName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">器械护士</span>
-                  <span class="text">{{patientInfo.instrumentNurseName}}</span>
+                  <span class="text">{{ patientInfo.instrumentNurseName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
-                  <span class="text">{{patientInfo.patientAge?(patientInfo.patientAge + '岁'):'' }}</span>
+                  <span
+                    class="text"
+                  >{{ patientInfo.patientAge ? (patientInfo.patientAge + '岁') : '' }}</span>
                 </div>
               </template>
             </oprat-info>
@@ -58,7 +62,7 @@
 <script lang="ts">
 import SurgicalProgress from './components/SurgicalProgress.vue'
 import OpratInfo from './components/OpratInfo.vue'
-import { useRouter,useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -71,7 +75,8 @@ export default defineComponent({
     OpratInfo
   },
   setup() {
-    const router = useRouter(),route = useRoute()
+    const router = useRouter()
+    const route = useRoute()
     console.log(route.query)
     const state = reactive({
       title: '手术详情',
@@ -80,12 +85,12 @@ export default defineComponent({
     const patientInfo = ref<any>({})
     const surgicalProgressData = ref<any[]>([])
     onMounted(() => {
-      if(route.query?.id){
+      if (route.query?.id) {
         loadData(route.query.id)
-      } 
+      }
     })
     // 接口请求
-    const loadData = async (id:any) => {
+    const loadData = async (id: any) => {
       try {
         const params = `opCode=${'001'}`
         await Request.xhr('getOperatDetail', {}, params).then((r: ReturnData) => {
@@ -108,7 +113,7 @@ export default defineComponent({
       const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
       return _MonthDay + _week + _startTime + '-' + _endTime
     })
-    
+
     const goBack = (): void => {
       router.back()
     }

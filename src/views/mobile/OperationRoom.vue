@@ -52,7 +52,7 @@
               </div>
               <div class="item">
                 <span class="title">患者年龄</span>
-                <span class="text">{{ item.patientAge?(item.patientAge + '岁'):'' }}</span>
+                <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
               </div>
             </template>
           </oprat-room-card>
@@ -62,7 +62,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref,Ref, onBeforeMount } from 'vue'
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
 import OpratRoomCard from './components/OpratRoomCard.vue'
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -161,12 +161,11 @@ export default defineComponent({
       state.pageNo = 1
       onLoad()
     };
-    const cardTitleClick = (item:any)=>{
-      console.log('--id--',item.code)
+    const cardTitleClick = (item: any) => {
       router.push({
-        path:'/operatDetail',
-        query:{
-          id:item.code
+        path: '/operatDetail',
+        query: {
+          id: item.code
         }
       })
     }
