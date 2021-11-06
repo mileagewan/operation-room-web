@@ -53,21 +53,4 @@
     color: #44c9c8;
   }
 }
-.status {
-  height: 40px;
-  padding: 0 12px;
-  border-radius: 20px;
-  font-size: 24px;
-  &.progress {
-    color: #3bdc37;
-    background: #e5ffe6;
-  }
-  &.before {
-    color: #5bc7f9;
-    background: #defaff;
-  }
-  &.end {
-    color: #ddd;
-    background: #fafafa;
-  }
-}
+
