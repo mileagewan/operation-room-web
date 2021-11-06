@@ -67,6 +67,7 @@ import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
+import JsToFlutter from '@/utils/js-to-flutter';
 
 export default defineComponent({
   name: 'OperatDetail',
@@ -96,7 +97,6 @@ export default defineComponent({
           if (r.code === 200) {
             const data = r.data;
             patientInfo.value = data
-            // console.log(patientInfo.value)
             surgicalProgressData.value = data.sectionVoList
           }
           console.log(r)
@@ -114,7 +114,11 @@ export default defineComponent({
     })
 
     const goBack = (): void => {
-      router.back()
+      if (route.query?.type === 'app') {
+        JsToFlutter.goback();
+      } else {
+        router.back()
+      }
     }
     // 下拉刷新
     const onRefresh = async () => {
