@@ -19,6 +19,24 @@ const nurse: ServiceItem[] = [
     key: 'queryCurrentTaskList',
     method: 'post',
   },
+  //    查询手术汇总卡片列表
+  {
+    path: '/nurse/querySummaryTaskList',
+    key: 'querySummaryTaskList',
+    method: 'post',
+  },
+  //     查询已完成任务卡片列表
+  {
+    path: '/nurse/queryCompletedTaskList',
+    key: 'queryCompletedTaskList',
+    method: 'post',
+  },
+  //      查询任务池卡片列表
+  {
+    path: '/nurse/queryTaskPoolList',
+    key: 'queryTaskPoolList',
+    method: 'post',
+  },
 
   {
     path: '/operationroom/getcurrenttask',
@@ -31,6 +49,5 @@ const nurse: ServiceItem[] = [
     key: 'itinerGetoproomlist',
     method: 'post',
   },
-
 ];
 export { nurse };

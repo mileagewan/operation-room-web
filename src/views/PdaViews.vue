@@ -1,13 +1,17 @@
 <template>
   <div class="pda-views">
-    <nav-bar @goBack="goBack" />
+    <nav-bar @goBack="goBack" right-component="ScanQrCode" />
     <van-tabs v-model:active="active">
       <van-tab
-        v-for="(cmponentItem,index) in componentsList"
+        v-for="(cmponentItem, index) in componentsList"
         :key="cmponentItem.component"
         :title="cmponentItem.label"
       >
-        <van-pull-refresh v-model="loading" @refresh="onRefresh"  v-if="active === index">
+        <van-pull-refresh
+          v-model="loading"
+          @refresh="onRefresh"
+          v-if="active === index"
+        >
           <component :is="cmponentItem.component"></component>
         </van-pull-refresh>
       </van-tab>
