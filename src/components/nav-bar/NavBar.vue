@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import ScanQrCode from './ScanQrCode.vue';
 export default defineComponent({
   name: 'NavBar',
@@ -31,6 +31,13 @@ export default defineComponent({
     const onClickLeft = (): void => {
       emit('goBack');
     };
+
+    watch(
+      () => props.title,
+      () => {
+        titleBar.value = props.title;
+      }
+    );
 
     return {
       titleBar,
