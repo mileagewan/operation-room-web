@@ -68,22 +68,8 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ];
-    // const testData = new Array(10).fill('').map((item, index) => {
-    //   return {
-    //     name: 'user' + (index + 1),
-    //   };
-    // });
     const list: any = ref([]);
     const getData = () => {
-      // list = testdata.map((d: any) => {
-      //   return {
-      //     ...d,
-      //     infoItems: formatTask(d, infoItems),
-      //   };
-      // });
-      // console.log(list);
-
-      // eslint-disable-next-line no-undef
       Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
         // console.log(r);
         if (r.data) {
@@ -95,11 +81,10 @@ export default defineComponent({
           });
           // console.log(list);
         }
-        // TODO 数据list赋值处理
       });
     };
     getData();
-    // console.log(list);
+
     return {
       loading,
       finished,

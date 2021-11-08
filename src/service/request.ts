@@ -4,7 +4,7 @@ import { RequestQuery, ServiceItem } from '@/types/interface-model';
 import { SsoLogin } from '@/service/sso-login';
 import qs from 'qs';
 const devToken =
-  'b91a02fe00574b0bb7f34e5e7c38671a.eyJleHAiOjE2MzY5NzQ3MjUsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDM5In0.xymlaUT2uqmd6mSmH0vo7Un2Kukkx9OHCqCenFhDYUY';
+  'db6a3ddff2e84bd6869bb6124f0ad637.eyJleHAiOjE2MzY5Njg4MzcsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDUyIn0.cSM6481MK_60P33mPk_stvwomCZNlp1E4BhE-gid-v4';
 
 Axios.interceptors.request.use((config: AxiosRequestConfig) => {
   const token: string | null =

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive, ref, toRefs } from 'vue';
 export default defineComponent({
   name: 'TaskList',
   props: {
@@ -16,14 +16,21 @@ export default defineComponent({
       default: () => [],
     },
   },
-  setup() {
+  setup(props) {
     // TODO list 用prop传进来的数据
+    // const { taskList }: any = toRefs(props);
+    // console.log(taskList);
+
     const list: any = ref([]);
-    list.value = new Array(10).fill('').map((item, index) => {
-      return {
-        name: 'user' + (index + 1),
-      };
-    });
+
+    // list.value = new Array(10).fill('').map((item, index) => {
+    //   return {
+    //     opInfo: {},
+    //     patient: {
+    //       name: 'user' + (index + 1),
+    //     },
+    //   };
+    // });
     const onLoad = () => {
       console.log('onLoad');
     };

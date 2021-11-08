@@ -22,7 +22,7 @@ export default defineComponent({
       setTimeout(() => {
         isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '3',
+          userId: '2',
         });
       }, 500);
     };
