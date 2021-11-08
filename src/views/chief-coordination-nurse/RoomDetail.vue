@@ -159,7 +159,7 @@ export default defineComponent({
           currentCode,
           flowData: flowData
         }
-      })
+      });
       return reactive({
         ...room,
         dtoList: formatDtoList
@@ -172,13 +172,7 @@ export default defineComponent({
     const goBack = () => {
       router.back()
     }
-    const isReady = ref(false)
-    if (!roomList.value) {
-      router.back()
-    } else {
-      isReady.value = true
-    }
-
+    const isReady = ref(true)
     const setTitle = () => {
       row.value.title = String(roomList.value.name)
     }

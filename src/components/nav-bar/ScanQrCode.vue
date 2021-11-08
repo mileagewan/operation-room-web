@@ -1,20 +1,13 @@
 <template>
-  <div class="nab-bar">
-    <van-nav-bar :title="titleBar" left-arrow @click-left="onClickLeft">
-      <template #right>
-        <component :is="rightComponent"></component>
-        <IconFont icon="icon-kuaijiesaoma" @click="openScanQRCode" />
-      </template>
-    </van-nav-bar>
-  </div>
+  <IconFont icon="icon-kuaijiesaoma" @click="openScanQRCode" />
 </template>
 
 <script lang="ts">
 import JsToFlutter from '@/utils/js-to-flutter';
-import { defineComponent, getCurrentInstance, ref } from 'vue';
+import { defineComponent, getCurrentInstance } from 'vue';
 export default defineComponent({
   name: 'ScanQrCode',
-  setup(props, { emit }) {
+  setup() {
     // TODO 看是否有更好的方式取到全局注入的emitter类
     const { appContext }: any = getCurrentInstance();
     const emitter: any = appContext.config.globalProperties.emitter;
