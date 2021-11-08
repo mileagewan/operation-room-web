@@ -57,7 +57,7 @@ export const anesthetistName = (key = 'opInfo.anesthetistName'): Task => {
     value: ''
   }
 }
-export const anesthesiaDicCode = (key = 'opInfo.anesthesiaDicCode'): Task => {
+export const anesthesiaDicCode = (key = 'opInfo.anesthesiaName'): Task => {
   return {
     key: key,
     label: '麻醉方式',

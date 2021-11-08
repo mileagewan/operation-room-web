@@ -43,6 +43,18 @@ const nurse: ServiceItem[] = [
     key: 'createNextOpTask',
     method: 'post',
   },
+  //      呼叫护工
+  {
+    path: '/nurseOperate/wardNurseCall',
+    key: 'wardNurseCall',
+    method: 'post',
+  },
+  //      接收任务
+  {
+    path: '/nurseOperate/recoveryTask',
+    key: 'recoveryTask',
+    method: 'post',
+  },
 
   {
     path: '/test',
