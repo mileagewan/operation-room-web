@@ -27,7 +27,9 @@
           {{ item.label }}
         </template>
       </KeyValue>
+      <FlowChart :flow-data="task.operatingStatusList" :current-code="task.currentOperatingStatus" />
       <KeyValueBlock>
+
         <template #value> 无 </template>
       </KeyValueBlock>
       <!--      送手术-->
@@ -35,7 +37,7 @@
         <div class="ihybrid-button-group">
           <van-button
             round
-            @click="manualHandle"
+            @click="manualHandle(task)"
             class="default-button"
             color="#f0fafe"
           >
@@ -43,7 +45,7 @@
           </van-button>
           <van-button
             icon="scan"
-            @click="codeHandle"
+            @click="codeHandle(task)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
@@ -61,7 +63,7 @@
         <div class="ihybrid-button-group">
           <van-button
             round
-            @click="manualHandle"
+            @click="manualHandle(task)"
             class="default-button"
             color="#f0fafe"
           >
@@ -69,7 +71,7 @@
           </van-button>
           <van-button
             icon="scan"
-            @click="codeHandle"
+            @click="codeHandle(task)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
@@ -116,7 +118,7 @@ export default defineComponent({
       show: false,
       value: '',
     });
-
+    let currentTask: any = reactive({});
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -151,19 +153,32 @@ export default defineComponent({
         }
       });
     };
-    getData()
+    getData();
 
-    const manualHandle = () => {
+    const manualHandle = (task: any) => {
       handleOverLay.show = true;
+      currentTask = task;
+      console.log(currentTask);
     };
     const manualOk = () => {
       console.log(handleOverLay);
       handleOverLay.show = false;
-    };
-    const codeHandle = () => {};
+      console.log(currentTask);
 
-    const callNurse = () => {
-      Toast('呼叫护工成功');
+      const data = {
+        opInfoId: currentTask.opInfo.id,
+        currentTaskId: currentTask.opTask.id,
+        parentTaskId: currentTask.opTask.parentTaskId,
+        userCode: handleOverLay.value,
+      };
+      Request.xhr('wardNurseHandover', data).then((res: any) => {
+        if (res.code === 200) {
+          getData();
+        }
+      });
+    };
+    const codeHandle = (task: any) => {
+      // Toast('呼叫护工成功');
     };
 
     onMounted(() => {
@@ -177,9 +192,8 @@ export default defineComponent({
       manualHandle,
       manualOk,
       codeHandle,
-      callNurse,
       onMounted,
-      getData
+      getData,
     };
   },
 });

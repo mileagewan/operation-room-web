@@ -55,6 +55,18 @@ const nurse: ServiceItem[] = [
     key: 'recoveryTask',
     method: 'post',
   },
+  //      转运工确认交接
+  {
+    path: '/nurseOperate/wardNurseHandover',
+    key: 'wardNurseHandover',
+    method: 'post',
+  },
+  //      手术室前接送护士确认交接
+  {
+    path: 'nurseOperate/transferWorkHandover',
+    key: 'transferWorkHandover',
+    method: 'post',
+  },
 
   {
     path: '/test',
