@@ -30,21 +30,21 @@
       <KeyValueBlock>
         <template #value> 无 </template>
       </KeyValueBlock>
-      <template v-if="task.opInfo.opSectionCode === 3">
+      <template v-if="task.opInfo.opSectionCode === '3'">
         <div class="ihybrid-button-center">
           <van-button
             round
-            @click="callNurse"
+            @click="callNurse(task)"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
             呼叫护工
           </van-button>
         </div>
       </template>
-      <template v-if="task.opInfo.opSectionCode === 4">
+      <template v-if="task.opInfo.opSectionCode === '4'">
         <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
-      <template v-if="task.opInfo.opSectionCode === 15">
+      <template v-if="task.opInfo.opSectionCode === '15'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -104,6 +104,46 @@ export default defineComponent({
     });
 
     const list: any = ref([]);
+
+    onMounted(() => {
+      Request.xhr('getSso').then((r: ReturnData) => {
+        console.log(r);
+      });
+    });
+
+    const { formatTask } = useTaskMixins();
+    const infoItems = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName(),
+    ];
+    const getData = () => {
+      // list.value = testdata.map((d: any) => {
+      //   return {
+      //     ...d,
+      //     infoItems: formatTask(d, infoItems),
+      //   };
+      // });
+      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        // const { code, data } = r;
+        console.log(r);
+        if (r.data) {
+          list.value = r.data.map((d: any) => {
+            return {
+              ...d,
+              infoItems: formatTask(d, infoItems),
+            };
+          });
+        }
+      });
+    };
     const manualHandle = () => {
       handleOverLay.show = true;
     };
@@ -122,52 +162,26 @@ export default defineComponent({
       });
     };
 
-    const callNurse = () => {
-      Toast('呼叫护工成功');
-    };
-
-    onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r);
-      });
-      // setTimeout(() => {
-      //   list.value = curentData.filter((c) => {
-      //     return [2, 3, 4, 14, 15].includes(c.code);
-      //   }) as any;
-      // }, 1000);
-    });
-
-    const { formatTask } = useTaskMixins();
-    const infoItems = [
-      opInfoCode(),
-      hospitalCode(),
-      departmentName(),
-      surgeonName(),
-      circulatingNurseName(),
-      anesthetistName(),
-      anesthesiaDicCode(),
-      infectType(),
-      opInfoName(),
-      beforeDiseaseName(),
-    ];
-    const getData = () => {
-      list.value = testdata.map((d: any) => {
-        return {
-          ...d,
-          infoItems: formatTask(d, infoItems),
-        };
-      });
-      // eslint-disable-next-line no-undef
-      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
-        console.log(r);
+    const callNurse = (task: any) => {
+      const data = {
+        opInfoId: task.opInfo.id,
+        currentTaskId: task.opTask.id,
+        parentTaskId: task.opTask.parentTaskId,
+      };
+      Request.xhr('wardNurseCall', data).then((res: any) => {
+        // console.log(res);
+        if (res.code === 200) {
+          Toast('呼叫护工成功');
+          getData()
+        }
       });
     };
 
-    Request.xhr('createNextOpTask', {}, 'opInfoId=2').then((r: any) => {
-      // const { code, data } = r;
-      console.log(r);
-    });
+    // 触发手术任务
+    // Request.xhr('createNextOpTask', {}, 'opInfoId=29').then((r: any) => {
+    //   // const { code, data } = r;
+    //   console.log(r);
+    // });
 
     getData();
     return {

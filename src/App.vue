@@ -1,5 +1,5 @@
 <template>
-  <router-view v-if="isReady"/>
+  <router-view v-if="isReady" />
   <van-loading
     v-if="!isReady"
     class="app-isReady"
@@ -27,25 +27,29 @@ export default defineComponent({
     };
     onMounted(() => {
       // 监听flutter透传的刷新操作
-      window.addEventListener('flutterCallJS', function (event: any) {
-        const { detail } = event
-        switch (detail.handleName) {
-          case 'or/refreshContent':
-            isReady.value = false
-            beforeEach()
-            break;
-          default:
-            console.log('default');
-            break
-        }
-      }, false);
+      window.addEventListener(
+        'flutterCallJS',
+        function (event: any) {
+          const { detail } = event;
+          switch (detail.handleName) {
+            case 'or/refreshContent':
+              isReady.value = false;
+              beforeEach();
+              break;
+            default:
+              console.log('default');
+              break;
+          }
+        },
+        false
+      );
       // window.addEventListener('flutterInAppWebViewPlatformReady',
       //   async () => {
       //     beforeEach()
       //   });
 
-      beforeEach()
-    })
+      beforeEach();
+    });
 
     return {
       isReady,

@@ -49,7 +49,6 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
-import { testdata } from '@/utils/mock-test-data';
 
 export default defineComponent({
   name: 'WardNurSummary',
@@ -74,19 +73,28 @@ export default defineComponent({
     //     name: 'user' + (index + 1),
     //   };
     // });
-    let list: any[] = reactive([]);
+    const list: any = ref([]);
     const getData = () => {
-      list = testdata.map((d: any) => {
-        return {
-          ...d,
-          infoItems: formatTask(d, infoItems),
-        };
-      });
+      // list = testdata.map((d: any) => {
+      //   return {
+      //     ...d,
+      //     infoItems: formatTask(d, infoItems),
+      //   };
+      // });
       // console.log(list);
 
       // eslint-disable-next-line no-undef
       Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
-        console.log(r);
+        // console.log(r);
+        if (r.data) {
+          list.value = r.data.map((d: any) => {
+            return {
+              ...d,
+              infoItems: formatTask(d, infoItems),
+            };
+          });
+          // console.log(list);
+        }
         // TODO 数据list赋值处理
       });
     };

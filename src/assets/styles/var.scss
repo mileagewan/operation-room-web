@@ -73,6 +73,15 @@
   button {
     width: 300px;
     height: 90px;
+    .iconfont{
+      font-size: 30px;
+      margin-right: 12px;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    span{
+      vertical-align: middle;
+    }
   }
 }
 

@@ -1,155 +1,202 @@
 <template>
-  <TaskView class="itinerant-nur-current"
-            v-for="(c, index) in current"
-            :key="index"
+  <TaskView
+    class="itinerant-nur-current"
+    v-for="(task, index) in taskList"
+    :key="index"
   >
     <template #header>
-      <PatientDetail :option="{
-        status: c.code,
-        name: '四个名字',
-        sex: '男',
-        age: '99',
-        type: '急诊',
-        room: '手术-01间-01台',}" />
+      <PatientDetail
+        :option="{
+          status: task.opInfo.opSectionCode,
+          name: task.patient.name,
+          sex: task.patient.sex,
+          age: task.age,
+          type: task.opInfo.type,
+          room: task.opInfo.oproomName,
+        }"
+      />
     </template>
     <template #content>
       <KeyValue
-        v-for="(vi, ii) in c.opInfo"
-        :value="vi.value"
-        :danger="vi.danger"
-        :key="ii"
+        v-for="(item, i) in task.infoItems"
+        :value="item.value"
+        :danger="item.danger"
+        :key="i"
       >
         <template #label>
-          {{ vi.label }}
+          {{ item.label }}
         </template>
       </KeyValue>
+      <FlowChart :flow-data="task.operatingStatusList" :current-code="task.currentOperatingStatus" />
       <KeyValueBlock>
-        <template #value>
-          无
-        </template>
+
+        <template #value> 无 </template>
       </KeyValueBlock>
-<!--      送手术-->
-      <template v-if="c.code === 4">
-        <div class="ihybrid-button-group" >
-          <van-button round
-                      @click="manualHandle"
-                      class="default-button"
-                      color="#f0fafe">
+      <!--      送手术-->
+      <template v-if="task.opInfo.opSectionCode === '4'">
+        <div class="ihybrid-button-group">
+          <van-button
+            round
+            @click="manualHandle(task)"
+            class="default-button"
+            color="#f0fafe"
+          >
             人工交接
           </van-button>
-          <van-button icon="scan"
-                      @click="codeHandle"
-                      round
-                      color="linear-gradient(to right, #00D6FA, #00ACF2)">
+          <van-button
+            icon="scan"
+            @click="codeHandle(task)"
+            round
+            color="linear-gradient(to right, #00D6FA, #00ACF2)"
+          >
             扫码交接
           </van-button>
         </div>
-
-      </template>
-
-<!--        转送中-->
-      <template v-if="c.code === 5">
-        <KeyValueBlock clear
-                       label="交接人"
-                       value="力度 13800138000" />
-      </template>
-
-      <template v-if="c.code === 14">
-        <div class="ihybrid-button-group" >
-          <van-button round
-                      @click="manualHandle"
-                      class="default-button"
-                      color="#f0fafe">
-            人工交接
-          </van-button>
-          <van-button icon="scan"
-                      @click="codeHandle"
-                      round
-                      color="linear-gradient(to right, #00D6FA, #00ACF2)">
-            扫码交接
-          </van-button>
-        </div>
-
       </template>
 
       <!--        转送中-->
-      <template v-if="c.code === 15">
-        <KeyValueBlock clear
-                       label="交接人"
-                       value="力度 13800138000" />
+      <template v-if="task.opInfo.opSectionCode === '5'">
+        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+      </template>
+
+      <template v-if="task.opInfo.opSectionCode === '14'">
+        <div class="ihybrid-button-group">
+          <van-button
+            round
+            @click="manualHandle(task)"
+            class="default-button"
+            color="#f0fafe"
+          >
+            人工交接
+          </van-button>
+          <van-button
+            icon="scan"
+            @click="codeHandle(task)"
+            round
+            color="linear-gradient(to right, #00D6FA, #00ACF2)"
+          >
+            扫码交接
+          </van-button>
+        </div>
+      </template>
+
+      <!--        转送中-->
+      <template v-if="task.opInfo.opSectionCode === '15'">
+        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
     </template>
   </TaskView>
-  <HandleOverLay v-model:visible="handleOverLay.show"
-                 @ok="manualOk"
-                 v-model="handleOverLay.value"/>
+  <HandleOverLay
+    v-model:visible="handleOverLay.show"
+    @ok="manualOk"
+    v-model="handleOverLay.value"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue';
-import { curentData } from '@/utils/mock-test-data';
-import { Toast } from 'vant';
+import { defineComponent, onMounted, ref, reactive } from 'vue';
 import Request from '@/service/request';
+import { Toast } from 'vant';
 import { ReturnData } from '@/types/interface-model';
+import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import useTaskMixins, {
+  anesthesiaDicCode,
+  anesthetistName,
+  beforeDiseaseName,
+  circulatingNurseName,
+  departmentName,
+  hospitalCode,
+  infectType,
+  opInfoCode,
+  opInfoName,
+  surgeonName,
+} from '../../utils/task-mixins';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
     const handleOverLay = reactive({
       show: false,
-      value: ''
+      value: '',
     });
-
-    const current = reactive(curentData.filter(c => {
-      return [4, 5, 14, 15].indexOf(c.code) > -1
-    }))
-    const manualHandle = () => {
-      handleOverLay.show = true
-    }
-    const manualOk = () => {
-      console.log(handleOverLay)
-      handleOverLay.show = false
-    }
-    const codeHandle = () => {
-      const toast = Toast({
-        duration: 0,
-        overlay: true,
-        message: '患者匹配成功，交接完成3s',
-      });
-
-      let second = 3;
-      const timer = setInterval(() => {
-        second--;
-        if (second) {
-          toast.message = `患者匹配成功，交接完成${second}s`;
-        } else {
-          clearInterval(timer);
-          Toast.clear();
+    let currentTask: any = reactive({});
+    const taskList: any = ref([]);
+    const { formatTask } = useTaskMixins();
+    const infoItems = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName(),
+    ];
+    const getData = () => {
+      // list.value = testdata.map((d: any) => {
+      //   return {
+      //     ...d,
+      //     infoItems: formatTask(d, infoItems),
+      //   };
+      // });
+      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        // const { code, data } = r;
+        console.log(r);
+        if (r.data) {
+          taskList.value = r.data.map((d: any) => {
+            return {
+              ...d,
+              infoItems: formatTask(d, infoItems),
+            };
+          });
         }
-      }, 1000);
-    }
+      });
+    };
+    getData();
 
-    const callNurse = () => {
-      Toast('呼叫护工成功')
-    }
+    const manualHandle = (task: any) => {
+      handleOverLay.show = true;
+      currentTask = task;
+      console.log(currentTask);
+    };
+    const manualOk = () => {
+      console.log(handleOverLay);
+      handleOverLay.show = false;
+      console.log(currentTask);
+
+      const data = {
+        opInfoId: currentTask.opInfo.id,
+        currentTaskId: currentTask.opTask.id,
+        parentTaskId: currentTask.opTask.parentTaskId,
+        userCode: handleOverLay.value,
+      };
+      Request.xhr('wardNurseHandover', data).then((res: any) => {
+        if (res.code === 200) {
+          getData();
+        }
+      });
+    };
+    const codeHandle = (task: any) => {
+      // Toast('呼叫护工成功');
+    };
 
     onMounted(() => {
       Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r)
-      })
-    })
+        console.log(r);
+      });
+    });
     return {
-      current,
+      taskList,
       handleOverLay,
       manualHandle,
       manualOk,
       codeHandle,
-      callNurse,
-      onMounted
+      onMounted,
+      getData,
     };
   },
-})
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

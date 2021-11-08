@@ -3,23 +3,23 @@
     <div class="task-item">
       <div class="flex flex-between header">
         <div class="flex-main">
-          <span class="name">{{ task.name }}</span>
-          <span>男 25岁</span>
+          <span class="name">{{ task.patient.name }}</span>
+          <span>{{ task.patient.sex === 1 ? "男" : "女" }} 25岁</span>
         </div>
-        <span class="task">送病人</span>
+        <span class="task">{{ listingTypes === 1 ? "送病人" : "接病人" }}</span>
       </div>
       <div class="flex">
-        <div class="flex-main">手术-01间-01台</div>
+        <div class="flex-main">{{ task.opInfo.oproomName }}</div>
         <span class="to-department">ICU</span>
       </div>
       <div class="flex info">
         <div class="info-item">
           <label>住院号</label>
-          <span>2021789789</span>
+          <span>{{ task.patient.hospitalCode }}</span>
         </div>
         <div class="info-item">
           <label>用时</label>
-          <span>10分钟</span>
+          <span>{{ task.taskTime }}</span>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="listData.length > 0">
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
@@ -58,6 +58,7 @@
           </oprat-room-card>
         </van-list>
       </van-pull-refresh>
+      <EmptyPage v-else-if="!loadingList && listData.length == 0" />
     </div>
   </div>
 </template>
@@ -88,7 +89,7 @@ export default defineComponent({
       finishedList: false,
       totalPage: 0,
       pageNo: 1,
-      pageSize: 3,
+      pageSize: 5,
     })
     const listData = ref<any[]>([])
     // 返回
@@ -104,6 +105,7 @@ export default defineComponent({
       loadData('TODAY', 1, 1, true)
       // 获取明日数量
       loadData('TOMORROW', 1, 1, true)
+      onRefresh()
     })
     // 加载更多
     const onLoad = async () => {
