@@ -49,5 +49,11 @@ const nurse: ServiceItem[] = [
     key: 'itinerGetoproomlist',
     method: 'post',
   },
+  {
+    path: '/tOpSyncInfo/syncOpDatas',
+    key: 'syncOpDatas',
+    method: 'post',
+  },
+
 ];
 export { nurse };

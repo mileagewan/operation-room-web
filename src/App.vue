@@ -1,5 +1,5 @@
 <template>
-  <router-view v-if="isReady" />
+  <router-view v-if="isReady"/>
   <van-loading
     v-if="!isReady"
     class="app-isReady"
@@ -8,7 +8,7 @@
   />
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { SET_USER_INFO_ACTION } from '@/store/action-types';
 
@@ -22,11 +22,27 @@ export default defineComponent({
       setTimeout(() => {
         isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '1',
+          userId: '6',
         });
       }, 500);
     };
     beforeEach();
+    onMounted(() => {
+      // 监听flutter透传的刷新操作
+      window.addEventListener('flutterCallJS', function (event: any) {
+        const { detail } = event
+        switch (detail.handleName) {
+          case 'or/refreshContent':
+            isReady.value = false
+            beforeEach()
+            break;
+          default:
+            console.log('default');
+            break
+        }
+      }, false);
+    })
+
     return {
       isReady,
     };
