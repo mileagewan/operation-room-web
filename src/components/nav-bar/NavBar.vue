@@ -1,29 +1,29 @@
 <template>
   <div class="nab-bar">
-    <van-nav-bar
-      :title="titleBar"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="openScanQRCode"
-    >
+    <van-nav-bar :title="titleBar" left-arrow @click-left="onClickLeft">
       <template #right>
-        <IconFont icon="icon-kuaijiesaoma" />
+        <component :is="rightComponent"></component>
       </template>
     </van-nav-bar>
   </div>
 </template>
 
 <script lang="ts">
-import JsToFlutter from '@/utils/js-to-flutter';
-import { defineComponent, getCurrentInstance, ref, watch } from 'vue';
-
+import { defineComponent, ref, watch } from 'vue';
+import ScanQrCode from './ScanQrCode.vue';
 export default defineComponent({
   name: 'NavBar',
-  inject: ['emitter'],
+  components: {
+    ScanQrCode,
+  },
   props: {
     title: {
       type: String,
       default: '手术室',
+    },
+    rightComponent: {
+      type: String,
+      default: '',
     },
   },
   setup(props, { emit }) {
@@ -31,27 +31,17 @@ export default defineComponent({
     const onClickLeft = (): void => {
       emit('goBack');
     };
-    // TODO 看是否有更好的方式取到全局注入的emitter类
-    const { appContext }: any = getCurrentInstance();
-    const emitter: any = appContext.config.globalProperties.emitter;
-    const openScanQRCode = () => {
-      // emitter.emit('scan-code-success', '扫码结果');
-      JsToFlutter.startScanQRCode().then((res) => {
-        // console.log(res);
-        // 扫码成功，emit事件
-        emitter.emit('scan-code-success', res);
-      });
-    };
 
-    watch(() => props.title, () => {
-      titleBar.value = props.title
-    })
+    watch(
+      () => props.title,
+      () => {
+        titleBar.value = props.title;
+      }
+    );
 
     return {
-      emitter,
       titleBar,
       onClickLeft,
-      openScanQRCode
     };
   },
 });
