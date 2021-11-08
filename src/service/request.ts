@@ -5,7 +5,7 @@ import { SsoLogin } from '@/service/sso-login'
 import qs from 'qs'
 
 Axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  const token: string|null = localStorage.getItem('token') || '70350ce036e843cd986b96d7c12e14da.eyJleHAiOjE2MzY3ODI4MTEsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDQ5In0.9E_XfvxLKiUUqzFw7FfVOxKStO1K52ztz6CRP6-9ung'
+  const token: string|null = localStorage.getItem('token') || (process.env.VUE_APP_TOKEN as string)
   const configs = config
   configs.headers = {}
   configs.headers['Content-Type'] = 'application/json;charset=UTF-8'
