@@ -5,7 +5,7 @@
       v-for="(item, i) in flowDatas"
       :key="i"
       :class="{
-        'is-current': item.current,
+        'is-current': item.code === currentCode,
         'is-todo': isTodo(i),
       }"
     >
@@ -13,7 +13,7 @@
         <IconFont icon="icon-jindujiantou" />
       </span>
       <span class="flow-chart-circle">
-        <IconFont :icon="iconMap[i+1]" />
+        <IconFont :icon="iconMap[i + 1]" />
       </span>
       <div class="flow-chart-item_title">{{ item.title }}</div>
     </div>
@@ -31,6 +31,10 @@ export default defineComponent({
       default() {
         return [];
       },
+    },
+    currentCode: {
+      type: String,
+      default: '',
     },
   },
   setup(props) {
@@ -55,7 +59,7 @@ export default defineComponent({
         8: 'icon-hedui', // 三方确认
         9: 'icon-mazui', // 麻醉
         10: 'icon-suxing', // 患者苏醒
-      }
+      },
     };
   },
   methods: {
