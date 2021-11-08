@@ -1,36 +1,36 @@
 <template>
   <TaskView
     class="itinerant-nur-current"
-    v-for="(c, index) in current"
+    v-for="(task, index) in list"
     :key="index"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: c.code,
-          name: '四个名字',
-          sex: '男',
-          age: '99',
-          type: '急诊',
-          room: '手术-01间-01台',
+          status: task.opInfo.opSectionCode,
+          name: task.patient.name,
+          sex: task.patient.sex,
+          age: task.age,
+          type: task.opInfo.type,
+          room: task.opInfo.oproomName,
         }"
       />
     </template>
     <template #content>
       <KeyValue
-        v-for="(vi, ii) in c.opInfo"
-        :value="vi.value"
-        :danger="vi.danger"
-        :key="ii"
+        v-for="(item, i) in task.infoItems"
+        :value="item.value"
+        :danger="item.danger"
+        :key="i"
       >
         <template #label>
-          {{ vi.label }}
+          {{ item.label }}
         </template>
       </KeyValue>
       <KeyValueBlock>
         <template #value> 无 </template>
       </KeyValueBlock>
-      <template v-if="c.code === 3">
+      <template v-if="task.opInfo.opSectionCode === 3">
         <div class="ihybrid-button-center">
           <van-button
             round
@@ -41,10 +41,10 @@
           </van-button>
         </div>
       </template>
-      <template v-if="c.code === 4">
+      <template v-if="task.opInfo.opSectionCode === 4">
         <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
-      <template v-if="c.code === 15">
+      <template v-if="task.opInfo.opSectionCode === 15">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -75,13 +75,26 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive } from 'vue';
-import { curentData } from '@/utils/mock-test-data';
+import { curentData, testdata } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import useTaskMixins, {
+  anesthesiaDicCode,
+  anesthetistName,
+  beforeDiseaseName,
+  circulatingNurseName,
+  departmentName,
+  hospitalCode,
+  infectType,
+  opInfoCode,
+  opInfoName,
+  surgeonName,
+} from '../../utils/task-mixins';
+
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
@@ -90,7 +103,7 @@ export default defineComponent({
       value: '',
     });
 
-    const current = ref([]);
+    const list: any = ref([]);
     const manualHandle = () => {
       handleOverLay.show = true;
     };
@@ -117,37 +130,49 @@ export default defineComponent({
       Request.xhr('getSso').then((r: ReturnData) => {
         console.log(r);
       });
-      setTimeout(() => {
-        current.value = curentData.filter((c) => {
-          return [2, 3, 4, 14, 15].includes(c.code);
-        }) as any;
-      }, 1000);
+      // setTimeout(() => {
+      //   list.value = curentData.filter((c) => {
+      //     return [2, 3, 4, 14, 15].includes(c.code);
+      //   }) as any;
+      // }, 1000);
     });
+
+    const { formatTask } = useTaskMixins();
+    const infoItems = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName(),
+    ];
     const getData = () => {
+      list.value = testdata.map((d: any) => {
+        return {
+          ...d,
+          infoItems: formatTask(d, infoItems),
+        };
+      });
       // eslint-disable-next-line no-undef
       Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
         // const { code, data } = r;
-        // if (code === 200) {
-        //   const taskViews = data.map((d) => {
-        //     return {
-        //       ...d,
-        //       taskList: formatTask(data, taskList)
-        //     }
-        //   })
-        // }
-        console.log(r)
-        // taskViewsList.value = testdata.map((d) => {
-        //   return {
-        //     ...d,
-        //     taskList: formatTask(d, taskList)
-        //   }
-        // }) as any;
-      })
-    }
-    getData()
+        console.log(r);
+      });
+    };
+
+    Request.xhr('createNextOpTask', {}, 'opInfoId=2').then((r: any) => {
+      // const { code, data } = r;
+      console.log(r);
+    });
+
+    getData();
     return {
       getData,
-      current,
+      list,
       handleOverLay,
       manualHandle,
       manualOk,

@@ -7,8 +7,28 @@
     @load="getData"
     class="page-padding list"
   >
-    <van-cell v-for="(item, index) in list" :key="index">
-      <ExpandCard />
+    <van-cell v-for="(task, index) in list" :key="index">
+      <ExpandCard
+        :option="{
+          status: task.opInfo.opSectionCode,
+          name: task.patient.name,
+          sex: task.patient.sex,
+          age: task.age,
+          type: task.opInfo.type,
+          room: task.opInfo.oproomName,
+        }"
+      >
+        <KeyValue
+          v-for="(item, i) in task.infoItems"
+          :value="item.value"
+          :danger="item.danger"
+          :key="i"
+        >
+          <template #label>
+            {{ item.label }}
+          </template>
+        </KeyValue>
+      </ExpandCard>
     </van-cell>
   </van-list>
 </template>
@@ -17,36 +37,57 @@
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import useTaskMixins, {
+  anesthesiaDicCode,
+  anesthetistName,
+  beforeDiseaseName,
+  circulatingNurseName,
+  departmentName,
+  hospitalCode,
+  infectType,
+  opInfoCode,
+  opInfoName,
+  surgeonName,
+} from '../../utils/task-mixins';
+import { testdata } from '@/utils/mock-test-data';
+
 export default defineComponent({
   name: 'WardNurSummary',
   setup() {
     const loading = ref(false);
     const finished = ref(true);
-    const testData = new Array(10).fill('').map((item, index) => {
-      return {
-        name: 'user' + (index + 1),
-      };
-    });
-    const list: any[] = reactive(testData);
+    const { formatTask } = useTaskMixins();
+    const infoItems = [
+      opInfoCode(),
+      hospitalCode(),
+      departmentName(),
+      surgeonName(),
+      circulatingNurseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      infectType(),
+      opInfoName(),
+      beforeDiseaseName(),
+    ];
+    // const testData = new Array(10).fill('').map((item, index) => {
+    //   return {
+    //     name: 'user' + (index + 1),
+    //   };
+    // });
+    let list: any[] = reactive([]);
     const getData = () => {
+      list = testdata.map((d: any) => {
+        return {
+          ...d,
+          infoItems: formatTask(d, infoItems),
+        };
+      });
+      // console.log(list);
+
       // eslint-disable-next-line no-undef
       Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
-        // if (code === 200) {
-        //   const taskViews = data.map((d) => {
-        //     return {
-        //       ...d,
-        //       taskList: formatTask(data, taskList)
-        //     }
-        //   })
-        // }
         console.log(r);
-        // taskViewsList.value = testdata.map((d) => {
-        //   return {
-        //     ...d,
-        //     taskList: formatTask(d, taskList)
-        //   }
-        // }) as any;
+        // TODO 数据list赋值处理
       });
     };
     getData();

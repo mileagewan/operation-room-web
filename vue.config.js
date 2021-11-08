@@ -100,10 +100,10 @@ module.exports = {
       '/comom': {
         // target: process.env.VUE_APP_API,
         // target: 'http://124.196.4.220:8088/',
-        // target: 'http://192.168.223.194:8080',
+         target: 'http://192.168.223.194:8080',
         // target: 'http://192.168.223.194:7311',
         // target: 'http://192.168.223.194:7311',
-        target: 'http://192.168.201.99:7311',
+        // target: 'http://192.168.201.99:7311',
         changeOrigin: true,
         pathRewrite: {
           '^/comom': '', // 开发环境

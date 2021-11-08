@@ -14,7 +14,7 @@ const mobile: ServiceItem[] = [
   {
     path: '/todayOp/op/detail', // 手术详情
     key: 'getOperatDetail',
-    method: 'get',
+    method: 'post',
   },
   {
     path: '/todayOp/task/list', // 清洁任务

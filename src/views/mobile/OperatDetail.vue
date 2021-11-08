@@ -29,7 +29,7 @@
                 </div>
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span class="text">{{ patientInfo.patientSex }}</span>
+                  <span class="text">{{ patientInfo.patientSex == 1 ? '男' : '女' }}</span>
                 </div>
               </template>
               <template #right-content>
@@ -92,7 +92,10 @@ export default defineComponent({
     // 接口请求
     const loadData = async (id: any) => {
       try {
-        const params = `opCode=${'001'}`
+        // const params = {
+        //   opCode: id
+        // }
+        const params = `opCode=${id}`
         await Request.xhr('getOperatDetail', {}, params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;

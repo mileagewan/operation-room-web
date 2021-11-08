@@ -5,8 +5,7 @@ import { SsoLogin } from '@/service/sso-login'
 import qs from 'qs'
 
 Axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  const token: string|null = localStorage.getItem('token') ||
-    '3c04fad2cadf47dc8bc442ad5a007568.eyJleHAiOjE2MzY5NTk4ODYsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDQ5In0.iSVSJ-X1gNKUNKrIPUUJk3j_CtzlDIKqH5OGfhovCoE'
+  const token: string | null = localStorage.getItem('token') || (process.env.VUE_APP_TOKEN as string)
   const configs = config
   configs.headers = {}
   configs.headers['Content-Type'] = 'application/json;charset=UTF-8'
@@ -15,7 +14,7 @@ Axios.interceptors.request.use((config: AxiosRequestConfig) => {
   configs.headers.token = token
   configs.headers['X-Auth-Token'] = token
   if (config.method === 'get') {
-    configs.paramsSerializer = function(params:any) {
+    configs.paramsSerializer = function (params: any) {
       return qs.stringify(params, { arrayFormat: 'repeat' })
     }
   }
@@ -170,9 +169,9 @@ class Request implements RequestQuery {
     }
   }
 
-  static setToken(): void{
+  static setToken(): void {
     this.axios.interceptors.request.use((config: AxiosRequestConfig) => {
-      const token: string|null = localStorage.getItem('token') || ''
+      const token: string | null = localStorage.getItem('token') || ''
       const configs = config
       configs.headers = {}
       configs.headers.token = token

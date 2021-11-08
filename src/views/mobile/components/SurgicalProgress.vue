@@ -3,7 +3,10 @@
     <div class="progress-warp" v-for="(item,index) in data" :key="index">
       <div class="arrow" v-if="index != 0">
         <div class="bar">
-          <IconFont icon="icon-jindujiantou" :class="[item.status==2? 'icons-current-select-green' : '']" />
+          <IconFont
+            icon="icon-jindujiantou"
+            :class="[item.status == 2 ? 'icons-current-select-green' : '']"
+          />
         </div>
       </div>
       <div class="item">
@@ -11,10 +14,22 @@
           <span class="date">{{ getMonthDays(item.startDate) }}</span>
           <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
         </div>
-        <div class="icon-warp" :class="[item.status==2?'icons-current-select-green-bg':'']">
-          <IconFont v-if="item.status==3" icon="icon-yiwancheng icons-default-color" :class="[item.doing?'icons-end':'']" />
-          <IconFont v-if="item.status==2" icon="icon-jinhangzhong icons-default-color" :class="[1?'icons-current-select-white':'']" />
-          <IconFont v-if="(item.status==null||item.status==1)" icon="icon-daikaishi icons-default-color" :class="[item.doing?'icons-not-start':'']" />
+        <div class="icon-warp" :class="[item.status == 2 ? 'icons-current-select-green-bg' : '']">
+          <IconFont
+            v-if="item.status == 3"
+            icon="icon-yiwancheng icons-default-color"
+            :class="[item.doing ? 'icons-end' : '']"
+          />
+          <IconFont
+            v-if="item.status == 2"
+            icon="icon-jinhangzhong icons-default-color"
+            :class="[1 ? 'icons-current-select-white' : '']"
+          />
+          <IconFont
+            v-if="(item.status == null || item.status == 1)"
+            icon="icon-daikaishi icons-default-color"
+            :class="[item.doing ? 'icons-not-start' : '']"
+          />
         </div>
         <div class="text-warp">
           <span class="title">{{ item.sectionName }}</span>
@@ -37,7 +52,7 @@ export default defineComponent({
   },
   setup() {
     const aa = '1'
-    const itemList = ref(['1', '2', '2', '2', '2'])
+    const itemList = ref([])
     const currentSelect = ref(true)
     const getMonthDays = (item: string) => {
       if (!item) return ''
@@ -135,22 +150,22 @@ export default defineComponent({
     }
   }
   .icons-current-select-white {
-    color: rgba(255,255,255,1) !important;
+    color: rgba(255, 255, 255, 1) !important;
   }
-  .icons-current-select-green-bg{
-    background-color: rgba(59,220,55,1) !important;
+  .icons-current-select-green-bg {
+    background-color: rgba(59, 220, 55, 1) !important;
   }
-  .icons-current-select-green{
-    color: rgba(59,220,55,1) !important;
+  .icons-current-select-green {
+    color: rgba(59, 220, 55, 1) !important;
   }
-  .icons-not-start{
-    color: rgba(91,199,249);
+  .icons-not-start {
+    color: rgba(91, 199, 249);
   }
-  .icons-end{
-    color: rgba(182,221,255,1);
+  .icons-end {
+    color: rgba(182, 221, 255, 1);
   }
-  .icons-default-color{
-    color: rgba(182,221,255,1);
+  .icons-default-color {
+    color: rgba(182, 221, 255, 1);
   }
 }
 </style>

@@ -37,6 +37,12 @@ const nurse: ServiceItem[] = [
     key: 'queryTaskPoolList',
     method: 'post',
   },
+  //      触发下台手术任务
+  {
+    path: '/nurseOperate/createNextOpTask',
+    key: 'createNextOpTask',
+    method: 'post',
+  },
 
   {
     path: '/test',
@@ -61,6 +67,5 @@ const nurse: ServiceItem[] = [
     key: 'syncOpDatas',
     method: 'post',
   },
-
 ];
 export { nurse };
