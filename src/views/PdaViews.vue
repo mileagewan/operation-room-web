@@ -32,7 +32,10 @@ export default defineComponent({
 
     const loading = ref<boolean>(false);
     const active = ref<number>(0);
-    const defaultRole = computed(() => store.state.userInfo.userId);
+    const defaultRole = computed(() => {
+      const userConfig = store.state.userInfo.userConfig
+      return '5'
+    });
 
     const goBack = (): void => {
       JsToFlutter.goback();

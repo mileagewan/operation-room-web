@@ -68,15 +68,46 @@ const nurse: ServiceItem[] = [
     method: 'post',
   },
 
+  // 扫码交接/人工(接送 -> 巡回)
   {
-    path: '/test',
-    key: 'manualOk',
+    path: '/nurseOperate/pickupNurseHandover',
+    key: 'pickupNurseHandover',
+    method: 'post'
+  },
+  // 三方确认
+  {
+    path: '/nurseOperate/tripartiteConfirmation',
+    key: 'tripartiteConfirmation',
+    method: 'post'
+  },
+  // 手术开始
+  {
+    path: '/nurseOperate/opStart',
+    key: 'opStart',
+    method: 'post'
+  },
+  // 手术结束
+  {
+    path: '/nurseOperate/opEnd',
+    key: 'opEnd',
+    method: 'post'
+  },
+  {
+    path: '/nurseOperate/notifyNextOperation',
+    key: 'notifyNextOperation',
     method: 'post'
   },
 
+  // 扫码/人工  巡回-> 复苏
   {
-    path: '/nurse/queryCurrentTaskList',
-    key: 'queryCurrentTaskList',
+    path: '/nurseOperate/circuitNurseHandoverToRecovery',
+    key: 'circuitNurseHandoverToRecovery',
+    method: 'post'
+  },
+  // 呼叫运工
+  {
+    path: '/nurseOperate/recoveryRoomNurseCall',
+    key: 'recoveryRoomNurseCall',
     method: 'post'
   },
   // 总协调护士

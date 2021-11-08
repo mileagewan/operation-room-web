@@ -82,6 +82,7 @@ interface OpTask{
   createTime:string;
   lastUpdateTime:string;
   taskTipContent?: string;
+  parentTaskId?:string;
 }
 export interface TaskViewItem {
   opInfo: OpInfo;

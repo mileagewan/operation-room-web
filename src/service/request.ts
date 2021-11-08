@@ -6,8 +6,7 @@ import qs from 'qs'
 import JsToFlutter from '@/utils/js-to-flutter';
 
 Axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  // const token: string | null = await JsToFlutter.getToken() as string
-  const token: string | null = process.env.VUE_APP_TOKEN as string
+  const token: string | null = await JsToFlutter.getToken() as string
   const configs = config
   configs.headers = {}
   configs.headers['Content-Type'] = 'application/json;charset=UTF-8'

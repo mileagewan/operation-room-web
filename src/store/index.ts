@@ -8,7 +8,7 @@ import { task } from '@/store/task';
 export default createStore({
   state: {
     userInfo: {
-      userId: '3',
+      userConfig: {},
     },
     token: ''
   },

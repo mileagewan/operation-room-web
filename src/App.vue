@@ -11,17 +11,19 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { SET_USER_INFO_ACTION } from '@/store/action-types';
+import Request from '@/service/request';
 
 export default defineComponent({
   name: 'App',
   setup() {
     const store = useStore();
     const isReady = ref<boolean>(false);
-    const beforeEach = () => {
+    const beforeEach = async () => {
+      const ret:any = await Request.xhr('getMenuTree')
       setTimeout(() => {
         isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '4',
+          userConfig: '4',
         });
       }, 500);
     };
@@ -45,10 +47,8 @@ export default defineComponent({
       );
       // window.addEventListener('flutterInAppWebViewPlatformReady',
       //   async () => {
-      //     beforeEach()
-      //   });
-
-      beforeEach();
+      beforeEach()
+      // });
     });
 
     return {

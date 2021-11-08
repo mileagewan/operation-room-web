@@ -35,19 +35,19 @@
       <div class="ihybrid-button-group">
         <template v-if="taskView.opInfo.opSectionCode === '6' ">
           <van-button round
-                      @click="manualHandle"
+                      @click="manualHandle(taskView)"
                       class="default-button"
                       color="#f0fafe">
             人工交接
           </van-button>
           <van-button icon="scan"
-                      @click="codeHandle"
+                      @click="codeHandle(taskView)"
                       round
                       color="linear-gradient(to right, #00D6FA, #00ACF2)">
             扫码交接
           </van-button>
         </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === 7">
+        <template v-else-if="taskView.opInfo.opSectionCode === '7'">
           <van-button icon="passed"
                       @click="thirdPartyConfirm(taskView)"
                       round
@@ -55,7 +55,7 @@
             三方确认
           </van-button>
         </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === 8">
+        <template v-else-if="taskView.opInfo.opSectionCode === '8'">
           <van-button icon="pause-circle-o"
                       @click="operationBegan(taskView)"
                       round
@@ -63,22 +63,24 @@
             手术开始
           </van-button>
         </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === 9">
+        <template v-else-if="taskView.opInfo.opSectionCode === '9'">
           <van-button round
+                      :disabled="taskView.notifyNextOperation === 2"
+                      v-if="taskView.notifyNextOperation !== 3"
                       @click="noticeNext(taskView)"
                       class="default-button"
                       color="#f0fafe">
             通知下一台术前准备
           </van-button>
           <van-button icon="passed"
-                      @click="resuscitationHandle"
+                      @click="resuscitationHandle(taskView)"
                       round
                       color="linear-gradient(to right, #00D6FA, #00ACF2)">
             手术完成
           </van-button>
         </template>
       </div>
-      <template v-if="taskView.opInfo.opSectionCode === 10">
+      <template v-if="taskView.opInfo.opSectionCode === '10'">
         <key-value label="交接人" value="接送护士"></key-value>
       </template>
       <template v-if="taskView.opInfo.opSectionCode === 11">
@@ -120,6 +122,7 @@
           取消
         </van-button>
         <van-button round
+                    @click="resuscitationOverLayHandleOk"
                     color="linear-gradient(to right, #00D6FA, #00ACF2)">
           确定
         </van-button>
@@ -130,7 +133,6 @@
 </template>
 
 <script lang="ts">
-import { testdata, FlowData2 } from '@/utils/mock-test-data';
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { Dialog, Toast } from 'vant';
@@ -149,6 +151,7 @@ import useTaskMixins, {
 } from '@/utils/task-mixins';
 import { ReturnData, Task } from '@/types/interface-model';
 import ToastCountdown from '@/utils/toast-countdown';
+import JsToFlutter from '@/utils/js-to-flutter';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
@@ -156,7 +159,8 @@ export default defineComponent({
     const { formatTask } = useTaskMixins()
     const handleOverLay = reactive({
       show: false,
-      value: ''
+      value: '',
+      row: {}
     });
     const resuscitationOverLay = reactive({
       show: false,
@@ -175,7 +179,8 @@ export default defineComponent({
           value: 3
         }
       ],
-      active: 1
+      active: 1,
+      row: {}
     })
     const taskList:Task[] = [
       opInfoCode(),
@@ -189,15 +194,18 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName()
     ];
-    const flowData = reactive(FlowData2);
     const taskViewsList = ref([])
 
-    const manualHandle = () => {
+    const manualHandle = (taskView:any) => {
       handleOverLay.show = true
+      handleOverLay.row = taskView
     }
     const manualOk = async () => {
-      const ret: ReturnData = await Request.xhr('manualOk', {
-        value: handleOverLay.value
+      const ret: ReturnData = await Request.xhr('pickupNurseHandover', {
+        userCode: handleOverLay.value,
+        opInfoId: (handleOverLay.row as any)?.opInfo?.id || '',
+        currentTaskId: (handleOverLay.row as any)?.opTask?.id || '',
+        parentTaskId: (handleOverLay.row as any)?.opTask?.parentTaskId || '',
       })
       if (ret.code === 200) {
         ToastCountdown({
@@ -207,33 +215,47 @@ export default defineComponent({
         handleOverLay.show = false;
       }
     }
-    const codeHandle = () => {
-      const toast = Toast({
-        duration: 0,
-        overlay: true,
-        message: '患者匹配成功，交接完成3s',
-      });
+    const codeHandle = async (row:any) => {
+      const ret: string = await JsToFlutter.startScanQRCode();
+      const data: ReturnData = await Request.xhr('pickupNurseHandover', {
+        opInfoId: row.opInfo.id || '',
+        currentTaskId: row.opTask.id || '',
+        parentTaskId: row.opTask.parentTaskId || '',
+        hospitalCode: ret,
+      })
+      if (data.code === 200) {
+        const toast = Toast({
+          duration: 0,
+          overlay: true,
+          message: '患者匹配成功，交接完成3s',
+        });
 
-      let second = 3;
-      const timer = setInterval(() => {
-        second--;
-        if (second) {
-          toast.message = `患者匹配成功，交接完成${second}s`;
-        } else {
-          clearInterval(timer);
-          getData()
-          Toast.clear();
-        }
-      }, 1000);
+        let second = 3;
+        const timer = setInterval(() => {
+          second--;
+          if (second) {
+            toast.message = `患者匹配成功，交接完成${second}s`;
+          } else {
+            clearInterval(timer);
+            getData()
+            Toast.clear();
+          }
+        }, 1000);
+      } else {
+        Toast('扫码交接失败')
+      }
     }
 
     const thirdPartyConfirm = (taskView: TaskViewItem) => {
-      console.log(taskView)
       Dialog.confirm({
         message: '请确定手术医生和麻醉医生已到现场',
       })
         .then(async () => {
-          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          const ret: ReturnData = await Request.xhr('tripartiteConfirmation', {
+            opInfoId: taskView.opInfo.id || '',
+            currentTaskId: taskView.opTask.id || '',
+            parentTaskId: taskView.opTask.parentTaskId || '',
+          });
           if (ret.code === 200) {
             getData();
           }
@@ -249,7 +271,11 @@ export default defineComponent({
         message: '请确定手术已开始准备切片',
       })
         .then(async () => {
-          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          const ret: ReturnData = await Request.xhr('opStart', {
+            opInfoId: taskView.opInfo.id || '',
+            currentTaskId: taskView.opTask.id || '',
+            parentTaskId: taskView.opTask.parentTaskId || '',
+          });
           if (ret.code === 200) {
             getData();
           }
@@ -259,18 +285,39 @@ export default defineComponent({
         });
     }
 
-    const noticeNext = (taskView: TaskViewItem) => {
-      console.log(taskView)
-      Toast('通知下一台术前准备')
+    const noticeNext = async (taskView: TaskViewItem) => {
+      const ret: ReturnData = await Request.xhr('notifyNextOperation', {
+        opInfoId: taskView.opInfo.id
+      }, `opInfoId=${taskView.opInfo.id}`)
+      if (ret.code === 200) {
+        Toast('通知下一台成功');
+        getData()
+      }
     }
 
-    const resuscitationHandle = () => {
+    const resuscitationHandle = (taskView: TaskViewItem) => {
       resuscitationOverLay.show = true
+      resuscitationOverLay.row = taskView
     }
     const roomSelect = (room: any) => {
       resuscitationOverLay.active = room.value
     }
 
+    const resuscitationOverLayHandleOk = async () => {
+      const params = {
+        opInfoId: (resuscitationOverLay.row as TaskViewItem).opInfo.id || '',
+        currentTaskId: (resuscitationOverLay.row as TaskViewItem).opTask.id || '',
+        parentTaskId: (resuscitationOverLay.row as TaskViewItem).opTask.parentTaskId || '',
+        resuscitationRoom: resuscitationOverLay.checked ? 1 : 2,
+        postoperativeLocation: resuscitationOverLay.active
+      }
+      const ret: ReturnData = await Request.xhr('opEnd', params)
+      if (ret.code === 200) {
+        Toast('手术完成')
+        resuscitationOverLay.show = true;
+        getData()
+      }
+    }
     const getData = () => {
       // eslint-disable-next-line no-undef
       Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
@@ -290,16 +337,16 @@ export default defineComponent({
     return {
       handleOverLay,
       resuscitationOverLay,
-      flowData,
       taskViewsList,
       manualHandle,
-      manualOk,
       resuscitationHandle,
+      manualOk,
       codeHandle,
       roomSelect,
       thirdPartyConfirm,
       operationBegan,
       noticeNext,
+      resuscitationOverLayHandleOk,
       onMounted
     };
   },
