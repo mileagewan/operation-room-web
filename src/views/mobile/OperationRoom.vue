@@ -38,7 +38,7 @@
               </div>
               <div class="item">
                 <span class="title">患者性别</span>
-                <span class="text">{{ item.patientSex }}</span>
+                <span class="text">{{ item.patientSex == 1 ? '男' : '女' }}</span>
               </div>
             </template>
             <template #right-content>
