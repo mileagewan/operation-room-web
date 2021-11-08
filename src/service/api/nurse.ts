@@ -21,6 +21,13 @@ const nurse: ServiceItem[] = [
   },
 
   {
+    path: '/test',
+    key: 'manualOk',
+    method: 'post'
+  },
+
+  // 总协调护士
+  {
     path: '/operationroom/getcurrenttask',
     key: 'roomGettotaltask',
     method: 'post',

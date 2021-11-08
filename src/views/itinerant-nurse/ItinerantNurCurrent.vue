@@ -132,7 +132,7 @@
 import { testdata, FlowData2 } from '@/utils/mock-test-data';
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
-import { Toast } from 'vant';
+import { Dialog, Toast } from 'vant';
 import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   opInfoCode,
@@ -146,7 +146,8 @@ import useTaskMixins, {
   opInfoName,
   beforeDiseaseName
 } from '@/utils/task-mixins';
-import { Task } from '@/types/interface-model';
+import { ReturnData, Task } from '@/types/interface-model';
+import ToastCountdown from '@/utils/toast-countdown';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
@@ -193,9 +194,17 @@ export default defineComponent({
     const manualHandle = () => {
       handleOverLay.show = true
     }
-    const manualOk = () => {
-      console.log(handleOverLay)
-      handleOverLay.show = false
+    const manualOk = async () => {
+      const ret: ReturnData = await Request.xhr('manualOk', {
+        value: handleOverLay.value
+      })
+      if (ret.code === 200) {
+        ToastCountdown({
+          message: '患者匹配成功，交接完成',
+          seconds: 3,
+        });
+        handleOverLay.show = false;
+      }
     }
     const codeHandle = () => {
       const toast = Toast({
@@ -211,6 +220,7 @@ export default defineComponent({
           toast.message = `患者匹配成功，交接完成${second}s`;
         } else {
           clearInterval(timer);
+          getData()
           Toast.clear();
         }
       }, 1000);
@@ -218,11 +228,34 @@ export default defineComponent({
 
     const thirdPartyConfirm = (taskView: TaskViewItem) => {
       console.log(taskView)
-      Toast('三方确认')
+      Dialog.confirm({
+        message: '请确定手术医生和麻醉医生已到现场',
+      })
+        .then(async () => {
+          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          if (ret.code === 200) {
+            getData();
+          }
+        })
+        .catch(() => {
+          console.log('Cancel')
+        });
     }
 
     const operationBegan = (taskView: TaskViewItem) => {
       console.log(taskView)
+      Dialog.confirm({
+        message: '请确定手术已开始准备切片',
+      })
+        .then(async () => {
+          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          if (ret.code === 200) {
+            getData();
+          }
+        })
+        .catch(() => {
+          console.log('Cancel')
+        });
       Toast('手术开始')
     }
 

@@ -24,9 +24,10 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <KeyValue label="状态节点">
+      <KeyValue label="状态节点" v-if="['6','7','8','9','10'].includes(taskView.opTask.opSectionCode)">
         <template #value>
-          <FlowChart></FlowChart>
+          <FlowChart :flow-data="taskView.flowData"
+                     :current-code="taskView.currentCode" />
         </template>
       </KeyValue>
       <KeyValue label="手术室接送护士"
@@ -58,6 +59,14 @@ import Request from '../../service/request';
 export default defineComponent({
   name: 'ChiefNurCurrent',
   setup() {
+    const map = new Map<number, string>([
+      [6, '到手术室'],
+      [7, '到手术间'],
+      [8, '麻醉'],
+      [9, '手术中'],
+      [10, '苏醒']
+    ]);
+
     const { formatTask } = useTaskMixins()
     const taskList:Task[] = [
       opInfoCode(),
@@ -83,10 +92,61 @@ export default defineComponent({
         const { code, data } = r;
         if (code === 200) {
           taskViewsList.value = data.map((d) => {
+            const currentCode = Number(d.opTask.opSectionCode);
+            let flowData: any[] = []
+            if (currentCode > 6 && currentCode < 10) {
+              flowData = [
+                {
+                  title: map.get(currentCode - 1),
+                  code: currentCode - 1
+                },
+                {
+                  title: map.get(currentCode),
+                  code: currentCode
+                },
+                {
+                  title: map.get(currentCode + 1),
+                  code: currentCode + 1
+                }
+              ]
+            } else if (currentCode === 6) {
+              flowData = [
+                {
+                  title: map.get(currentCode),
+                  code: currentCode
+                },
+                {
+                  title: map.get(currentCode + 1),
+                  code: currentCode + 1
+                },
+                {
+                  title: map.get(currentCode + 2),
+                  code: currentCode + 2
+                }
+              ]
+            } else if (currentCode === 10) {
+              flowData = [
+                {
+                  title: map.get((currentCode - 2)),
+                  code: currentCode - 2
+                },
+                {
+                  title: map.get(currentCode - 1),
+                  code: currentCode - 1
+                },
+                {
+                  title: map.get(currentCode),
+                  code: (currentCode)
+                }
+              ]
+            }
+
             return {
               ...d,
-              taskList: formatTask(d, taskList)
-            }
+              taskList: formatTask(d, taskList),
+              currentCode,
+              flowData: flowData
+            };
           }) as any
         }
         console.log(taskViewsList.value)

@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import JsToFlutter from '@/utils/js-to-flutter';
-import { defineComponent, getCurrentInstance, ref } from 'vue';
+import { defineComponent, getCurrentInstance, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'NavBar',
@@ -42,6 +42,10 @@ export default defineComponent({
         emitter.emit('scan-code-success', res);
       });
     };
+
+    watch(() => props.title, () => {
+      titleBar.value = props.title
+    })
 
     return {
       emitter,

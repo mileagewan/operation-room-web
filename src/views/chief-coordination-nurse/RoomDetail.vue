@@ -27,9 +27,16 @@
           <template v-if="isOnOperation.indexOf(list.opInfo.opSectionCode) > -1">
             <KeyValue label="状态节点">
               <template #value>
-                <FlowChart></FlowChart>
+                <FlowChart :flow-data="list.flowData"
+                           :current-code="list.currentCode" />
               </template>
             </KeyValue>
+            <KeyValue label="手术室接送护士"
+                      important
+                      :value="`${list.handoverPerson.name} ${list.handoverPerson.phone}`" />
+            <KeyValue label="巡回护士电话"
+                      important
+                      :value="`${list.responsiblePerson.name} ${list.responsiblePerson.phone}`" />
           </template>
           <template v-if="list.opInfo.opSectionCode === '16'">
             <KeyValue label="患者返回" :value="list.opInfo.departmentName"></KeyValue>
@@ -42,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import useTaskMixins, {
@@ -60,6 +67,14 @@ import useTaskMixins, {
 export default defineComponent({
   name: 'RoomDetail',
   setup() {
+    const map = new Map<number, string>([
+      [6, '到手术室'],
+      [7, '到手术间'],
+      [8, '麻醉'],
+      [9, '手术中'],
+      [10, '苏醒']
+    ]);
+
     const router = useRouter();
     const store = useStore();
     const { formatTask } = useTaskMixins();
@@ -81,18 +96,68 @@ export default defineComponent({
       '8',
       '9',
       '10',
-      '11'
     ])
-    const row = reactive({
-      title: '手术间01间'
+    const row = ref({
+      title: ''
     })
     const loading = ref<boolean>(false)
     const roomList = computed(() => {
       const room = store.state.chiefNur.room
       const formatDtoList = room.dtoList.map((d:any) => {
+        const currentCode = Number(d.opTask.opSectionCode);
+        let flowData: any[] = []
+        if (currentCode > 6 && currentCode < 10) {
+          flowData = [
+            {
+              title: map.get(currentCode - 1),
+              code: currentCode - 1
+            },
+            {
+              title: map.get(currentCode),
+              code: currentCode
+            },
+            {
+              title: map.get(currentCode + 1),
+              code: currentCode + 1
+            }
+          ]
+        } else if (currentCode === 6) {
+          flowData = [
+            {
+              title: map.get(currentCode),
+              code: currentCode
+            },
+            {
+              title: map.get(currentCode + 1),
+              code: currentCode + 1
+            },
+            {
+              title: map.get(currentCode + 2),
+              code: currentCode + 2
+            }
+          ]
+        } else if (currentCode === 10) {
+          flowData = [
+            {
+              title: map.get((currentCode - 2)),
+              code: currentCode - 2
+            },
+            {
+              title: map.get(currentCode - 1),
+              code: currentCode - 1
+            },
+            {
+              title: map.get(currentCode),
+              code: (currentCode)
+            }
+          ]
+        }
+
         return {
           ...d,
-          taskList: formatTask(d, list)
+          taskList: formatTask(d, list),
+          currentCode,
+          flowData: flowData
         }
       })
       return reactive({
@@ -100,6 +165,7 @@ export default defineComponent({
         dtoList: formatDtoList
       })
     })
+
     const onRefresh = () => {
       loading.value = false
     }
@@ -112,6 +178,13 @@ export default defineComponent({
     } else {
       isReady.value = true
     }
+
+    const setTitle = () => {
+      row.value.title = String(roomList.value.name)
+    }
+    onMounted(() => {
+      setTitle()
+    })
     return {
       isReady,
       row,
@@ -119,7 +192,8 @@ export default defineComponent({
       loading,
       roomList,
       onRefresh,
-      goBack
+      goBack,
+      onMounted
     }
   }
 })
