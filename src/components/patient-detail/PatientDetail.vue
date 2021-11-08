@@ -3,7 +3,9 @@
     <div class="patient-name">
       <div class="patient-name-left">
         <span class="patient-pesonal-name">{{ option.name }}</span>
-        <span class="patient-pesonal-sex">{{ option.sex }}</span>
+        <span class="patient-pesonal-sex">{{
+          option.sex === 1 ? "男" : "女"
+        }}</span>
         <span class="patient-pesonal-old">{{ option.age }}</span>
       </div>
       <TagStatus :code="option.status" />
@@ -40,8 +42,8 @@ export default defineComponent({
     },
     showRight: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
 
   setup() {
