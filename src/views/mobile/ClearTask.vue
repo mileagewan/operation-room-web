@@ -62,7 +62,7 @@ export default defineComponent({
       finishedList: false,
       totalPage: 0,
       pageNo: 1,
-      pageSize: 3,
+      pageSize: 5,
     })
     const listData = ref<any[]>([])
     const goBack = (): void => {
