@@ -83,24 +83,9 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ];
-    // const testData = new Array(10).fill('').map((item, index) => {
-    //   return {
-    //     name: 'user' + (index + 1),
-    //   };
-    // });
     const list: any = ref([]);
     const getData = () => {
-      // list = testdata.map((d: any) => {
-      //   return {
-      //     ...d,
-      //     infoItems: formatTask(d, infoItems),
-      //   };
-      // });
-      // console.log(list);
-
-      // eslint-disable-next-line no-undef
       Request.xhr('queryTaskPoolList').then((r: CurrentTaskViews) => {
-        // console.log(r);
         if (r.data) {
           list.value = r.data.map((d: any) => {
             return {
@@ -108,7 +93,6 @@ export default defineComponent({
               infoItems: formatTask(d, infoItems),
             };
           });
-          // console.log(list);
         }
         // TODO 数据list赋值处理
       });
@@ -131,9 +115,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r);
-      });
+      getData()
     });
     return {
       list,

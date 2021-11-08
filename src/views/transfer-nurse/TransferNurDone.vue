@@ -6,6 +6,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
+import Request from '@/service/request';
+import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 export default defineComponent({
   name: 'TransferNurDone',
   setup() {
@@ -13,22 +15,30 @@ export default defineComponent({
     const options = reactive([
       {
         label: '送病人',
-        value: 4,
+        value: 0,
       },
       {
         label: '接病人',
-        value: 4,
+        value: 0,
       },
     ]);
     const taskList: any = ref([]);
-    taskList.value = new Array(10).fill('').map((item, index) => {
-      return {
-        name: 'user' + (index + 1),
-      };
-    });
+    const getData = () => {
+      // eslint-disable-next-line no-undef
+      Request.xhr('queryCompletedTaskList').then((r: any) => {
+        console.log(r);
+        const { data }: any = r;
+        options[0].value = data.sendPatient
+        options[1].value = data.receivePatient
+        taskList.value = data.opTaskListingDTOList;
+        console.log(taskList);
+      });
+    };
+    getData();
     return {
       options,
       taskList,
+      getData,
     };
   },
 });

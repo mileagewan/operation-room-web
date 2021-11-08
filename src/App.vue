@@ -19,11 +19,11 @@ export default defineComponent({
     const store = useStore();
     const isReady = ref<boolean>(false);
     const beforeEach = async () => {
-      const ret:any = await Request.xhr('getMenuTree')
+      const ret: any = await Request.xhr('getMenuTree');
       setTimeout(() => {
         isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userConfig: '4',
+          userConfig: '2',
         });
       }, 500);
     };
@@ -47,7 +47,7 @@ export default defineComponent({
       );
       // window.addEventListener('flutterInAppWebViewPlatformReady',
       //   async () => {
-      beforeEach()
+      beforeEach();
       // });
     });
 

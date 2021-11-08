@@ -134,22 +134,16 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      // list.value = testdata.map((d: any) => {
-      //   return {
-      //     ...d,
-      //     infoItems: formatTask(d, infoItems),
-      //   };
-      // });
       Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
-        console.log(r);
-        if (r.data) {
+        if (r.code === 200) {
           taskList.value = r.data.map((d: any) => {
             return {
               ...d,
               infoItems: formatTask(d, infoItems),
             };
           });
+        } else {
+          taskList.value = []
         }
       });
     };
@@ -182,9 +176,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r);
-      });
+      getData()
     });
     return {
       taskList,

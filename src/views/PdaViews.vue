@@ -34,7 +34,7 @@ export default defineComponent({
     const active = ref<number>(0);
     const defaultRole = computed(() => {
       const userConfig = store.state.userInfo.userConfig
-      return '5'
+      return '2'
     });
 
     const goBack = (): void => {
