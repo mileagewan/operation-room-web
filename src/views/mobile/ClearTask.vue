@@ -8,7 +8,7 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="listData.length > 0">
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
@@ -33,6 +33,7 @@
           </template>
         </van-list>
       </van-pull-refresh>
+      <EmptyPage v-else-if="!loadingList && listData.length == 0" />
     </div>
   </div>
 </template>
@@ -61,7 +62,7 @@ export default defineComponent({
       finishedList: false,
       totalPage: 0,
       pageNo: 1,
-      pageSize: 3,
+      pageSize: 5,
     })
     const listData = ref<any[]>([])
     const goBack = (): void => {
@@ -70,6 +71,7 @@ export default defineComponent({
     onBeforeMount(() => {
       // 获取当前任务数量
       // loadData('UNDO', 1, 100, true)
+      onRefresh()
     })
     // 加载更多
     const onLoad = async () => {

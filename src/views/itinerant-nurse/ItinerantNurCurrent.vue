@@ -256,7 +256,6 @@ export default defineComponent({
         .catch(() => {
           console.log('Cancel')
         });
-      Toast('手术开始')
     }
 
     const noticeNext = (taskView: TaskViewItem) => {

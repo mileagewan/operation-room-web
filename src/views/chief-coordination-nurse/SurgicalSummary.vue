@@ -39,8 +39,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-import { Dialog } from 'vant';
+import { defineComponent, onMounted, ref, toRefs } from 'vue';
+import { Dialog, Toast } from 'vant';
 import { useRouter } from 'vue-router';
 import Request from '@/service/request';
 import { useStore } from 'vuex';
@@ -62,6 +62,7 @@ export default defineComponent({
           const ret: ReturnData = await Request.xhr('syncOpDatas');
           if (ret.code === 200) {
             getData();
+            Toast('更新成功')
           }
         })
         .catch(() => {

@@ -3,7 +3,9 @@ import { SET_ROOM_ACTION } from '@/store/action-types';
 
 export const chiefNur = {
   state: {
-    room: []
+    room: {
+      dtoList: []
+    }
 
   },
   mutations: {

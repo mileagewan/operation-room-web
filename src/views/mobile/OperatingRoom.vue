@@ -80,7 +80,7 @@ export default defineComponent({
       finishedList: false,
       totalPage: 0,
       pageNo: 1,
-      pageSize: 3,
+      pageSize: 5,
       subRoomId: 0
     })
     const listData = ref<any[]>([])

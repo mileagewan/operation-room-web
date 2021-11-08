@@ -2,7 +2,9 @@
   <div class="room-detail">
     <nav-bar :title="row.title" @goBack="goBack" />
     <div class="room-detail-content" v-if="isReady">
-      <van-pull-refresh v-model="loading" @refresh="onRefresh">
+      <van-pull-refresh v-model="loading"
+                        v-if="roomList.dtoList.length"
+                        @refresh="onRefresh">
         <ExpandCard v-for="(list,index) in roomList.dtoList"
                     :key="index"
                     :option="{
@@ -43,7 +45,7 @@
           </template>
         </ExpandCard>
       </van-pull-refresh>
-
+      <EmptyPage></EmptyPage>
     </div>
   </div>
 </template>
@@ -159,7 +161,7 @@ export default defineComponent({
           currentCode,
           flowData: flowData
         }
-      })
+      });
       return reactive({
         ...room,
         dtoList: formatDtoList
@@ -172,13 +174,7 @@ export default defineComponent({
     const goBack = () => {
       router.back()
     }
-    const isReady = ref(false)
-    if (!roomList.value) {
-      router.back()
-    } else {
-      isReady.value = true
-    }
-
+    const isReady = ref(true)
     const setTitle = () => {
       row.value.title = String(roomList.value.name)
     }

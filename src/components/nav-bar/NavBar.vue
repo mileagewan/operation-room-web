@@ -1,8 +1,8 @@
 <template>
   <div class="nab-bar">
     <van-nav-bar :title="titleBar" left-arrow @click-left="onClickLeft">
-      <template #right>
-        <component :is="rightComponent"></component>
+      <template #right v-if="rightComponentRef">
+        <component :is="rightComponentRef"></component>
       </template>
     </van-nav-bar>
   </div>
@@ -32,6 +32,8 @@ export default defineComponent({
       emit('goBack');
     };
 
+    const rightComponentRef = ref(props.rightComponent)
+
     watch(
       () => props.title,
       () => {
@@ -39,9 +41,14 @@ export default defineComponent({
       }
     );
 
+    watch(() => props.rightComponent, () => {
+      rightComponentRef.value = props.rightComponent
+    })
+
     return {
       titleBar,
       onClickLeft,
+      rightComponentRef
     };
   },
 });
