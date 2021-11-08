@@ -1,7 +1,8 @@
 <template>
   <!-- 复苏室护士 已完成任务 -->
-  <DoneSummary :options="options" />
-  <TaskList :taskList="taskList" />
+  <DoneSummary :options="options" v-if="taskList.length"/>
+  <TaskList :taskList="taskList" v-if="taskList.length" />
+  <EmptyPage message="当前暂无完成任务" v-if="!taskList.length" />
 </template>
 
 <script lang="ts">
@@ -26,6 +27,7 @@ export default defineComponent({
         name: 'user' + (index + 1),
       };
     });
+    taskList.value = []
     return {
       options,
       taskList,

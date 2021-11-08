@@ -38,6 +38,7 @@
                 :value="`${taskView.responsiblePerson.name} ${taskView.responsiblePerson.phone}`" />
     </template>
   </TaskView>
+  <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length" />
 </template>
 
 <script lang="ts">

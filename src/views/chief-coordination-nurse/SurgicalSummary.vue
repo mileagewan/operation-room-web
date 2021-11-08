@@ -36,10 +36,12 @@
     <van-icon name="replay" />
     <div class="refresh-option-title">手术更新</div>
   </div>
+  <EmptyPage message="当前暂无手术任务" v-if="!doList.length" />
+
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, toRefs } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { Dialog, Toast } from 'vant';
 import { useRouter } from 'vue-router';
 import Request from '@/service/request';

@@ -24,16 +24,20 @@ export default class JsToFlutter {
 
   static getToken(): Promise<any> {
     return new Promise(resolve => {
-      try {
-        window.flutter_inappwebview
-          .callHandler('jsCallFlutter', 'getToken')
-          .then((result:string) => {
-            return result
-          });
-      } catch (e) {
-        console.log(e)
-        resolve(false)
-      }
+      // try {
+      // window.flutter_inappwebview
+      //   .callHandler('jsCallFlutter', 'getToken')
+      //   .then((result:string) => {
+      //     resolve(result)
+      //   });
+
+      window.flutter_inappwebview.callHandler('jsCallFlutter', 'getToken').then(function (result:any) {
+        resolve(result)
+      });
+      // } catch (e) {
+      //   console.log(e)
+      //   resolve(false)
+      // }
     })
   }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="itinerant-nur-done">
-    <DoneSummary :options="pageData.options" />
-    <div class="done-list">
+    <DoneSummary :options="pageData.options" v-if="pageData.completeList.length" />
+    <div class="done-list" v-if="pageData.completeList.length">
       <van-cell value="查看详情"
                 v-for="(list,index) in pageData.completeList"
                 :key="index"
@@ -16,6 +16,7 @@
         </template>
       </van-cell>
     </div>
+    <EmptyPage message="当前暂无完成任务" v-if="!pageData.completeList.length" />
   </div>
 
 </template>

@@ -16,17 +16,15 @@ export default defineComponent({
   name: 'App',
   setup() {
     const store = useStore();
-
     const isReady = ref<boolean>(false);
     const beforeEach = () => {
       setTimeout(() => {
         isReady.value = true;
         store.dispatch(SET_USER_INFO_ACTION, {
-          userId: '6',
+          userId: '4',
         });
       }, 500);
     };
-    beforeEach();
     onMounted(() => {
       // 监听flutter透传的刷新操作
       window.addEventListener('flutterCallJS', function (event: any) {
@@ -41,6 +39,12 @@ export default defineComponent({
             break
         }
       }, false);
+      // window.addEventListener('flutterInAppWebViewPlatformReady',
+      //   async () => {
+      //     beforeEach()
+      //   });
+
+      beforeEach()
     })
 
     return {

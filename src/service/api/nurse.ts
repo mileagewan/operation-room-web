@@ -50,6 +50,11 @@ const nurse: ServiceItem[] = [
     method: 'post'
   },
 
+  {
+    path: '/nurse/queryCurrentTaskList',
+    key: 'queryCurrentTaskList',
+    method: 'post'
+  },
   // 总协调护士
   {
     path: '/operationroom/getcurrenttask',

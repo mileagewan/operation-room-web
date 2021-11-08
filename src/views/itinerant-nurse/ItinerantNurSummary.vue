@@ -11,6 +11,7 @@
       <ExpandCard />
     </van-cell>
   </van-list>
+  <EmptyPage message="当前手术任务" v-if="!list.length" />
 </template>
 
 <script>

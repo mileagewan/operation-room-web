@@ -3,9 +3,11 @@ import { ListServiceMap, TargetServiceMap } from '@/service/cfg'
 import { RequestQuery, ServiceItem } from '@/types/interface-model'
 import { SsoLogin } from '@/service/sso-login'
 import qs from 'qs'
+import JsToFlutter from '@/utils/js-to-flutter';
 
-Axios.interceptors.request.use((config: AxiosRequestConfig) => {
-  const token: string | null = localStorage.getItem('token') || (process.env.VUE_APP_TOKEN as string)
+Axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
+  // const token: string | null = await JsToFlutter.getToken() as string
+  const token: string | null = process.env.VUE_APP_TOKEN as string
   const configs = config
   configs.headers = {}
   configs.headers['Content-Type'] = 'application/json;charset=UTF-8'
@@ -170,8 +172,8 @@ class Request implements RequestQuery {
   }
 
   static setToken(): void {
-    this.axios.interceptors.request.use((config: AxiosRequestConfig) => {
-      const token: string | null = localStorage.getItem('token') || ''
+    this.axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
+      const token: string | null = await JsToFlutter.getToken() as string
       const configs = config
       configs.headers = {}
       configs.headers.token = token

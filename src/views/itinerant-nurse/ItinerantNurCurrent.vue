@@ -25,7 +25,7 @@
         </template>
       </KeyValue>
       <div class="itinerant-flow-chart">
-        <FlowChart :flow-data="flowData"></FlowChart>
+        <FlowChart :flow-data="taskView.operatingStatusList" :current-code="taskView.currentOperatingStatus" />
       </div>
       <key-value-block>
         <template #value>
@@ -33,7 +33,7 @@
         </template>
       </key-value-block>
       <div class="ihybrid-button-group">
-        <template v-if="taskView.opInfo.opSectionCode === 6">
+        <template v-if="taskView.opInfo.opSectionCode === '6' ">
           <van-button round
                       @click="manualHandle"
                       class="default-button"
@@ -86,6 +86,7 @@
       </template>
     </template>
   </TaskView>
+  <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length" />
   <HandleOverLay v-model:visible="handleOverLay.show"
                  @ok="manualOk"
                  v-model="handleOverLay.value"/>
@@ -272,24 +273,15 @@ export default defineComponent({
 
     const getData = () => {
       // eslint-disable-next-line no-undef
-      Request.xhr('itinerGetcurrenttask').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
-        // if (code === 200) {
-        //   const taskViews = data.map((d) => {
-        //     return {
-        //       ...d,
-        //       taskList: formatTask(data, taskList)
-        //     }
-        //   })
-        // }
-        console.log(r)
-        taskViewsList.value = testdata.map((d) => {
-          return {
-            ...d,
-            taskList: formatTask(d, taskList)
-          }
-        }) as any;
-        console.log(taskViewsList.value)
+      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        if (r.code === 200) {
+          taskViewsList.value = r.data.map((d) => {
+            return {
+              ...d,
+              taskList: formatTask(d, taskList)
+            }
+          }) as any;
+        }
       })
     }
     onMounted(() => {

@@ -71,6 +71,7 @@
       </template>
     </template>
   </TaskView>
+  <EmptyPage message="当前暂无任务" v-if="!current.length" />
   <HandleOverLay
     v-model:visible="handleOverLay.show"
     @ok="manualOk"
@@ -79,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive } from 'vue';
+import { defineComponent, onMounted, ref, reactive } from 'vue';
 import { curentData } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
@@ -92,7 +93,7 @@ export default defineComponent({
       value: '',
     });
 
-    const current = reactive(
+    const current = ref(
       curentData.filter((c) => {
         return [11, 12, 13].indexOf(c.code) > -1;
       })
