@@ -45,6 +45,7 @@ import { useRouter } from 'vue-router';
 import Request from '@/service/request';
 import { useStore } from 'vuex';
 import { SET_ROOM_ACTION } from '@/store/action-types';
+import { ReturnData } from '@/types/interface-model';
 
 export default defineComponent({
   name: 'SurgicalSummary',
@@ -57,11 +58,14 @@ export default defineComponent({
         title: '手术更新',
         message: '取消手术或增加急诊手术时，需要点击"手术更新"',
       })
-        .then(() => {
-          // on confirm
+        .then(async () => {
+          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          if (ret.code === 200) {
+            getData();
+          }
         })
         .catch(() => {
-          // on cancel
+          console.log('Cancel')
         });
     };
     const doList = ref([])
