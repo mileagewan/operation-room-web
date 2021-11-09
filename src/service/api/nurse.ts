@@ -43,10 +43,16 @@ const nurse: ServiceItem[] = [
     key: 'createNextOpTask',
     method: 'post',
   },
-  //      呼叫护工
+  //    病区护士：  呼叫护工
   {
     path: '/nurseOperate/wardNurseCall',
     key: 'wardNurseCall',
+    method: 'post',
+  },
+  //    病区护士：  接收手术患者回病房
+  {
+    path: '/nurseOperate/wardNurseReceive',
+    key: 'wardNurseReceive',
     method: 'post',
   },
   //      接收任务
@@ -55,10 +61,16 @@ const nurse: ServiceItem[] = [
     key: 'recoveryTask',
     method: 'post',
   },
-  //      转运工确认交接
+  //      转运工确认交接（送手术室）
   {
     path: '/nurseOperate/wardNurseHandover',
     key: 'wardNurseHandover',
+    method: 'post',
+  },
+  //      转运工确认交接（从手术室接回病区）
+  {
+    path: '/nurseOperate/pickupNurseHandoverToWard',
+    key: 'pickupNurseHandoverToWard',
     method: 'post',
   },
   //      手术室前接送护士确认交接
@@ -78,43 +90,43 @@ const nurse: ServiceItem[] = [
   {
     path: '/nurseOperate/pickupNurseHandover',
     key: 'pickupNurseHandover',
-    method: 'post'
+    method: 'post',
   },
   // 三方确认
   {
     path: '/nurseOperate/tripartiteConfirmation',
     key: 'tripartiteConfirmation',
-    method: 'post'
+    method: 'post',
   },
   // 手术开始
   {
     path: '/nurseOperate/opStart',
     key: 'opStart',
-    method: 'post'
+    method: 'post',
   },
   // 手术结束
   {
     path: '/nurseOperate/opEnd',
     key: 'opEnd',
-    method: 'post'
+    method: 'post',
   },
   {
     path: '/nurseOperate/notifyNextOperation',
     key: 'notifyNextOperation',
-    method: 'post'
+    method: 'post',
   },
 
   // 扫码/人工  巡回-> 复苏
   {
     path: '/nurseOperate/circuitNurseHandoverToRecovery',
     key: 'circuitNurseHandoverToRecovery',
-    method: 'post'
+    method: 'post',
   },
   // 呼叫运工
   {
     path: '/nurseOperate/recoveryRoomNurseCall',
     key: 'recoveryRoomNurseCall',
-    method: 'post'
+    method: 'post',
   },
   // 总协调护士
   {

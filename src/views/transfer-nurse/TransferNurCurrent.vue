@@ -177,7 +177,11 @@ export default defineComponent({
 
     const next = (data: any) => {
       // TODO 区分送手术室与送回病区操作
-      Request.xhr('wardNurseHandover', data)
+      const type: string =
+        currentTask.opInfo.opSectionCode === '4'
+          ? 'wardNurseHandover'
+          : 'pickupNurseHandoverToWard';
+      Request.xhr(type, data)
         .then((res: any) => {
           if (res.code === 200) {
             getData();

@@ -174,10 +174,14 @@ export default defineComponent({
     };
     const next = (data: any) => {
       // TODO
-      getData();
-      ToastCountdown({
-        message: '患者匹配成功，交接完成',
-        seconds: 3,
+      Request.xhr('wardNurseReceive', data).then((res: any) => {
+        if (res.code === 200) {
+          getData();
+          ToastCountdown({
+            message: '患者匹配成功，交接完成',
+            seconds: 3,
+          });
+        }
       });
     };
 
