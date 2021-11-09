@@ -61,7 +61,7 @@ Axios.interceptors.response.use(
 class Request implements RequestQuery {
   static axios: AxiosStatic = Axios;
 
-  static BASE_URL = process.env.BASE_URL;
+  static BASE_URL = process.env.VUE_APP_API;
 
   static xhr(
     key: string,
@@ -91,7 +91,7 @@ class Request implements RequestQuery {
     }
     queryParams = Object.assign(
       {
-        url: `${this.BASE_URL}${process.env.VUE_APP_SERVICE}${cfgService.path}${path || ''
+        url: `${this.BASE_URL}${process.env.VUE_APP_SERVICE || ''}${cfgService.path}${path || ''
           }${paramsQuery ? `?${paramsQuery}` : ''}`,
         method: cfgService.method,
       },

@@ -33,8 +33,8 @@ export default defineComponent({
     const loading = ref<boolean>(false);
     const active = ref<number>(0);
     const defaultRole = computed(() => {
-      const userConfig = store.state.userInfo.userConfig
-      return '2'
+      const userInfo = store.state.userInfo
+      return userInfo.role;
     });
 
     const goBack = (): void => {

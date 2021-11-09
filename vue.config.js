@@ -98,7 +98,7 @@ module.exports = {
     // },
     proxy: {
       '/comom': {
-        target: process.env.VUE_APP_API,
+        target: process.env.VUE_APP_PROXY,
         // target: 'http://124.196.4.220:8088/',
         //  target: 'http://192.168.223.194:8080',
         // target: 'http://192.168.223.194:7311',
