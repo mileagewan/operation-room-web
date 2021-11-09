@@ -60,10 +60,10 @@
 
       <!-- 转送中 -->
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="接收人" value="未对接数据 13800138000" />
+        <KeyValueBlock clear label="交接人" value="未对接数据 13800138000" />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">
-        <KeyValueBlock clear label="接收人" value="未对接数据 13800138000" />
+        <KeyValueBlock clear label="交接人" value="未对接数据 13800138000" />
       </template>
     </template>
   </TaskView>

@@ -39,7 +39,7 @@
       </KeyValueBlock>
 
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="对接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -66,7 +66,7 @@
 
       <!-- 从手术室接出 -->
       <template v-if="isBack(task.opInfo.opSectionCode)">
-        <KeyValueBlock clear label="对接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
         <div class="ihybrid-button-group">
           <van-button
             round

@@ -52,7 +52,7 @@
       </template>
 
       <template v-if="taskView.opInfo.opSectionCode === '12'">
-        <KeyValueBlock clear label="对接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
         <div class="ihybrid-button-center">
           <van-button
             icon="scan"
