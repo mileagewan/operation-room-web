@@ -213,6 +213,7 @@ export default defineComponent({
           seconds: 3,
         });
         handleOverLay.show = false;
+        getData()
       }
     }
     const codeHandle = async (row:any) => {
@@ -314,7 +315,7 @@ export default defineComponent({
       const ret: ReturnData = await Request.xhr('opEnd', params)
       if (ret.code === 200) {
         Toast('手术完成')
-        resuscitationOverLay.show = true;
+        resuscitationOverLay.show = false;
         getData()
       }
     }

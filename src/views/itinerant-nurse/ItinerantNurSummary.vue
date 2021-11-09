@@ -4,7 +4,6 @@
     v-model:loading="loading"
     :finished="finished"
     finished-text=""
-    @load="onLoad"
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in list" :key="index">

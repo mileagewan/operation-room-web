@@ -88,7 +88,7 @@ const nurse: ServiceItem[] = [
 
   // 扫码交接/人工(接送 -> 巡回)
   {
-    path: '/nurseOperate/pickupNurseHandover',
+    path: '/nurseOperate/pickupNurseHandoverToOp',
     key: 'pickupNurseHandover',
     method: 'post',
   },

@@ -138,6 +138,7 @@ export default defineComponent({
           seconds: 3,
         });
         handleOverLay.show = false;
+        getData()
       }
     }
     const codeHandle = async (row:any) => {
