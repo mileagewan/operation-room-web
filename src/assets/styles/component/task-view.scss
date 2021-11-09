@@ -8,37 +8,36 @@
     background-color: #fff;
     margin-bottom: 12px;
     position: relative;
-    box-shadow: 2px 2px 2px 2px #d9dcdd;
-
-    .task-view-line {
-      height: 30px;
-      width: 100%;
-      position: absolute;
-      bottom: -21px;
-      .task-line-block-left {
-        position: absolute;
-        width: 10px;
-        height: 100%;
-        border-radius: 4px;
-        background: #fff;
-        box-shadow: 1px 2px 2px 2px #ccc;
-        left: 48px;
-      }
-
-      .task-line-block-right {
-        @extend .task-line-block-left;
-        left: auto;
-        right: 48px;
-      }
-    }
+    box-shadow: 0px 12px 24px 0px rgba(217, 220, 221, 0.5);
   }
   .task-view-contet {
+    position: relative;
+    z-index: 2;
     min-height: 200px;
     width: 100%;
     border-radius: 12px;
     background-color: #fff;
     margin-bottom: 24px;
     padding: 0 24px;
-    box-shadow: 2px 2px 2px 2px #d9dcdd;
+    box-shadow: 0px 12px 24px 0px rgba(217, 220, 221, 0.5);
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 3;
+      width: 10px;
+      height: 30px;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0px 1px 4px 0px #cccccc,
+        0px 3px 1px 0px rgba(225, 225, 225, 0.5);
+      left: 48px;
+      top: -21px;
+    }
+
+    &::after {
+      left: auto;
+      right: 48px;
+    }
   }
 }

@@ -67,6 +67,12 @@ const nurse: ServiceItem[] = [
     key: 'transferWorkHandover',
     method: 'post',
   },
+  //      手术室前接送护士确认交接(从手术室出来)
+  {
+    path: '/nurseOperate/circuitNurseHandoverToWard',
+    key: 'circuitNurseHandoverToWard',
+    method: 'post',
+  },
 
   // 扫码交接/人工(接送 -> 巡回)
   {

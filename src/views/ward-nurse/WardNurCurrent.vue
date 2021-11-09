@@ -1,7 +1,8 @@
 <template>
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length" />
   <TaskView
     class="itinerant-nur-current"
-    v-for="(task, index) in list"
+    v-for="(task, index) in taskList"
     :key="index"
   >
     <template #header>
@@ -48,7 +49,7 @@
         <div class="ihybrid-button-group">
           <van-button
             round
-            @click="manualHandle"
+            @click="manualHandle(task)"
             class="default-button"
             color="#f0fafe"
           >
@@ -56,7 +57,7 @@
           </van-button>
           <van-button
             icon="scan"
-            @click="codeHandle"
+            @click="codeHandle(task)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
@@ -66,6 +67,7 @@
       </template>
     </template>
   </TaskView>
+
   <HandleOverLay
     v-model:visible="handleOverLay.show"
     @ok="manualOk"
@@ -98,18 +100,13 @@ import useTaskMixins, {
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
-    const handleOverLay = reactive({
-      show: false,
-      value: '',
-    });
+    const taskList: any = ref([]);
 
-    const list: any = ref([]);
-
-    onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r);
-      });
-    });
+    // onMounted(() => {
+    //   Request.xhr('getSso').then((r: ReturnData) => {
+    //     console.log(r);
+    //   });
+    // });
 
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -125,17 +122,10 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      // list.value = testdata.map((d: any) => {
-      //   return {
-      //     ...d,
-      //     infoItems: formatTask(d, infoItems),
-      //   };
-      // });
       Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
         console.log(r);
         if (r.data) {
-          list.value = r.data.map((d: any) => {
+          taskList.value = r.data.map((d: any) => {
             return {
               ...d,
               infoItems: formatTask(d, infoItems),
@@ -144,24 +134,53 @@ export default defineComponent({
         }
       });
     };
-    const manualHandle = () => {
+
+    let currentTask: any = reactive({});
+    const handleOverLay = reactive({
+      show: false,
+      value: '',
+    });
+    const manualHandle = (task: any) => {
+      currentTask = task;
       handleOverLay.show = true;
     };
     const manualOk = () => {
       console.log(handleOverLay);
       handleOverLay.show = false;
+      const data = {
+        opInfoId: currentTask.opInfo.id,
+        currentTaskId: currentTask.opTask.id,
+        parentTaskId: currentTask.opTask.parentTaskId,
+        userCode: handleOverLay.value,
+      };
+      next(data);
     };
-    const codeHandle = () => {
+    const codeHandle = (task: any) => {
+      currentTask = task;
       JsToFlutter.startScanQRCode().then((res) => {
-        console.log(res);
+        console.log('扫码结果：', res);
         // TODO 调接口推进下一阶段
+        if (res) {
+          const data = {
+            opInfoId: currentTask.opInfo.id,
+            currentTaskId: currentTask.opTask.id,
+            parentTaskId: currentTask.opTask.parentTaskId,
+            hospitalCode: res,
+          };
+          next(data);
+        }
       });
+    };
+    const next = (data: any) => {
+      // TODO
+      getData();
       ToastCountdown({
         message: '患者匹配成功，交接完成',
         seconds: 3,
       });
     };
 
+    // 呼叫转运护工
     const callNurse = (task: any) => {
       const data = {
         opInfoId: task.opInfo.id,
@@ -172,7 +191,7 @@ export default defineComponent({
         // console.log(res);
         if (res.code === 200) {
           Toast('呼叫护工成功');
-          getData()
+          getData();
         }
       });
     };
@@ -186,7 +205,7 @@ export default defineComponent({
     getData();
     return {
       getData,
-      list,
+      taskList,
       handleOverLay,
       manualHandle,
       manualOk,

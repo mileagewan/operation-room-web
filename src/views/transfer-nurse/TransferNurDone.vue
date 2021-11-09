@@ -1,7 +1,10 @@
 <template>
   <!-- 转运护士 已完成任务 -->
-  <DoneSummary :options="options" />
-  <TaskList :taskList="taskList" />
+  <template v-if="taskList.length">
+    <DoneSummary :options="options" />
+    <TaskList :taskList="taskList" />
+  </template>
+  <EmptyPage v-else message="暂无已完成任务" />
 </template>
 
 <script lang="ts">

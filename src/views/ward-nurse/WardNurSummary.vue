@@ -1,5 +1,6 @@
 <template>
   <!-- 任务汇总 -->
+  <EmptyPage message="暂无手术任务" v-if="!taskList.length" />
   <van-list
     v-model:loading="loading"
     :finished="finished"
@@ -7,7 +8,7 @@
     @load="getData"
     class="page-padding list"
   >
-    <van-cell v-for="(task, index) in list" :key="index">
+    <van-cell v-for="(task, index) in taskList" :key="index">
       <ExpandCard
         :option="{
           status: task.opInfo.opSectionCode,
@@ -68,18 +69,18 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ];
-    const list: any = ref([]);
+    const taskList: any = ref([]);
     const getData = () => {
       Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
         // console.log(r);
         if (r.data) {
-          list.value = r.data.map((d: any) => {
+          taskList.value = r.data.map((d: any) => {
             return {
               ...d,
               infoItems: formatTask(d, infoItems),
             };
           });
-          // console.log(list);
+          // console.log(taskList);
         }
       });
     };
@@ -88,7 +89,7 @@ export default defineComponent({
     return {
       loading,
       finished,
-      list,
+      taskList,
       getData,
     };
   },

@@ -1,5 +1,6 @@
 <template>
   <!-- 手术室接送护士 当前任务 -->
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length" />
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -28,7 +29,10 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <FlowChart :flow-data="task.operatingStatusList" :current-code="task.currentOperatingStatus"></FlowChart>
+      <FlowChart
+        :flow-data="task.operatingStatusList"
+        :current-code="task.currentOperatingStatus"
+      ></FlowChart>
       <KeyValueBlock>
         <template #value> 无 </template>
       </KeyValueBlock>
@@ -59,26 +63,21 @@
         <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
 
-      <template v-if="task.opInfo.opSectionCode === '10'">
+      <!-- 从手术室接出 -->
+      <template v-if="isBack(task.opInfo.opSectionCode)">
         <KeyValueBlock clear label="对接人" value="力度 13800138000" />
-        <div class="ihybrid-button-center">
+        <div class="ihybrid-button-group">
+          <van-button
+            round
+            @click="manualHandle(task)"
+            class="default-button"
+            color="#f0fafe"
+          >
+            人工交接
+          </van-button>
           <van-button
             icon="scan"
             @click="codeHandle(task)"
-            round
-            color="linear-gradient(to right, #00D6FA, #00ACF2)"
-          >
-            扫码交接
-          </van-button>
-        </div>
-      </template>
-
-      <template v-if="task.opInfo.opSectionCode === '12'">
-        <KeyValueBlock clear label="对接人" value="力度 13800138000" />
-        <div class="ihybrid-button-center">
-          <van-button
-            icon="scan"
-            @click="codeHandle"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
@@ -118,6 +117,7 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
+import JsToFlutter from '@/utils/js-to-flutter';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
@@ -144,17 +144,36 @@ export default defineComponent({
         parentTaskId: currentTask.opTask.parentTaskId,
         userCode: handleOverLay.value,
       };
-      Request.xhr('transferWorkHandover', data).then((res: any) => {
+      next(data);
+    };
+
+    const next = (data: any) => {
+      const xhrType: string = isBack(currentTask.opInfo.opSectionCode)
+        ? 'circuitNurseHandoverToWard'
+        : 'transferWorkHandover';
+      Request.xhr(xhrType, data).then((res: any) => {
         if (res.code === 200) {
           getData();
         }
       });
     };
-    const codeHandle = () => {};
-
-    const callNurse = () => {
-      Toast('呼叫护工成功');
+    const codeHandle = (task: any) => {
+      currentTask = task;
+      JsToFlutter.startScanQRCode().then((res) => {
+        console.log('扫码结果：', res);
+        if (res) {
+          // TODO 调接口推进下一阶段
+          const data = {
+            opInfoId: currentTask.opInfo.id,
+            currentTaskId: currentTask.opTask.id,
+            parentTaskId: currentTask.opTask.parentTaskId,
+            hospitalCode: res,
+          };
+          next(data);
+        }
+      });
     };
+
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -170,14 +189,7 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      // list.value = testdata.map((d: any) => {
-      //   return {
-      //     ...d,
-      //     infoItems: formatTask(d, infoItems),
-      //   };
-      // });
       Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // const { code, data } = r;
         console.log(r);
         if (r.data) {
           taskList.value = r.data.map((d: any) => {
@@ -186,15 +198,21 @@ export default defineComponent({
               infoItems: formatTask(d, infoItems),
             };
           });
+          console.log(taskList);
         }
       });
     };
     getData();
 
+    // 是否从手术室接回
+    const isBack = (statusCode: string) => {
+      return ['10', '13'].includes(statusCode);
+    };
+
     onMounted(() => {
-      Request.xhr('getSso').then((r: ReturnData) => {
-        console.log(r);
-      });
+      // Request.xhr('getSso').then((r: ReturnData) => {
+      //   console.log(r);
+      // });
     });
     return {
       taskList,
@@ -202,8 +220,8 @@ export default defineComponent({
       manualHandle,
       manualOk,
       codeHandle,
-      callNurse,
       onMounted,
+      isBack,
     };
   },
 });

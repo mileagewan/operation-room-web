@@ -1,8 +1,9 @@
 <template>
   <!-- 转运护工 任务池 -->
+  <EmptyPage message="当前暂无任务发布" v-if="!taskList.length" />
   <TaskView
     class="itinerant-nur-current"
-    v-for="(task, index) in list"
+    v-for="(task, index) in taskList"
     :key="index"
   >
     <template #header>
@@ -31,26 +32,23 @@
       <KeyValueBlock>
         <template #value> 无 </template>
       </KeyValueBlock>
-      <!--      送手术-->
-      <template v-if="task.opInfo.opSectionCode === '4'">
-        <div class="ihybrid-button-center">
-          <van-button
-            @click="recoveryTask(task)"
-            round
-            color="linear-gradient(to right, #00D6FA, #00ACF2)"
-          >
-            <IconFont icon="icon-jierenwu" />
-            <span>接任务</span>
-          </van-button>
-        </div>
-      </template>
+      <!-- 接任务操作 -->
+      <div class="ihybrid-button-center">
+        <van-button
+          @click="recoveryTask(task)"
+          round
+          color="linear-gradient(to right, #00D6FA, #00ACF2)"
+        >
+          <IconFont icon="icon-jierenwu" />
+          <span>接任务</span>
+        </van-button>
+      </div>
     </template>
   </TaskView>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue';
-import { curentData } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '../../service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -83,22 +81,22 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ];
-    const list: any = ref([]);
+    const taskList: any = ref([]);
     const getData = () => {
       Request.xhr('queryTaskPoolList').then((r: CurrentTaskViews) => {
         if (r.data) {
-          list.value = r.data.map((d: any) => {
+          taskList.value = r.data.map((d: any) => {
             return {
               ...d,
               infoItems: formatTask(d, infoItems),
             };
           });
         }
-        // TODO 数据list赋值处理
       });
     };
     getData();
 
+    // 接任务操作
     const recoveryTask = (task: any) => {
       const data = {
         opInfoId: task.opInfo.id,
@@ -115,10 +113,10 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      getData()
+      getData();
     });
     return {
-      list,
+      taskList,
       recoveryTask,
       onMounted,
       getData,

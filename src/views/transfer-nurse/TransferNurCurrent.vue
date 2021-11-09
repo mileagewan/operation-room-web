@@ -1,4 +1,5 @@
 <template>
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length" />
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -27,13 +28,15 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <FlowChart :flow-data="task.operatingStatusList" :current-code="task.currentOperatingStatus" />
+      <FlowChart
+        :flow-data="task.operatingStatusList"
+        :current-code="task.currentOperatingStatus"
+      />
       <KeyValueBlock>
-
         <template #value> 无 </template>
       </KeyValueBlock>
-      <!--      送手术-->
-      <template v-if="task.opInfo.opSectionCode === '4'">
+      <!--  交接操作 -->
+      <template v-if="checkEditable(task)">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -54,38 +57,16 @@
         </div>
       </template>
 
-      <!--        转送中-->
+      <!-- 转送中 -->
       <template v-if="task.opInfo.opSectionCode === '5'">
         <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
-
-      <template v-if="task.opInfo.opSectionCode === '14'">
-        <div class="ihybrid-button-group">
-          <van-button
-            round
-            @click="manualHandle(task)"
-            class="default-button"
-            color="#f0fafe"
-          >
-            人工交接
-          </van-button>
-          <van-button
-            icon="scan"
-            @click="codeHandle(task)"
-            round
-            color="linear-gradient(to right, #00D6FA, #00ACF2)"
-          >
-            扫码交接
-          </van-button>
-        </div>
-      </template>
-
-      <!--        转送中-->
       <template v-if="task.opInfo.opSectionCode === '15'">
         <KeyValueBlock clear label="交接人" value="力度 13800138000" />
       </template>
     </template>
   </TaskView>
+
   <HandleOverLay
     v-model:visible="handleOverLay.show"
     @ok="manualOk"
@@ -111,14 +92,11 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
+import ToastCountdown from '@/utils/toast-countdown';
+import JsToFlutter from '@/utils/js-to-flutter';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
-    const handleOverLay = reactive({
-      show: false,
-      value: '',
-    });
-    let currentTask: any = reactive({});
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -143,41 +121,79 @@ export default defineComponent({
             };
           });
         } else {
-          taskList.value = []
+          taskList.value = [];
         }
       });
     };
     getData();
 
+    // 人工交接
+    let currentTask: any = reactive({});
+    const handleOverLay = reactive({
+      show: false,
+      value: '',
+    });
     const manualHandle = (task: any) => {
       handleOverLay.show = true;
       currentTask = task;
       console.log(currentTask);
     };
     const manualOk = () => {
-      console.log(handleOverLay);
       handleOverLay.show = false;
-      console.log(currentTask);
-
       const data = {
         opInfoId: currentTask.opInfo.id,
         currentTaskId: currentTask.opTask.id,
         parentTaskId: currentTask.opTask.parentTaskId,
         userCode: handleOverLay.value,
       };
-      Request.xhr('wardNurseHandover', data).then((res: any) => {
-        if (res.code === 200) {
-          getData();
+      next(data);
+    };
+
+    // 扫码交接
+    const codeHandle = (task: any) => {
+      // Toast('呼叫护工成功');
+      currentTask = task
+      JsToFlutter.startScanQRCode().then((res) => {
+        console.log('扫码结果：', res);
+        if (res) {
+          // TODO 调接口推进下一阶段
+          const data = {
+            opInfoId: currentTask.opInfo.id,
+            currentTaskId: currentTask.opTask.id,
+            parentTaskId: currentTask.opTask.parentTaskId,
+            hospitalCode: res,
+          };
+          next(data);
         }
       });
     };
-    const codeHandle = (task: any) => {
-      // Toast('呼叫护工成功');
+
+    const next = (data: any) => {
+      // TODO 区分送手术室与送回病区操作
+      Request.xhr('wardNurseHandover', data)
+        .then((res: any) => {
+          if (res.code === 200) {
+            getData();
+            ToastCountdown({
+              message: '患者匹配成功，交接完成',
+              seconds: 3,
+            });
+          }
+        })
+        .catch(() => {
+          Toast('患者匹配失败');
+        });
     };
 
-    onMounted(() => {
-      getData()
-    });
+    const checkEditable = (task: any) => {
+      return (
+        task.opInfo.opSectionCode === '4' || task.opInfo.opSectionCode === '14'
+      );
+    };
+
+    // onMounted(() => {
+    //   getData();
+    // });
     return {
       taskList,
       handleOverLay,
@@ -186,6 +202,7 @@ export default defineComponent({
       codeHandle,
       onMounted,
       getData,
+      checkEditable,
     };
   },
 });
