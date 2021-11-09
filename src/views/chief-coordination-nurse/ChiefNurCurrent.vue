@@ -95,6 +95,8 @@ export default defineComponent({
           taskViewsList.value = data.map((d) => {
             const currentCode = Number(d.opInfo.opSectionCode);
             let flowData: any[] = []
+            d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
+            d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }
             if (currentCode > 6 && currentCode < 10) {
               flowData = [
                 {

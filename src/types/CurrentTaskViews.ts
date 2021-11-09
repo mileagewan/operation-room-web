@@ -90,6 +90,8 @@ export interface TaskViewItem {
   opTask: OpTask;
   operatingStatusList: Array<any>;
   currentOperatingStatus: number;
+  responsiblePerson?: any;
+  handoverPerson?: any;
 }
 export interface CurrentTaskViews {
   code: number;
