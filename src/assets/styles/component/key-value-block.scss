@@ -1,5 +1,4 @@
 .key-value-block {
-
   &.is-clear {
     background: #fff;
     margin-bottom: 30px;
@@ -8,34 +7,31 @@
     }
     .key-value-block-value {
       background: #fff;
-      padding: 0 16px;
     }
   }
-  margin:0 -24px 36px -24px;
-  overflow: hidden;
-  background: #e1f6fd;
   display: flex;
+  margin:0 -24px 36px -24px;
   align-items: center;
+  background: #e1f6fd;
+  overflow: hidden;
   zoom: 1;
   .key-value-block-label {
-    float: left;
-    display: flex;
-    align-items: center;
-    padding-left: 24px;
-    background: #e1f6fd;
     width: 144px;
-    height: 100%;
+    padding: 18px 24px;
+    line-height: 24px;
+    flex-shrink: 0;
+    text-align: center;
+    background: #e1f6fd;
     color: var(--ihybrid--primary-color);
   }
   .key-value-block-value {
-    float: left;
-    width: calc(100% - 144px);
+    flex: auto;
     height: 100%;
+    padding: 18px 24px;
+    line-height: 24px;
+    min-height: 60px;
     background: #f0fafe;
     color: var(--ihybrid--default-color);
-    padding: 16px;
-    display: flex;
-    align-items: center;
 
     div {
       white-space: normal;

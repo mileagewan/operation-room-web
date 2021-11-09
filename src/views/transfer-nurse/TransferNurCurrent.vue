@@ -1,5 +1,5 @@
 <template>
-  <EmptyPage message="当前暂无任务" v-if="!taskList.length" />
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length && !loading" />
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -33,7 +33,7 @@
         :current-code="task.currentOperatingStatus"
       />
       <KeyValueBlock>
-        <template #value> 无 </template>
+        <template #value> {{ task.opTask.taskTipContent }} </template>
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
@@ -97,6 +97,7 @@ import JsToFlutter from '@/utils/js-to-flutter';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
+    const loading = ref(false);
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -112,18 +113,23 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        if (r.code === 200) {
-          taskList.value = r.data.map((d: any) => {
-            return {
-              ...d,
-              infoItems: formatTask(d, infoItems),
-            };
-          });
-        } else {
-          taskList.value = [];
-        }
-      });
+      loading.value = true;
+      Request.xhr('queryCurrentTaskList')
+        .then((r: CurrentTaskViews) => {
+          if (r.code === 200) {
+            taskList.value = r.data.map((d: any) => {
+              return {
+                ...d,
+                infoItems: formatTask(d, infoItems),
+              };
+            });
+          } else {
+            taskList.value = [];
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+        });
     };
     getData();
 
@@ -152,7 +158,7 @@ export default defineComponent({
     // 扫码交接
     const codeHandle = (task: any) => {
       // Toast('呼叫护工成功');
-      currentTask = task
+      currentTask = task;
       JsToFlutter.startScanQRCode().then((res) => {
         console.log('扫码结果：', res);
         if (res) {
@@ -195,6 +201,7 @@ export default defineComponent({
     //   getData();
     // });
     return {
+      loading,
       taskList,
       handleOverLay,
       manualHandle,
