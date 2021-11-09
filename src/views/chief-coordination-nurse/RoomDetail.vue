@@ -106,7 +106,7 @@ export default defineComponent({
     const roomList = computed(() => {
       const room = store.state.chiefNur.room
       const formatDtoList = room.dtoList.map((d:any) => {
-        const currentCode = Number(d.opTask.opSectionCode);
+        const currentCode = Number(d.opInfo.opSectionCode);
         let flowData: any[] = []
         if (currentCode > 6 && currentCode < 10) {
           flowData = [
