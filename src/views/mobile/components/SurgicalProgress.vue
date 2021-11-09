@@ -40,7 +40,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, PropType, computed } from 'vue'
+import { defineComponent, ref, PropType } from 'vue'
 
 export default defineComponent({
   name: 'SurgicalProgress',
