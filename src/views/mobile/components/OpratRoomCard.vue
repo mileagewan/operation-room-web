@@ -12,12 +12,6 @@
       </div>
       <oprat-info>
         <slot name="content" />
-        <!-- <template #left-content>
-          <slot name="left-content" />
-        </template>
-        <template #right-content>
-          <slot name="right-content" />
-        </template> -->
       </oprat-info>
     </div>
     <div class="footer" v-if="hasFooter">

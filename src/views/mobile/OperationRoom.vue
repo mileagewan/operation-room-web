@@ -61,38 +61,6 @@
                 </div>
               </div>
             </template>
-            <!-- <template #left-content>
-              <div class="item">
-                <span class="title">手术室</span>
-                <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
-              </div>
-              <div class="item">
-                <span class="title">主刀医生</span>
-                <span class="text">{{ item.surgeonName }}</span>
-              </div>
-              <div class="item">
-                <span class="title">麻醉医生</span>
-                <span class="text">{{ item.anesthetistName }}</span>
-              </div>
-              <div class="item">
-                <span class="title">患者性别</span>
-                <span class="text">{{ item.patientSex == 1 ? '男' : '女' }}</span>
-              </div>
-            </template>
-            <template #right-content>
-              <div class="item">
-                <span class="title">巡回护士</span>
-                <span class="text">{{ item.circulatingNurseName }}</span>
-              </div>
-              <div class="item">
-                <span class="title">器械护士</span>
-                <span class="text">{{ item.instrumentNurseName }}</span>
-              </div>
-              <div class="item">
-                <span class="title">患者年龄</span>
-                <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
-              </div>
-            </template>-->
           </oprat-room-card>
         </van-list>
       </van-pull-refresh>
