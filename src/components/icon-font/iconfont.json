@@ -6,6 +6,34 @@
   "description": "项目icon",
   "glyphs": [
     {
+      "icon_id": "25552462",
+      "name": "手术室",
+      "font_class": "shoushushi1",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "25552463",
+      "name": "手术间",
+      "font_class": "shoushujian",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "25552464",
+      "name": "手术中",
+      "font_class": "shoushuzhong",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
+      "icon_id": "25552465",
+      "name": "入复苏室",
+      "font_class": "rufusushi",
+      "unicode": "e67f",
+      "unicode_decimal": 59007
+    },
+    {
       "icon_id": "25499306",
       "name": "扫码交接",
       "font_class": "saomajiaojie",

@@ -45,7 +45,7 @@
           </template>
         </ExpandCard>
       </van-pull-refresh>
-      <EmptyPage></EmptyPage>
+      <EmptyPage v-if="!roomList.dtoList.length"></EmptyPage>
     </div>
   </div>
 </template>
@@ -69,12 +69,27 @@ import useTaskMixins, {
 export default defineComponent({
   name: 'RoomDetail',
   setup() {
-    const map = new Map<number, string>([
-      [6, '到手术室'],
-      [7, '到手术间'],
-      [8, '麻醉'],
-      [9, '手术中'],
-      [10, '苏醒']
+    const map = new Map<number, any>([
+      [6, {
+        title: '到手术室',
+        icon: 'icon-shoushushi1'
+      }],
+      [7, {
+        title: '到手术间',
+        icon: 'icon-shoushujian'
+      }],
+      [8, {
+        title: '麻醉',
+        icon: 'icon-mazui'
+      }],
+      [9, {
+        title: '手术中',
+        icon: 'icon-shoushuzhong'
+      }],
+      [10, {
+        title: '苏醒',
+        icon: 'icon-suxing'
+      }]
     ]);
 
     const router = useRouter();
@@ -87,7 +102,7 @@ export default defineComponent({
       surgeonName(),
       circulatingNurseName(),
       anesthetistName(),
-      anesthesiaDicCode(),
+      anesthesiaDicCode('anesthesiaName'),
       infectType(),
       opInfoName(),
       beforeDiseaseName(),
@@ -107,49 +122,51 @@ export default defineComponent({
       const room = store.state.chiefNur.room
       const formatDtoList = room.dtoList.map((d:any) => {
         const currentCode = Number(d.opInfo.opSectionCode);
+        d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
+        d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }
         let flowData: any[] = []
         if (currentCode > 6 && currentCode < 10) {
           flowData = [
             {
-              title: map.get(currentCode - 1),
-              code: currentCode - 1
+              ...map.get(currentCode - 1) as any,
+              code: currentCode - 1,
             },
             {
-              title: map.get(currentCode),
+              ...map.get(currentCode),
               code: currentCode
             },
             {
-              title: map.get(currentCode + 1),
+              ...map.get(currentCode + 1),
               code: currentCode + 1
             }
           ]
         } else if (currentCode === 6) {
           flowData = [
             {
-              title: map.get(currentCode),
+              ...map.get(currentCode),
               code: currentCode
             },
             {
-              title: map.get(currentCode + 1),
+              ...map.get(currentCode + 1),
               code: currentCode + 1
             },
             {
-              title: map.get(currentCode + 2),
+              ...map.get(currentCode + 2),
               code: currentCode + 2
             }
           ]
         } else if (currentCode === 10) {
           flowData = [
             {
-              title: map.get((currentCode - 2)),
+              ...map.get((currentCode - 2)),
               code: currentCode - 2
             },
             {
-              title: map.get(currentCode - 1),
+              ...map.get(currentCode - 1),
               code: currentCode - 1
             },
             {
-              title: map.get(currentCode),
+              ...map.get(currentCode),
               code: (currentCode)
             }
           ]
