@@ -21,8 +21,8 @@ export default createStore({
     },
   },
   actions: {
-    [SET_USER_INFO_ACTION]({ commit }, value) {
-      commit(SET_USER_INFO_MUTATION, value);
+    async [SET_USER_INFO_ACTION]({ commit }, value) {
+      await commit(SET_USER_INFO_MUTATION, value);
     },
     [SET_TOKEN_ACTION]({ commit }, value) {
       commit(SET_TOKEN_ACTION, value);

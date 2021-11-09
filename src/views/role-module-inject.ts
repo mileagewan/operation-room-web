@@ -3,7 +3,7 @@ import { defineAsyncComponent } from 'vue';
 
 export const RoleModuleInject: RoleModuleMap[] = [
   {
-    role: '1',
+    role: 'WardNurse',
     roleName: '病区护士',
     lists: [
       {
@@ -21,7 +21,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: '2',
+    role: 'TransferWork',
     roleName: '转运护工',
     lists: [
       {
@@ -39,7 +39,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: '3',
+    role: 'PickUpNurse',
     roleName: '手术室接送护士',
     lists: [
       {
@@ -53,7 +53,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: '4',
+    role: 'CircuitNurse',
     roleName: '巡回护士',
     lists: [
       {
@@ -71,7 +71,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: '5',
+    role: 'RecoveryRoomNurse',
     roleName: '复苏室护士',
     lists: [
       {
@@ -85,7 +85,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: '6',
+    role: 'MzDoctor',
     roleName: '总协调护士',
     lists: [
       {
