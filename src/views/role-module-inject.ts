@@ -85,7 +85,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     ]
   },
   {
-    role: 'MzDoctor',
+    role: 'CoordinateNurse',
     roleName: '总协调护士',
     lists: [
       {

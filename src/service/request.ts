@@ -89,9 +89,6 @@ class Request implements RequestQuery {
         queryParams.params = data;
         break;
     }
-    console.log(`${this.BASE_URL}${process.env.VUE_APP_SERVICE || ''}${cfgService.path}${path || ''
-    }${paramsQuery ? `?${paramsQuery}` : ''}`)
-    debugger
     queryParams = Object.assign(
       {
         url: `${this.BASE_URL}${process.env.VUE_APP_SERVICE || ''}${cfgService.path}${path || ''

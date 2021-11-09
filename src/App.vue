@@ -41,10 +41,14 @@ export default defineComponent({
         },
         false
       );
-      window.addEventListener('flutterInAppWebViewPlatformReady',
-        async () => {
-          beforeEach();
-        });
+      if (process.env.NODE_ENV !== 'development') {
+        window.addEventListener('flutterInAppWebViewPlatformReady',
+          async () => {
+            beforeEach();
+          });
+      } else {
+        beforeEach()
+      }
     });
 
     return {
