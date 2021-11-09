@@ -19,7 +19,45 @@
             :name="item.name"
             :tagCode="item.opSectioode"
           >
-            <template #left-content>
+            <template #content>
+              <div class="row">
+                <div class="item">
+                  <span class="title">手术室</span>
+                  <span class="text">{{ item.departmentardName }} - {{ item.oproomSubName }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="item">
+                  <span class="title">主刀医生</span>
+                  <span class="text">{{ item.surgeonName }}</span>
+                </div>
+                <div class="item">
+                  <span class="title">巡回护士</span>
+                  <span class="text">{{ item.circulatingNurseName }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="item">
+                  <span class="title">麻醉医生</span>
+                  <span class="text">{{ item.anesthetistName }}</span>
+                </div>
+                <div class="item">
+                  <span class="title">器械护士</span>
+                  <span class="text">{{ item.instrumentNurseName }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="item">
+                  <span class="title">患者性别</span>
+                  <span class="text">{{ item.patientSex == 1 ? '男' : '女' }}</span>
+                </div>
+                <div class="item">
+                  <span class="title">患者年龄</span>
+                  <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
+                </div>
+              </div>
+            </template>
+            <!-- <template #left-content>
               <div class="item">
                 <span class="title">手术室</span>
                 <span class="text">{{ item.departmentardName }} - {{ item.oproomSubName }}</span>
@@ -50,7 +88,7 @@
                 <span class="title">患者年龄</span>
                 <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
               </div>
-            </template>
+            </template>-->
           </oprat-room-card>
         </van-list>
       </van-pull-refresh>
@@ -163,6 +201,7 @@ export default defineComponent({
     height: calc(100vh - 75px);
     background-color: #f9f9f9;
     padding-top: 12px;
+    overflow-y: scroll;
     :deep(.operat-room-card) {
       margin-bottom: 12px;
       margin-top: 12px;

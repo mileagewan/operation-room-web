@@ -154,6 +154,7 @@ export default defineComponent({
     height: calc(100vh - 85px);
     background-color: #f9f9f9;
     padding-top: 12px;
+    overflow-y: scroll;
     .van-pull-refresh {
       overflow: visible;
     }

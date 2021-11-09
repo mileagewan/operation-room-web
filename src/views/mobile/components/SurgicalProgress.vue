@@ -133,11 +133,15 @@ export default defineComponent({
       }
       .text-warp {
         margin-left: 30px;
+        display: flex;
         .title {
+          display: inline-block;
+          min-width: 120px;
           font-size: 24px;
           font-family: PingFangSC, PingFangSC-Semibold;
           font-weight: 600;
           color: #999999;
+          padding: 0;
         }
         .name {
           margin-left: 24px;
@@ -145,6 +149,9 @@ export default defineComponent({
           font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #999999;
+          max-width: 300px;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }
