@@ -119,6 +119,7 @@ import useTaskMixins, {
   surgeonName,
 } from '../../utils/task-mixins';
 import JsToFlutter from '@/utils/js-to-flutter';
+import ToastCountdown from '@/utils/toast-countdown';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
@@ -154,6 +155,10 @@ export default defineComponent({
         : 'transferWorkHandover';
       Request.xhr(xhrType, data).then((res: any) => {
         if (res.code === 200) {
+          ToastCountdown({
+            message: '患者匹配成功，交接完成',
+            seconds: 3,
+          });
           getData();
         }
       });
