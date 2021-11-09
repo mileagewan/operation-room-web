@@ -6,11 +6,12 @@
           <span class="name">{{ task.patient.name }}</span>
           <span>{{ task.patient.sex === 1 ? "男" : "女" }} 25岁</span>
         </div>
-        <span class="task">{{ task.listingTypes === 1 ? "送病人" : "接病人" }}</span>
+        <span class="task">{{ task.listingType === 1 ? "送病人" : "接病人" }}</span>
       </div>
       <div class="flex">
-        <div class="flex-main">{{ task.opInfo.oproomName }}</div>
-        <span class="to-department">ICU</span>
+        <div class="flex-main">{{ task.opDescName }}</div>
+        <!-- TODO目的地 -->
+        <span class="to-department"></span>
       </div>
       <div class="flex info">
         <div class="info-item">
