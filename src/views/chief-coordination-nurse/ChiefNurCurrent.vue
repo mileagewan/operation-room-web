@@ -24,7 +24,7 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <KeyValue label="状态节点" v-if="['6','7','8','9','10'].includes(taskView.opTask.opSectionCode)">
+      <KeyValue label="状态节点" v-if="['6','7','8','9','10'].includes(taskView.opInfo.opSectionCode)">
         <template #value>
           <FlowChart :flow-data="taskView.flowData"
                      :current-code="taskView.currentCode" />
@@ -93,7 +93,7 @@ export default defineComponent({
         const { code, data } = r;
         if (code === 200) {
           taskViewsList.value = data.map((d) => {
-            const currentCode = Number(d.opTask.opSectionCode);
+            const currentCode = Number(d.opInfo.opSectionCode);
             let flowData: any[] = []
             if (currentCode > 6 && currentCode < 10) {
               flowData = [
