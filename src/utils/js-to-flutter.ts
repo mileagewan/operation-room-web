@@ -32,7 +32,7 @@ export default class JsToFlutter {
           });
       } catch (e) {
         // 病区护士
-        resolve('c75b5d7938c440149d97c2a4ac957a55.eyJleHAiOjE2MzcwNTQwNjksInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDUxIn0.B9b4Lc4u7jlIL9-Vjx83N7yLlAqDsNJxfPBrU9b4hqs')
+        resolve('27a5e1d8f1b745cbb7382d9b945d6850.eyJleHAiOjE2MzcwNjExMjAsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDUxIn0._0ggGRZZeTrl2afz5CRLZ1Rek_Y5Vpxt_pVU8BvToKI')
         // 转运工
         // resolve('8d2a622d73604147993061ae4a379237.eyJleHAiOjE2MzcwNDYxNDgsInVzZXIiOiJjbG91ZC1ob3NwaXRhbDphcHBVc2VyQDUyIn0.WG30GBGWNyeo_H5mCwnadI1xtcAdUGbrpPs_MIZptv8')
         // 接送护士

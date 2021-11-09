@@ -6,7 +6,9 @@
           <span class="name">{{ task.patient.name }}</span>
           <span>{{ task.patient.sex === 1 ? "男" : "女" }} 25岁</span>
         </div>
-        <span class="task">{{ task.listingType === 1 ? "送病人" : "接病人" }}</span>
+        <span class="task">{{
+          task.listingType === 1 ? "送病人" : "接病人"
+        }}</span>
       </div>
       <div class="flex">
         <div class="flex-main">{{ task.opDescName }}</div>
@@ -20,7 +22,7 @@
         </div>
         <div class="info-item">
           <label>用时</label>
-          <span>{{ task.taskTime }}</span>
+          <span>{{ $filters.formatTime(task.taskTime) }}</span>
         </div>
       </div>
     </div>
@@ -36,7 +38,7 @@ export default defineComponent({
       type: Object,
       default: () => ({
         patient: {},
-        opInfo: {}
+        opInfo: {},
       }),
     },
   },
