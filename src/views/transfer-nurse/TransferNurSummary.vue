@@ -12,7 +12,7 @@
           status: task.opInfo.opSectionCode,
           name: task.patient.name,
           sex: task.patient.sex,
-          age: task.age,
+          age: task.patient.age,
           type: task.opInfo.type,
           room: task.opInfo.oproomName,
         }"

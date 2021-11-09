@@ -11,7 +11,7 @@
           status: task.opInfo.opSectionCode,
           name: task.patient.name,
           sex: task.patient.sex,
-          age: task.age,
+          age: task.patient.age,
           type: task.opInfo.type,
           room: task.opInfo.oproomName,
         }"
@@ -32,8 +32,9 @@
         :flow-data="task.operatingStatusList"
         :current-code="task.currentOperatingStatus"
       />
+      <!-- 任务描述 -->
       <KeyValueBlock>
-        <template #value> {{ task.opTask.taskTipContent }} </template>
+        <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
@@ -59,10 +60,10 @@
 
       <!-- 转送中 -->
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="接收人" value="未对接数据 13800138000" />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="接收人" value="未对接数据 13800138000" />
       </template>
     </template>
   </TaskView>

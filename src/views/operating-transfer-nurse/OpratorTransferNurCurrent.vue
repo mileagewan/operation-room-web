@@ -12,7 +12,7 @@
           status: task.opInfo.opSectionCode,
           name: task.patient.name,
           sex: task.patient.sex,
-          age: task.age,
+          age: task.patient.age,
           type: task.opInfo.type,
           room: task.opInfo.oproomName,
         }"
@@ -33,8 +33,9 @@
         :flow-data="task.operatingStatusList"
         :current-code="task.currentOperatingStatus"
       ></FlowChart>
+      <!-- 任务描述 -->
       <KeyValueBlock>
-        <template #value> 无 </template>
+        <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
       </KeyValueBlock>
 
       <template v-if="task.opInfo.opSectionCode === '5'">
