@@ -1,6 +1,6 @@
 <template>
   <!-- 转运护工 任务池 -->
-  <EmptyPage message="当前暂无任务发布" v-if="!taskList.length" />
+  <EmptyPage message="当前暂无任务发布" v-if="!taskList.length && !loading" />
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -85,17 +85,25 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const taskList: any = ref([]);
+    const loading = ref(false);
     const getData = () => {
-      return Request.xhr('queryTaskPoolList').then((r: CurrentTaskViews) => {
-        if (r.data) {
-          taskList.value = r.data.map((d: any) => {
-            return {
-              ...d,
-              infoItems: formatTask(d, infoItems),
-            };
-          });
-        }
-      });
+      loading.value = true;
+      return Request.xhr('queryTaskPoolList')
+        .then((r: CurrentTaskViews) => {
+          if (r.data) {
+            taskList.value = r.data.map((d: any) => {
+              return {
+                ...d,
+                infoItems: formatTask(d, infoItems),
+              };
+            });
+          } else {
+            taskList.value = [];
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+        });
     };
 
     // 接任务操作
@@ -110,22 +118,23 @@ export default defineComponent({
         if (res.code === 200) {
           Toast('接任务成功');
           getData();
-          store.commit(SET_ACTIVE_MUTATION, 0)
+          store.commit(SET_ACTIVE_MUTATION, 0);
         }
       });
     };
 
-    let timer:number;
+    let timer: number;
     onMounted(() => {
       getData();
       timer = setInterval(() => {
-        getData()
-      }, 30000)
+        getData();
+      }, 30000);
     });
     onUnmounted(() => {
-      clearInterval(timer)
-    })
+      clearInterval(timer);
+    });
     return {
+      loading,
       taskList,
       recoveryTask,
       onMounted,

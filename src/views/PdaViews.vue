@@ -10,7 +10,6 @@
         <van-pull-refresh
           v-model="loading"
           @refresh="onRefresh(index)"
-          v-if="active === index"
         >
           <component :is="cmponentItem.component"
                      :ref="setItemRef" />

@@ -1,6 +1,6 @@
 <template>
   <!-- 任务汇总 -->
-  <EmptyPage message="暂无手术任务" v-if="!taskList.length" />
+  <EmptyPage message="暂无手术任务" v-if="!taskList.length && !loading" />
   <van-list
     v-model:loading="loading"
     :finished="finished"
@@ -71,18 +71,25 @@ export default defineComponent({
     ];
     const taskList: any = ref([]);
     const getData = () => {
-      return Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
-        // console.log(r);
-        if (r.data) {
-          taskList.value = r.data.map((d: any) => {
-            return {
-              ...d,
-              infoItems: formatTask(d, infoItems),
-            };
-          });
-          // console.log(taskList);
-        }
-      });
+      loading.value = true;
+      return Request.xhr('querySummaryTaskList')
+        .then((r: CurrentTaskViews) => {
+          // console.log(r);
+          if (r.data) {
+            taskList.value = r.data.map((d: any) => {
+              return {
+                ...d,
+                infoItems: formatTask(d, infoItems),
+              };
+            });
+            // console.log(taskList);
+          } else {
+            taskList.value = []
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+        });
     };
     getData();
 

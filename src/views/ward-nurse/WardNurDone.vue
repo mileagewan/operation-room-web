@@ -4,7 +4,7 @@
     <DoneSummary :options="options" />
     <TaskList :taskList="taskList" />
   </template>
-  <EmptyPage v-else message="暂无已完成任务" />
+  <EmptyPage v-if="!taskList.length && !loading" message="暂无已完成任务" />
 </template>
 
 <script lang="ts">
@@ -27,16 +27,26 @@ export default defineComponent({
       },
     ]);
     const taskList: any = ref([]);
+    const loading = ref(false);
     const getData = () => {
-      return Request.xhr('queryCompletedTaskList').then(
-        (r: CurrentTaskViews) => {
+      loading.value = true;
+      return Request.xhr('queryCompletedTaskList')
+        .then((r: CurrentTaskViews) => {
           // console.log(r);
-          const { data }: any = r;
-          options[0].value = data.sendPatient;
-          options[1].value = data.receivePatient;
-          taskList.value = data.opTaskListingDTOList;
-        }
-      );
+          if (r.code === 200) {
+            const { data }: any = r;
+            options[0].value = data.sendPatient;
+            options[1].value = data.receivePatient;
+            taskList.value = data.opTaskListingDTOList;
+          } else {
+            options[0].value = 0;
+            options[1].value = 0;
+            taskList.value = [];
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+        });
     };
     getData();
 
@@ -51,6 +61,7 @@ export default defineComponent({
     //   }
     // });
     return {
+      loading,
       options,
       taskList,
       getData,

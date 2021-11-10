@@ -2,12 +2,12 @@
   <!-- 复苏室护士 已完成任务 -->
   <DoneSummary :options="options" v-if="taskList.length"/>
   <TaskList :taskList="taskList" v-if="taskList.length"/>
-  <EmptyPage message="当前暂无完成任务" v-if="!taskList.length"/>
+  <EmptyPage v-if="!taskList.length && !loading" message="暂无已完成任务" />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-
+import Request from '@/service/request'
 export default defineComponent({
   name: 'ResuscitationNurDone',
   setup() {
@@ -15,28 +15,39 @@ export default defineComponent({
     const options = reactive([
       {
         label: '送病人',
-        value: 4,
+        value: 0,
       },
       {
         label: '接病人',
-        value: 4,
+        value: 0,
       },
     ]);
     const taskList: any = ref([]);
-    taskList.value = new Array(10).fill('').map((item, index) => {
-      return {
-        name: 'user' + (index + 1),
-      };
-    });
-    taskList.value = []
-    const getData = (): Promise<any> => {
-      return new Promise<any>(resolve => {
-        setTimeout(() => {
-          resolve(true)
-        }, 1000)
-      })
-    }
+    const loading = ref(false)
+    const getData = () => {
+      loading.value = true;
+      return Request.xhr('queryCompletedTaskList')
+        .then((r: any) => {
+          // console.log(r);
+          if (r.code === 200) {
+            const { data }: any = r;
+            options[0].value = data.sendPatient;
+            options[1].value = data.receivePatient;
+            taskList.value = data.opTaskListingDTOList;
+          } else {
+            options[0].value = 0;
+            options[1].value = 0;
+            taskList.value = [];
+          }
+          // console.log(taskList);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    };
+    getData();
     return {
+      loading,
       options,
       taskList,
       getData

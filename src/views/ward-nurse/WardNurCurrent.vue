@@ -1,5 +1,5 @@
 <template>
-  <EmptyPage message="当前暂无任务" v-if="!taskList.length" />
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length && !loading" />
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -78,7 +78,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, reactive } from 'vue';
-import { curentData, testdata } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -102,7 +101,7 @@ export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
     const taskList: any = ref([]);
-
+    const loading = ref(false);
     // onMounted(() => {
     //   Request.xhr('getSso').then((r: ReturnData) => {
     //     console.log(r);
@@ -123,17 +122,24 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // console.log(r);
-        if (r.data) {
-          taskList.value = r.data.map((d: any) => {
-            return {
-              ...d,
-              infoItems: formatTask(d, infoItems),
-            };
-          });
-        }
-      });
+      loading.value = true;
+      return Request.xhr('queryCurrentTaskList')
+        .then((r: CurrentTaskViews) => {
+          // console.log(r);
+          if (r.data) {
+            taskList.value = r.data.map((d: any) => {
+              return {
+                ...d,
+                infoItems: formatTask(d, infoItems),
+              };
+            });
+          } else {
+            taskList.value = [];
+          }
+        })
+        .finally(() => {
+          loading.value = false;
+        });
     };
 
     let currentTask: any = reactive({});
@@ -205,6 +211,7 @@ export default defineComponent({
 
     getData();
     return {
+      loading,
       getData,
       taskList,
       handleOverLay,
