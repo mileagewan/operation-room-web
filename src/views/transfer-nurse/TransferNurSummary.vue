@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { Toast } from 'vant';
 import Request from '../../service/request';
 import { ReturnData } from '@/types/interface-model';
@@ -94,7 +94,6 @@ export default defineComponent({
         }
       });
     };
-    getData();
 
     // 接任务操作
     const recoveryTask = (task: any) => {
@@ -112,9 +111,16 @@ export default defineComponent({
       });
     };
 
+    let timer:number;
     onMounted(() => {
       getData();
+      timer = setInterval(() => {
+        getData()
+      }, 30000)
     });
+    onUnmounted(() => {
+      clearInterval(timer)
+    })
     return {
       taskList,
       recoveryTask,
