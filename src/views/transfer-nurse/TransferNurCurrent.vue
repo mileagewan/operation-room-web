@@ -115,7 +115,7 @@ export default defineComponent({
     ];
     const getData = () => {
       loading.value = true;
-      Request.xhr('queryCurrentTaskList')
+      return Request.xhr('queryCurrentTaskList')
         .then((r: CurrentTaskViews) => {
           if (r.code === 200) {
             taskList.value = r.data.map((d: any) => {

@@ -38,6 +38,7 @@ export default defineComponent({
     getData();
     return {
       options,
+      getData,
       taskList,
     };
   },
