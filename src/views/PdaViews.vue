@@ -1,18 +1,14 @@
 <template>
   <div class="pda-views">
     <nav-bar @goBack="goBack" right-component="ScanQrCode" />
-    <van-tabs v-model:active="active" swipeable>
+    <van-tabs v-model:active="active" swipeable :lazy-render="false">
       <van-tab
         v-for="(cmponentItem, index) in componentsList"
         :key="cmponentItem.component"
         :title="cmponentItem.label"
       >
-        <van-pull-refresh
-          v-model="loading"
-          @refresh="onRefresh(index)"
-        >
-          <component :is="cmponentItem.component"
-                     :ref="setItemRef" />
+        <van-pull-refresh v-model="loading" @refresh="onRefresh(index)">
+          <component :is="cmponentItem.component" :ref="setItemRef" />
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -34,24 +30,24 @@ export default defineComponent({
     const loading = ref<boolean>(false);
     const active = computed({
       get() {
-        return store.state.active
+        return store.state.active;
       },
       set(value) {
-        store.commit(SET_ACTIVE_MUTATION, value)
-      }
+        store.commit(SET_ACTIVE_MUTATION, value);
+      },
     });
     const defaultRole = computed(() => {
-      const userInfo = store.state.userInfo
+      const userInfo = store.state.userInfo;
       return userInfo.role;
     });
 
     const goBack = (): void => {
       JsToFlutter.goback();
     };
-    const onRefresh = (index:number):void => {
+    const onRefresh = (index: number): void => {
       itemRefs[index].getData().finally(() => {
         loading.value = false;
-      })
+      });
     };
 
     const getComponentsList = (defaultRole: string) => {
@@ -71,12 +67,12 @@ export default defineComponent({
     //   console.log(item.component);
     // })
 
-    const itemRefs:any[] = []
-    const setItemRef = (el:HTMLElement) => {
+    const itemRefs: any[] = [];
+    const setItemRef = (el: HTMLElement) => {
       if (el) {
-        itemRefs.push(el)
+        itemRefs.push(el);
       }
-    }
+    };
     return {
       loading,
       active,
@@ -85,7 +81,7 @@ export default defineComponent({
       componentsList,
       goBack,
       onRefresh,
-      setItemRef
+      setItemRef,
     };
   },
 });

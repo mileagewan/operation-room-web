@@ -117,10 +117,10 @@ export const components = {
     /* webpackChunkName: "TransferNurCurrent" */ '@/views/transfer-nurse/TransferNurCurrent.vue'
   )),
   TransferNurSummary: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/transfer-nurse/TransferNurSummary.vue'
+    /* webpackChunkName: "TransferNurSummary" */ '@/views/transfer-nurse/TransferNurSummary.vue'
   )),
   TransferNurDone: defineAsyncComponent(() => import(
-    /* webpackChunkName: "TransferNurCurrent" */ '@/views/transfer-nurse/TransferNurDone.vue'
+    /* webpackChunkName: "TransferNurDone" */ '@/views/transfer-nurse/TransferNurDone.vue'
   )),
 
   // 手术室接送护工
