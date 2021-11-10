@@ -179,7 +179,8 @@ export default defineComponent({
       router.push({
         path: path,
         query: {
-          id: item.code
+          id: item.code,
+          dateType: state.active ? state.active : ''
         }
       })
     }

@@ -135,7 +135,14 @@ export default defineComponent({
       }
     }
     const goBack = (): void => {
-      router.back()
+      const _dateType: any = route?.query?.dateType
+      // router.back()
+      router.push({
+        path: 'operationRoom',
+        query: {
+          dateType: _dateType ? _dateType : ''
+        }
+      })
     }
     // 下拉刷新
     const onRefresh = async () => {

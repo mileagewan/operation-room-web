@@ -160,7 +160,14 @@ export default defineComponent({
       if (route.query?.type === 'app') {
         JsToFlutter.goback();
       } else {
-        router.back()
+        const _dateType: any = route?.query?.dateType
+        router.push({
+          path: 'operationRoom',
+          query: {
+            dateType: _dateType ? _dateType : ''
+          }
+        })
+        // router.back()
       }
     }
     // 下拉刷新
