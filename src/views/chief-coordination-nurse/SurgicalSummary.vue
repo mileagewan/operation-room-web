@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="refresh-option" @click="refresh($event)">
-    <van-icon name="replay" />
+    <IconFont icon="icon-gengxin" />
     <div class="refresh-option-title">手术更新</div>
   </div>
   <EmptyPage message="当前暂无手术任务" v-if="!doList.length" />

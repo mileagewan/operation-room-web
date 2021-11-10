@@ -3579,6 +3579,11 @@
   dependencies:
     "execa" "^3.3.0"
 
+"default-passive-events@^2.0.0":
+  "integrity" "sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ=="
+  "resolved" "https://registry.npmjs.org/default-passive-events/-/default-passive-events-2.0.0.tgz"
+  "version" "2.0.0"
+
 "defaults@^1.0.3":
   "integrity" "sha1-xlYFHpgX2f8I7YgUd/P+QBnz730="
   "resolved" "https://registry.npm.taobao.org/defaults/download/defaults-1.0.3.tgz"

@@ -8,7 +8,7 @@ import 'lib-flexible';
 import { setupPlugins } from '@/plugin';
 import { inject } from '@/components/inject-custom-components';
 import '@/assets/styles/index.scss';
-
+import 'default-passive-events';
 import Emitter from 'tiny-emitter';
 const emitter = new Emitter();
 

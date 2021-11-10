@@ -1,5 +1,10 @@
 import { createStore } from 'vuex';
-import { SET_ACTIVE_MUTATION, SET_TOKEN_MUTATION, SET_USER_INFO_MUTATION } from '@/store/mutation-types';
+import {
+  SET_ACTIVE_MUTATION,
+  SET_TITLE_COUNT_MUTATION,
+  SET_TOKEN_MUTATION,
+  SET_USER_INFO_MUTATION
+} from '@/store/mutation-types';
 import { SET_TOKEN_ACTION, SET_USER_INFO_ACTION } from '@/store/action-types';
 import { itinerantNur } from '@/store/itinerant-nur';
 import { chiefNur } from '@/store/chief-nur';
@@ -11,7 +16,8 @@ export default createStore({
       userConfig: {},
     },
     active: 0,
-    token: ''
+    token: '',
+    titleCount: {}
   },
   mutations: {
     [SET_USER_INFO_MUTATION](state, value) {
@@ -22,6 +28,9 @@ export default createStore({
     },
     [SET_ACTIVE_MUTATION](state, value) {
       state.active = value
+    },
+    [SET_TITLE_COUNT_MUTATION](state, value) {
+      state.titleCount = value
     }
   },
   actions: {

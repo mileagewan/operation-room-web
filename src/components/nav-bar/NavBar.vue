@@ -1,6 +1,9 @@
 <template>
   <div class="nab-bar">
-    <van-nav-bar :title="titleBar" left-arrow @click-left="onClickLeft">
+    <van-nav-bar :title="titleBar" @click-left="onClickLeft">
+      <template #left>
+        <IconFont icon="icon-fanhui" />
+      </template>
       <template #right v-if="rightComponentRef">
         <component :is="rightComponentRef"></component>
       </template>

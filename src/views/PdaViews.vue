@@ -8,7 +8,8 @@
         :title="cmponentItem.label"
       >
         <van-pull-refresh v-model="loading" @refresh="onRefresh(index)">
-          <component :is="cmponentItem.component" :ref="setItemRef" />
+          <component :is="cmponentItem.component"
+                     :ref="setItemRef" />
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -32,8 +33,13 @@ export default defineComponent({
       get() {
         return store.state.active;
       },
-      set(value) {
+      set(value:number) {
         store.commit(SET_ACTIVE_MUTATION, value);
+        try {
+          itemRefs[value].getData();
+        } catch (e) {
+          console.log(e);
+        }
       },
     });
     const defaultRole = computed(() => {
@@ -61,11 +67,6 @@ export default defineComponent({
     };
 
     const componentsList = reactive(getComponentsList(defaultRole.value));
-    // TODO store 保存各项任务数据
-    // console.log(componentsList);
-    // componentsList.forEach((item:RoleModuleItem) => {
-    //   console.log(item.component);
-    // })
 
     const itemRefs: any[] = [];
     const setItemRef = (el: HTMLElement) => {

@@ -140,7 +140,7 @@ export default defineComponent({
       router.push({
         path: 'operationRoom',
         query: {
-          dateType: _dateType ? _dateType : ''
+          dateType: _dateType || ''
         }
       })
     }

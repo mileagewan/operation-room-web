@@ -2,6 +2,15 @@
   @extend .position-center;
   background: #fff;
 }
+.nab-bar {
+  .van-nav-bar .van-icon {
+    color: var(--ihybrid--default-color);
+  }
+  .iconfont{
+    font-size: 40px;
+    color: var(--ihybrid--default-color);
+  }
+}
 .pda-views {
   @extend .page-bg-line-bar;
   height: 100vh;
@@ -13,6 +22,7 @@
     }
     .iconfont{
       font-size: 40px;
+      color: var(--ihybrid--default-color);
     }
   }
 
