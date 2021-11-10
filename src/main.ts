@@ -12,8 +12,8 @@ import '@/assets/styles/index.scss';
 import Emitter from 'tiny-emitter';
 const emitter = new Emitter();
 
-const log = new VConsole();
-console.log(log)
+// const log = new VConsole();
+// console.log(log)
 
 const app = createApp(App);
 app.config.globalProperties.$filters = filters;

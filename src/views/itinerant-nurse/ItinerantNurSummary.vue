@@ -69,7 +69,7 @@ export default defineComponent({
     ];
     const list: any = ref([]);
     const getData = () => {
-      Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
+      return Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
         if (r.data) {
           list.value = r.data.map((d: any) => {
             return {

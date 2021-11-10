@@ -1,12 +1,13 @@
 <template>
   <!-- 复苏室护士 已完成任务 -->
   <DoneSummary :options="options" v-if="taskList.length"/>
-  <TaskList :taskList="taskList" v-if="taskList.length" />
-  <EmptyPage message="当前暂无完成任务" v-if="!taskList.length" />
+  <TaskList :taskList="taskList" v-if="taskList.length"/>
+  <EmptyPage message="当前暂无完成任务" v-if="!taskList.length"/>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
+
 export default defineComponent({
   name: 'ResuscitationNurDone',
   setup() {
@@ -28,9 +29,17 @@ export default defineComponent({
       };
     });
     taskList.value = []
+    const getData = (): Promise<any> => {
+      return new Promise<any>(resolve => {
+        setTimeout(() => {
+          resolve(true)
+        }, 1000)
+      })
+    }
     return {
       options,
       taskList,
+      getData
     };
   },
 });

@@ -70,6 +70,7 @@ export default defineComponent({
     return {
       next,
       pageData,
+      getData,
       onMounted
     }
   }

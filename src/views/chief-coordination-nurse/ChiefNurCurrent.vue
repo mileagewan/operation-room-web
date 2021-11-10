@@ -101,7 +101,7 @@ export default defineComponent({
 
     const getData = () => {
       // eslint-disable-next-line no-undef
-      Request.xhr('roomGettotaltask', {
+      return Request.xhr('roomGettotaltask', {
         pageNo: 1,
         pageSize: 300
       }).then((r: CurrentTaskViews) => {
@@ -176,6 +176,7 @@ export default defineComponent({
     return {
       flowData,
       taskViewsList,
+      getData,
       onMounted
     };
   },

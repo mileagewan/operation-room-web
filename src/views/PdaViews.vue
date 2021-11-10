@@ -1,7 +1,7 @@
 <template>
   <div class="pda-views">
     <nav-bar @goBack="goBack" right-component="ScanQrCode" />
-    <van-tabs v-model:active="active">
+    <van-tabs v-model:active="active" swipeable>
       <van-tab
         v-for="(cmponentItem, index) in componentsList"
         :key="cmponentItem.component"
@@ -9,10 +9,11 @@
       >
         <van-pull-refresh
           v-model="loading"
-          @refresh="onRefresh"
+          @refresh="onRefresh(index)"
           v-if="active === index"
         >
-          <component :is="cmponentItem.component"></component>
+          <component :is="cmponentItem.component"
+                     :ref="setItemRef" />
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -24,6 +25,7 @@ import { useStore } from 'vuex';
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
+import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
 export default defineComponent({
   name: 'PdaViews',
   components,
@@ -31,7 +33,14 @@ export default defineComponent({
     const store = useStore();
 
     const loading = ref<boolean>(false);
-    const active = ref<number>(0);
+    const active = computed({
+      get() {
+        return store.state.active
+      },
+      set(value) {
+        store.commit(SET_ACTIVE_MUTATION, value)
+      }
+    });
     const defaultRole = computed(() => {
       const userInfo = store.state.userInfo
       return userInfo.role;
@@ -40,10 +49,10 @@ export default defineComponent({
     const goBack = (): void => {
       JsToFlutter.goback();
     };
-    const onRefresh = (): void => {
-      setTimeout(() => {
+    const onRefresh = (index:number):void => {
+      itemRefs[index].getData().finally(() => {
         loading.value = false;
-      }, 1000);
+      })
     };
 
     const getComponentsList = (defaultRole: string) => {
@@ -62,6 +71,13 @@ export default defineComponent({
     // componentsList.forEach((item:RoleModuleItem) => {
     //   console.log(item.component);
     // })
+
+    const itemRefs:any[] = []
+    const setItemRef = (el:HTMLElement) => {
+      if (el) {
+        itemRefs.push(el)
+      }
+    }
     return {
       loading,
       active,
@@ -70,6 +86,7 @@ export default defineComponent({
       componentsList,
       goBack,
       onRefresh,
+      setItemRef
     };
   },
 });

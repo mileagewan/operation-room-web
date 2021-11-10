@@ -65,9 +65,12 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
+import { useStore } from 'vuex';
+import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
 export default defineComponent({
   name: 'TransferNurSummary',
   setup() {
+    const store = useStore();
     const { formatTask } = useTaskMixins();
     const infoItems = [
       opInfoCode(),
@@ -107,6 +110,7 @@ export default defineComponent({
         if (res.code === 200) {
           Toast('接任务成功');
           getData();
+          store.commit(SET_ACTIVE_MUTATION, 0)
         }
       });
     };

@@ -183,9 +183,9 @@ export default defineComponent({
         getData()
       }
     };
-    const getData = () => {
+    const getData = (): Promise<any> => {
       // eslint-disable-next-line no-undef
-      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
         if (r.code === 200) {
           taskViewsList.value = r.data.map((d) => {
             return {
@@ -207,6 +207,7 @@ export default defineComponent({
       callNurse,
       onMounted,
       taskViewsList,
+      getData
     };
   },
 });

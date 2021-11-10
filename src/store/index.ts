@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { SET_TOKEN_MUTATION, SET_USER_INFO_MUTATION } from '@/store/mutation-types';
+import { SET_ACTIVE_MUTATION, SET_TOKEN_MUTATION, SET_USER_INFO_MUTATION } from '@/store/mutation-types';
 import { SET_TOKEN_ACTION, SET_USER_INFO_ACTION } from '@/store/action-types';
 import { itinerantNur } from '@/store/itinerant-nur';
 import { chiefNur } from '@/store/chief-nur';
@@ -10,6 +10,7 @@ export default createStore({
     userInfo: {
       userConfig: {},
     },
+    active: 0,
     token: ''
   },
   mutations: {
@@ -19,6 +20,9 @@ export default createStore({
     [SET_TOKEN_MUTATION](state, value) {
       state.token = value;
     },
+    [SET_ACTIVE_MUTATION](state, value) {
+      state.active = value
+    }
   },
   actions: {
     async [SET_USER_INFO_ACTION]({ commit }, value) {

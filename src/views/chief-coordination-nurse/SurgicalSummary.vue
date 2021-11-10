@@ -101,6 +101,7 @@ export default defineComponent({
       refresh,
       doList,
       next,
+      getData,
       onMounted
     };
   },
