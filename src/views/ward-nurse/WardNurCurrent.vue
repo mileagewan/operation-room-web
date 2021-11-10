@@ -201,12 +201,6 @@ export default defineComponent({
       });
     };
 
-    // 触发手术任务
-    // Request.xhr('createNextOpTask', {}, 'opInfoId=29').then((r: any) => {
-    //   // const { code, data } = r;
-    //   console.log(r);
-    // });
-
     getData();
     return {
       getData,

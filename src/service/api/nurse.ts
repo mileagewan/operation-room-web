@@ -39,8 +39,8 @@ const nurse: ServiceItem[] = [
   },
   //      触发下台手术任务
   {
-    path: '/nurseOperate/createNextOpTask',
-    key: 'createNextOpTask',
+    path: '/nurseOperate/notifyNextOperation',
+    key: 'notifyNextOperation',
     method: 'post',
   },
   //    病区护士：  呼叫护工
