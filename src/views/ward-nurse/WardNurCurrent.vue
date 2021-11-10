@@ -43,7 +43,7 @@
           </van-button>
         </div>
       </template>
-      <template v-if="task.opInfo.opSectionCode === '4'">
+      <template v-if="task.opInfo.opSectionCode === '4'||task.opInfo.opSectionCode === '15'">
         <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">

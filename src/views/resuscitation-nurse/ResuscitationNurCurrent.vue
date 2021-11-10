@@ -12,7 +12,7 @@
           sex: taskView.patient.sex,
           age: taskView.patient.age,
           type: taskView.opInfo.type,
-          room: taskView.opInfo.oproomSubName,
+          room: taskView.opInfo.opDescName,
         }"
       />
     </template>
@@ -35,7 +35,7 @@
       </div>
       <KeyValueBlock>
         <template #value>
-          {{ taskView.opInfo.taskTipContent || "无" }}
+          {{ taskView.opTask.taskTipContent || "无" }}
         </template>
       </KeyValueBlock>
 
