@@ -12,7 +12,7 @@ import '@/assets/styles/index.scss';
 import Emitter from 'tiny-emitter';
 const emitter = new Emitter();
 
-if (String(process.env.VUE_TEST_ENV) !== 'true') {
+if (String(process.env.VUE_APP_TEST_ENV) !== 'true') {
   const log = new VConsole();
   console.log(log)
 }
