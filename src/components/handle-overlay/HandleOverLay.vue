@@ -9,7 +9,7 @@
     <div class="handle-overlay_title">
       请输入交接人工号
     </div>
-    <van-field v-model="valueReal"/>
+    <van-field v-model="valueReal" type="digit" />
     <div class="ihybrid-button-group" >
       <van-button round
                   @click="manualHandle"
