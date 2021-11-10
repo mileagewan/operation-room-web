@@ -95,6 +95,7 @@
   <van-popup
     v-model:show="resuscitationOverLay.show"
     round
+    teleport=".van-tabs__track"
     position="bottom"
   >
     <div class="itinerant-nur-to-resuscitation">
