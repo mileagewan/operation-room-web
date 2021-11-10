@@ -20,6 +20,11 @@ export default defineComponent({
 .oprat-info-warp {
   :deep(.row) {
     display: flex;
+    &:nth-child(n+2){
+      .item{
+        width: 196px;
+      }
+    }
     .item {
       padding: 12px 0;
       .title {
