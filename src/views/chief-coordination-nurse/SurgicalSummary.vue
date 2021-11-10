@@ -12,7 +12,7 @@
           }"
           type="primary"
           :class="[room.type === 2 ? 'emergency' : 'normal']"
-        >{{ room.type === 2 ? "急诊" : "平珍" }}</van-tag>
+        >{{ room.type === 2 ? "急诊" : "平诊" }}</van-tag>
       </div>
       <div class="surgical-summary-item_number" v-if="room.name !== '复苏室'">
         <span class="surgical-summary-item_number_status">

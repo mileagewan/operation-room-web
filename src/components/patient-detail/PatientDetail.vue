@@ -18,7 +18,7 @@
         type="primary"
         v-if="showRight"
         :class="[option.type === 2 ? 'emergency' : 'normal']"
-        >{{ option.type === 2 ? "急诊" : "平珍" }}</van-tag
+        >{{ option.type === 2 ? "急诊" : "平诊" }}</van-tag
       >
     </div>
   </div>

@@ -7,7 +7,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
     roleName: '病区护士',
     lists: [
       {
-        label: '今日任务',
+        label: '当前任务',
         component: 'WardNurCurrent'
       },
       {

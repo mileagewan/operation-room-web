@@ -28,6 +28,7 @@ import { useRouter } from 'vue-router';
 import { testCompleteTotal } from '@/utils/mock-test-data';
 import { useStore } from 'vuex';
 import { SET_OP_TASK_DTO_MUTATION } from '@/store/mutation-types';
+import Request from '@/service/request';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {
@@ -43,25 +44,26 @@ export default defineComponent({
         path: '/surgical-detail'
       })
     }
-    const getData = async (): Promise<any> => {
-      // let ret = await Request.xhr('itinerGettotaltask')
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(true)
-        }, 200)
-      })
-      const ret = testCompleteTotal.data;
-      pageData.options = [
-        {
-          label: '送病人',
-          value: ret.sendPatient as any,
-        },
-        {
-          label: '接病人',
-          value: ret.receivePatient as any,
+    const getData = () => {
+      return Request.xhr('queryCompletedTaskList').then((r:any) => {
+        const { code, data } = r;
+        if (code === 200) {
+          pageData.options = [
+            {
+              label: '送病人',
+              value: data.sendPatient as any,
+            },
+            {
+              label: '接病人',
+              value: data.receivePatient as any,
+            }
+          ];
+          pageData.completeList = data.opTaskListingDTOList as any
+        } else {
+          pageData.options = [];
+          pageData.completeList = []
         }
-      ];
-      pageData.completeList = ret.opTaskListingDTOList as any
+      })
     }
 
     onMounted(() => {
