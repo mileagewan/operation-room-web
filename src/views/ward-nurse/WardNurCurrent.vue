@@ -80,7 +80,6 @@
 import { defineComponent, onMounted, ref, reactive } from 'vue';
 import { Toast } from 'vant';
 import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
