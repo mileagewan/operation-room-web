@@ -71,7 +71,7 @@ export default defineComponent({
     ];
     const taskList: any = ref([]);
     const getData = () => {
-      Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
+      return Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
         // console.log(r);
         if (r.data) {
           taskList.value = r.data.map((d: any) => {

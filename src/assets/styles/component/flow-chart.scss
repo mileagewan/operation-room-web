@@ -9,7 +9,7 @@
     overflow: visible;
     height: 48px;
     &:not(:first-child) {
-      flex: auto;
+      flex: 1;
       .flow-chart-item_title {
         margin-right: -50%;
       }

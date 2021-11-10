@@ -75,7 +75,7 @@ const nurse: ServiceItem[] = [
   },
   //      手术室前接送护士确认交接
   {
-    path: 'nurseOperate/transferWorkHandover',
+    path: '/nurseOperate/transferWorkHandover',
     key: 'transferWorkHandover',
     method: 'post',
   },
