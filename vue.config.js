@@ -84,26 +84,9 @@ module.exports = {
     port: 8080,
     https: false,
     hotOnly: true,
-    // proxy: {
-    //   '/api': {
-    //     // 代理地址
-    //     target: process.env.VUE_APP_API,
-    //     changeOrigin: true, // 是否跨域
-    //     secure: false,
-    //     pathRewrite: {
-    //       '^/api': '/api/ctrl', // 测试环境
-    //       // '/api': '', //需要rewrite重写的, //本地联调
-    //     },
-    //   },
-    // },
     proxy: {
       '/comom': {
         target: process.env.VUE_APP_PROXY,
-        // target: 'http://124.196.4.220:8088/',
-        //  target: 'http://192.168.223.194:8080',
-        // target: 'http://192.168.223.194:7311',
-        // target: 'http://192.168.223.194:7311',
-        // target: 'http://192.168.201.99:7311',
         changeOrigin: true,
         pathRewrite: {
           '^/comom': '', // 开发环境

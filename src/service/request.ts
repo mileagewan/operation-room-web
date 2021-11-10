@@ -91,7 +91,7 @@ class Request implements RequestQuery {
     }
     queryParams = Object.assign(
       {
-        url: `${this.BASE_URL}${process.env.VUE_APP_SERVICE || ''}${cfgService.path}${path || ''
+        url: `${this.BASE_URL}${cfgService.path}${path || ''
           }${paramsQuery ? `?${paramsQuery}` : ''}`,
         method: cfgService.method,
       },
