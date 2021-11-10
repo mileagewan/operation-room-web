@@ -153,6 +153,8 @@ export default defineComponent({
       const xhrType: string = isBack(currentTask.opInfo.opSectionCode)
         ? 'circuitNurseHandoverToWard'
         : 'transferWorkHandover';
+      console.log(xhrType);
+
       Request.xhr(xhrType, data).then((res: any) => {
         if (res.code === 200) {
           ToastCountdown({
@@ -160,6 +162,8 @@ export default defineComponent({
             seconds: 3,
           });
           getData();
+        } else {
+          Toast(res.msg);
         }
       });
     };
@@ -195,8 +199,8 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        console.log(r);
+      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        // console.log(r);
         if (r.data) {
           taskList.value = r.data.map((d: any) => {
             return {
@@ -204,7 +208,6 @@ export default defineComponent({
               infoItems: formatTask(d, infoItems),
             };
           });
-          console.log(taskList);
         }
       });
     };

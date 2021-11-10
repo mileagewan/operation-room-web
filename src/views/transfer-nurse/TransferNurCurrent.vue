@@ -189,6 +189,8 @@ export default defineComponent({
               message: '患者匹配成功，交接完成',
               seconds: 3,
             });
+          } else {
+            Toast(res.msg);
           }
         })
         .catch(() => {

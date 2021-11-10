@@ -28,13 +28,15 @@ export default defineComponent({
     ]);
     const taskList: any = ref([]);
     const getData = () => {
-      Request.xhr('queryCompletedTaskList').then((r: CurrentTaskViews) => {
-        // console.log(r);
-        const { data }: any = r;
-        options[0].value = data.sendPatient;
-        options[1].value = data.receivePatient;
-        taskList.value = data.opTaskListingDTOList;
-      });
+      return Request.xhr('queryCompletedTaskList').then(
+        (r: CurrentTaskViews) => {
+          // console.log(r);
+          const { data }: any = r;
+          options[0].value = data.sendPatient;
+          options[1].value = data.receivePatient;
+          taskList.value = data.opTaskListingDTOList;
+        }
+      );
     };
     getData();
 

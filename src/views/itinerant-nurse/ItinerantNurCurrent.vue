@@ -167,16 +167,12 @@ export default defineComponent({
       checked: false,
       roomList: [
         {
-          label: '原料室',
+          label: '原科室',
           value: 1
         },
         {
           label: 'ICU',
           value: 2
-        },
-        {
-          label: '原料室',
-          value: 3
         }
       ],
       active: 1,

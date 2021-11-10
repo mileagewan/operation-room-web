@@ -28,13 +28,13 @@ export default defineComponent({
     const taskList: any = ref([]);
     const getData = () => {
       // eslint-disable-next-line no-undef
-      Request.xhr('queryCompletedTaskList').then((r: any) => {
-        console.log(r);
+      return Request.xhr('queryCompletedTaskList').then((r: any) => {
+        // console.log(r);
         const { data }: any = r;
         options[0].value = data.sendPatient
         options[1].value = data.receivePatient
         taskList.value = data.opTaskListingDTOList;
-        console.log(taskList);
+        // console.log(taskList);
       });
     };
     getData();

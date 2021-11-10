@@ -123,8 +123,8 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const getData = () => {
-      Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        console.log(r);
+      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
+        // console.log(r);
         if (r.data) {
           taskList.value = r.data.map((d: any) => {
             return {
@@ -181,6 +181,8 @@ export default defineComponent({
             message: '患者匹配成功，交接完成',
             seconds: 3,
           });
+        } else {
+          Toast(res.msg);
         }
       });
     };
