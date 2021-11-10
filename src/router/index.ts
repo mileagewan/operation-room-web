@@ -39,7 +39,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/clearTask',
     name: 'ClearTask',
     component: () => import(/* webpackChunkName: "clearTask" */ '../views/mobile/ClearTask.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "login" */ '../views/login.vue')
+  },
 ]
 
 const router = createRouter({

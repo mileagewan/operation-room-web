@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, getCurrentInstance } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import Request from '@/service/request';
 

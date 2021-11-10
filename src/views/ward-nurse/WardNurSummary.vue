@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
