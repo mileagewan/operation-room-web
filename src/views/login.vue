@@ -41,6 +41,21 @@ export default defineComponent({
         password: '1',
         role: '接送护士',
       },
+      {
+        phone: '18812341386',
+        password: '1',
+        role: '巡回护士',
+      },
+      {
+        phone: '18812341628',
+        password: '1',
+        role: '复苏室护士',
+      },
+      {
+        phone: '18812341650',
+        password: '1',
+        role: '总协调护士',
+      },
     ]);
     const user = reactive({
       phone: '',
