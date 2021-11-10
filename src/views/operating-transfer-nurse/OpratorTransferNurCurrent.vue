@@ -14,7 +14,7 @@
           sex: task.patient.sex,
           age: task.patient.age,
           type: task.opInfo.type,
-          room: task.opInfo.oproomName,
+          room: task.opInfo.opDescName,
         }"
       />
     </template>
@@ -39,7 +39,7 @@
       </KeyValueBlock>
 
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -61,12 +61,12 @@
       </template>
 
       <template v-if="task.opInfo.opSectionCode === '6'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
       </template>
 
       <!-- 从手术室接出 -->
       <template v-if="isBack(task.opInfo.opSectionCode)">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -88,7 +88,7 @@
       </template>
 
       <template v-if="task.opInfo.opSectionCode === '14'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
       </template>
     </template>
   </TaskView>

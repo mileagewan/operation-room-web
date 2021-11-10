@@ -14,7 +14,7 @@
           sex: task.patient.sex,
           age: task.patient.age,
           type: task.opInfo.type,
-          room: task.opInfo.oproomName,
+          room: task.opInfo.opDescName,
         }"
       />
     </template>
@@ -30,8 +30,13 @@
         </template>
       </KeyValue>
       <KeyValueBlock>
-        <template #value> 无 </template>
+        <template #value>  {{ task.opTask.taskTipContent || "无" }} </template>
       </KeyValueBlock>
+      <KeyValueBlock
+          clear
+          label="发布人"
+          :value="`${task.opTask.publisherUserName} ${task.opTask.publisherUserPhone}`"
+        />
       <!-- 接任务操作 -->
       <div class="ihybrid-button-center">
         <van-button

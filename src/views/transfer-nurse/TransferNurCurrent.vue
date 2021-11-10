@@ -13,7 +13,7 @@
           sex: task.patient.sex,
           age: task.patient.age,
           type: task.opInfo.type,
-          room: task.opInfo.oproomName,
+          room: task.opInfo.opDescName,
         }"
       />
     </template>
@@ -38,6 +38,7 @@
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
+
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -60,10 +61,18 @@
 
       <!-- 转送中 -->
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="交接人" value="未对接数据 13800138000" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">
-        <KeyValueBlock clear label="交接人" value="未对接数据 13800138000" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
       </template>
     </template>
   </TaskView>
@@ -117,6 +126,7 @@ export default defineComponent({
       loading.value = true;
       return Request.xhr('queryCurrentTaskList')
         .then((r: CurrentTaskViews) => {
+          // console.log(r);
           if (r.code === 200) {
             taskList.value = r.data.map((d: any) => {
               return {

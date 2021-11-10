@@ -16,7 +16,7 @@
           sex: task.patient.sex,
           age: task.patient.age,
           type: task.opInfo.type,
-          room: task.opInfo.oproomName,
+          room: task.opInfo.opDescName,
         }"
       >
         <KeyValue

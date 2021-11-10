@@ -13,7 +13,7 @@
           sex: task.patient.sex,
           age: task.patient.age,
           type: task.opInfo.type,
-          room: task.opInfo.oproomName,
+          room: task.opInfo.opDescName,
         }"
       />
     </template>
@@ -44,7 +44,7 @@
         </div>
       </template>
       <template v-if="task.opInfo.opSectionCode === '4'">
-        <KeyValueBlock clear label="交接人" value="力度 13800138000" />
+        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">
         <div class="ihybrid-button-group">
