@@ -57,9 +57,12 @@ import useTaskMixins, {
 import { Task } from '@/types/interface-model';
 import { CurrentTaskViews, } from '@/types/CurrentTaskViews';
 import Request from '../../service/request';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ChiefNurCurrent',
   setup() {
+    const { updateTitleCount } = useTitleCount();
+
     const map = new Map<number, any>([
       [6, {
         title: '到手术室',
@@ -166,7 +169,10 @@ export default defineComponent({
               flowData: flowData
             };
           }) as any
+        } else {
+          taskViewsList.value = []
         }
+        updateTitleCount(taskViewsList.value.length)
         console.log(taskViewsList.value)
       })
     }

@@ -120,10 +120,13 @@ import useTaskMixins, {
 import JsToFlutter from '@/utils/js-to-flutter';
 import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
 import ToastCountdown from '@/utils/toast-countdown';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ResuscitationNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
+    const { updateTitleCount } = useTitleCount();
+
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -224,6 +227,7 @@ export default defineComponent({
         } else {
           taskViewsList.value = []
         }
+        updateTitleCount(taskViewsList.value.length);
       });
     };
     onMounted(() => {

@@ -8,9 +8,12 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request'
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ResuscitationNurDone',
   setup() {
+    const { updateTitleCount } = useTitleCount();
+
     // TODO 页面请求数据，并封装好DoneSummary所需要的options数据
     const options = reactive([
       {
@@ -39,7 +42,7 @@ export default defineComponent({
             options[1].value = 0;
             taskList.value = [];
           }
-          // console.log(taskList);
+          updateTitleCount(taskList.value.length)
         })
         .finally(() => {
           loading.value = false;

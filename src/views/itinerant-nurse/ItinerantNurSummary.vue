@@ -49,9 +49,12 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ItinerantNurSummary',
   setup() {
+    const { updateTitleCount } = useTitleCount();
+
     const loading = ref(false);
     const finished = ref(true);
     const { formatTask } = useTaskMixins();
@@ -77,12 +80,14 @@ export default defineComponent({
               infoItems: formatTask(d, infoItems),
             };
           });
+        } else {
+          list.value = []
         }
+        updateTitleCount(list.value.length)
         // TODO 数据list赋值处理
       });
     };
     getData();
-    // console.log(list);
     return {
       loading,
       finished,
