@@ -60,23 +60,23 @@
         </template>
         <template v-else-if="taskView.opInfo.opSectionCode === '7'">
           <van-button
-            icon="passed"
             class="btn-operation"
             @click="thirdPartyConfirm(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
+            <IconFont icon="icon-sanfangqueren" />
             三方确认
           </van-button>
         </template>
         <template v-else-if="taskView.opInfo.opSectionCode === '8'">
           <van-button
-            icon="pause-circle-o"
             class="btn-operation"
             @click="operationBegan(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
+            <IconFont icon="icon-shoushukaishi1" />
             手术开始
           </van-button>
         </template>
@@ -89,15 +89,15 @@
             class="default-button"
             color="#f0fafe"
           >
-            通知下一台术前准备
+           {{taskView.notifyNextOperation === 2 ? '已通知下一台手术' : '通知下一台术前准备'}}
           </van-button>
           <van-button
-            icon="passed"
             class="btn-operation"
             @click="resuscitationHandle(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
+            <IconFont icon="icon-shoushuwancheng" />
             手术完成
           </van-button>
         </template>

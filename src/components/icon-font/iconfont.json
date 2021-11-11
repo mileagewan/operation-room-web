@@ -6,6 +6,20 @@
   "description": "项目icon",
   "glyphs": [
     {
+      "icon_id": "25635592",
+      "name": "手术完成",
+      "font_class": "shoushuwancheng",
+      "unicode": "e73e",
+      "unicode_decimal": 59198
+    },
+    {
+      "icon_id": "25635591",
+      "name": "手术开始",
+      "font_class": "shoushukaishi1",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
       "icon_id": "25552462",
       "name": "手术室",
       "font_class": "shoushushi1",

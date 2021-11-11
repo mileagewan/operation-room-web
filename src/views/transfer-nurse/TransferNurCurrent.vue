@@ -89,7 +89,6 @@
 import { defineComponent, onMounted, ref, reactive } from 'vue';
 import Request from '@/service/request';
 import { Toast } from 'vant';
-import { ReturnData } from '@/types/interface-model';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   anesthesiaDicCode,

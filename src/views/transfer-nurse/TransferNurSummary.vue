@@ -53,10 +53,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue';
+import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
 import { Toast } from 'vant';
 import Request from '../../service/request';
-import { ReturnData } from '@/types/interface-model';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   anesthesiaDicCode,

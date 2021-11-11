@@ -119,10 +119,8 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue';
-import { curentData } from '@/utils/mock-test-data';
 import { Toast } from 'vant';
 import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   anesthesiaDicCode,

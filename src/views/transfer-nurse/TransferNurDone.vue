@@ -10,7 +10,6 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
-import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'TransferNurDone',

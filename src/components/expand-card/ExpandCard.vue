@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'ExpandCard',
@@ -37,27 +37,10 @@ export default defineComponent({
       },
     },
   },
-  setup(props) {
+  setup() {
     const expandStatus = ref<boolean>(false);
     const expandContentRef = ref<HTMLElement | null>(null);
     const expandCardRef = ref<HTMLElement | null>(null);
-    watch(
-      expandStatus,
-      (value) => {
-        // if (!expandCardRef.value || !expandContentRef.value) {
-        //   return;
-        // }
-        // const dpr = window.devicePixelRatio >= 2 ? 2 : 1;
-        // if (value) {
-        //   const scrollHeight = (expandContentRef.value as any)
-        //     .scrollHeight as number;
-        //   (expandCardRef.value as any).style.height = `${scrollHeight + 36}px`;
-        // } else {
-        //   (expandCardRef.value as any).style.height = `${460 / dpr}px`;
-        // }
-      },
-      { immediate: true }
-    );
     return {
       expandStatus,
       expandContentRef,
