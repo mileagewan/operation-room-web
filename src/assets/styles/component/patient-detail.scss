@@ -6,8 +6,8 @@
     height: 48px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-
+    align-items: flex-end;
+    line-height: 1;
     .patient-name-left {
       * {
         color: var(--ihybrid--default-color);
@@ -16,6 +16,7 @@
     .patient-pesonal-name {
       font-size: 48px;
       line-height: 48px;
+      font-weight: 600;
     }
     .patient-pesonal-sex,
     .patient-pesonal-old {
@@ -26,14 +27,15 @@
 
   .patient-label {
     height: 40px;
-    margin-top: 24px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
-
+    align-items: flex-end;
+    line-height: 1;
     .patient-label-title {
       color: #333;
       font-size: var(--ihybrid--default-font-size);
-      line-height: 40px;
+      // line-height: 40px;
     }
   }
 }

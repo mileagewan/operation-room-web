@@ -10,10 +10,12 @@
     }
   }
   display: flex;
-  margin:0 -24px 36px -24px;
+  margin:44px -24px 36px -24px;
   align-items: center;
   background: #e1f6fd;
   overflow: hidden;
+  border-radius: 0 0 12px 12px;
+  // box-shadow: 0px 12px 20px 0px rgba(217,220,221,0.50);
   zoom: 1;
   .key-value-block-label {
     width: 144px;
@@ -21,6 +23,7 @@
     line-height: 24px;
     flex-shrink: 0;
     text-align: center;
+    font-weight: 500;
     background: #e1f6fd;
     color: var(--ihybrid--primary-color);
   }
@@ -28,7 +31,7 @@
     flex: auto;
     height: 100%;
     padding: 18px 24px;
-    line-height: 24px;
+    line-height: 1.2;
     min-height: 60px;
     background: #f0fafe;
     color: var(--ihybrid--default-color);

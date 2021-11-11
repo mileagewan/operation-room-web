@@ -6,7 +6,7 @@
         <span class="patient-pesonal-sex">{{
           option.sex === 1 ? "男" : "女"
         }}</span>
-        <span class="patient-pesonal-old">{{ option.age }}</span>
+        <span class="patient-pesonal-old">{{ option.age }}岁</span>
       </div>
       <TagStatus :code="option.status" />
     </div>

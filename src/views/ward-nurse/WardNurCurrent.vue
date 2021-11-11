@@ -37,8 +37,10 @@
           <van-button
             round
             @click="callNurse(task)"
+            class="btn-operation"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
+            <IconFont icon="icon-hujiao" />
             呼叫护工
           </van-button>
         </div>

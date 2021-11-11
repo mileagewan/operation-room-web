@@ -1,10 +1,14 @@
 <template>
   <div class="expand-card" ref="expandCardRef">
-    <div class="expand-card-content" ref="expandContentRef">
-      <PatientDetail :option="option"/>
+    <div
+      class="expand-card-content"
+      ref="expandContentRef"
+      :class="{ expaned: expandStatus }"
+    >
+      <PatientDetail :option="option" />
 
       <div class="expand-card-list">
-       <slot></slot>
+        <slot></slot>
       </div>
     </div>
     <div
@@ -29,9 +33,9 @@ export default defineComponent({
     option: {
       type: Object,
       default() {
-        return {}
-      }
-    }
+        return {};
+      },
+    },
   },
   setup(props) {
     const expandStatus = ref<boolean>(false);
@@ -40,17 +44,17 @@ export default defineComponent({
     watch(
       expandStatus,
       (value) => {
-        if (!expandCardRef.value || !expandContentRef.value) {
-          return;
-        }
-        const dpr = window.devicePixelRatio >= 2 ? 2 : 1;
-        if (value) {
-          const scrollHeight = (expandContentRef.value as any)
-            .scrollHeight as number;
-          (expandCardRef.value as any).style.height = `${scrollHeight + 36}px`;
-        } else {
-          (expandCardRef.value as any).style.height = `${460 / dpr}px`;
-        }
+        // if (!expandCardRef.value || !expandContentRef.value) {
+        //   return;
+        // }
+        // const dpr = window.devicePixelRatio >= 2 ? 2 : 1;
+        // if (value) {
+        //   const scrollHeight = (expandContentRef.value as any)
+        //     .scrollHeight as number;
+        //   (expandCardRef.value as any).style.height = `${scrollHeight + 36}px`;
+        // } else {
+        //   (expandCardRef.value as any).style.height = `${460 / dpr}px`;
+        // }
       },
       { immediate: true }
     );
