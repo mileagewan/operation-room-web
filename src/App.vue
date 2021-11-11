@@ -28,6 +28,7 @@ export default defineComponent({
       window.addEventListener(
         'flutterCallJS',
         function (event: any) {
+          console.log(event);
           const { detail } = event;
           switch (detail.handleName) {
             case 'or/refreshContent':
