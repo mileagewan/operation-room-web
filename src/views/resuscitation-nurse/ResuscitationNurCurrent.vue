@@ -221,6 +221,8 @@ export default defineComponent({
               taskList: formatTask(d, taskList),
             };
           }) as any;
+        } else {
+          taskViewsList.value = []
         }
       });
     };

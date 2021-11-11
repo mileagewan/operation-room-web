@@ -5,7 +5,7 @@
       <van-tab
         v-for="(cmponentItem, index) in componentsList"
         :key="cmponentItem.component"
-        :title="cmponentItem.label"
+        :title="`${cmponentItem.label}${titleCount[cmponentItem.component] ? `(${titleCount[cmponentItem.component]})` : ''}`"
       >
         <van-pull-refresh v-model="loading" @refresh="onRefresh(index)">
           <component :is="cmponentItem.component"
@@ -48,7 +48,11 @@ export default defineComponent({
     const defaultRole = computed(() => {
       const userInfo = store.state.userInfo;
       return userInfo.role;
-    });
+    })
+
+    const titleCount = computed(() => {
+      return store.state.titleCount;
+    })
 
     const goBack = (): void => {
       JsToFlutter.goback();
@@ -86,6 +90,7 @@ export default defineComponent({
       goBack,
       onRefresh,
       setItemRef,
+      titleCount
     };
   },
 });

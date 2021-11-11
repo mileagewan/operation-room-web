@@ -179,11 +179,13 @@ import useTaskMixins, {
 import { ReturnData, Task } from '@/types/interface-model';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
+import useTitleCount from '@/utils/useTitleCount';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
+    const { updateTitleCount } = useTitleCount();
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -358,7 +360,10 @@ export default defineComponent({
               taskList: formatTask(d, taskList),
             };
           }) as any;
+        } else {
+          taskViewsList.value = [];
         }
+        updateTitleCount(taskViewsList.value.length)
       });
     };
     onMounted(() => {

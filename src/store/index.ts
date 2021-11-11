@@ -30,7 +30,10 @@ export default createStore({
       state.active = value
     },
     [SET_TITLE_COUNT_MUTATION](state, value) {
-      state.titleCount = value
+      state.titleCount = {
+        ...state.titleCount,
+        ...value
+      }
     }
   },
   actions: {

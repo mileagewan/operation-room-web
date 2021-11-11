@@ -13,8 +13,8 @@ import Emitter from 'tiny-emitter';
 const emitter = new Emitter();
 
 // if (String(process.env.VUE_APP_TEST_ENV) !== 'true') {
-const log = new VConsole();
-console.log(log)
+// eslint-disable-next-line no-new
+new VConsole();
 // }
 
 const app = createApp(App);

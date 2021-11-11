@@ -24,14 +24,14 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-// import Request from '@/service/request';
-import { testCompleteTotal } from '@/utils/mock-test-data';
 import { useStore } from 'vuex';
 import { SET_OP_TASK_DTO_MUTATION } from '@/store/mutation-types';
 import Request from '@/service/request';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {
+    const { updateTitleCount } = useTitleCount()
     const router = useRouter();
     const store = useStore();
     const pageData:any = reactive({
@@ -63,6 +63,7 @@ export default defineComponent({
           pageData.options = [];
           pageData.completeList = []
         }
+        updateTitleCount(pageData.completeList.length)
       })
     }
 
