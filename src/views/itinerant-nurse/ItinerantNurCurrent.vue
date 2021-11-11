@@ -200,16 +200,16 @@ export default defineComponent({
       show: false,
       checked: false,
       roomList: [
-        {
-          label: '原科室',
-          value: 1,
-        },
-        {
-          label: 'ICU',
-          value: 2,
-        },
+        // {
+        //   label: '原科室',
+        //   value: 1,
+        // },
+        // {
+        //   label: 'ICU',
+        //   value: 2,
+        // },
       ],
-      active: 1,
+      active: '',
       row: {},
     });
     const taskList: Task[] = [
@@ -244,6 +244,8 @@ export default defineComponent({
         });
         handleOverLay.show = false;
         getData();
+      } else {
+        Toast(ret.msg as string)
       }
     };
     const codeHandle = async (row: any) => {
@@ -321,8 +323,9 @@ export default defineComponent({
         'notifyNextOperation',
         {
           opInfoId: taskView.opInfo.id,
+          currentTaskId: taskView.opTask.id || '',
+          parentTaskId: taskView.opTask.parentTaskId || '',
         },
-        `opInfoId=${taskView.opInfo.id}`
       );
       if (ret.code === 200) {
         Toast('通知下一台成功');
@@ -330,7 +333,18 @@ export default defineComponent({
       }
     };
 
-    const resuscitationHandle = (taskView: TaskViewItem) => {
+    const resuscitationHandle = async (taskView: TaskViewItem) => {
+      const ret: ReturnData = await Request.xhr('getWardList', {
+        opInfoWardId: taskView.opInfo.departmentWardId
+      }, `opInfoWardId=${taskView.opInfo.departmentWardId}`)
+      const { data } = ret;
+      resuscitationOverLay.roomList = data.map((d: { name: string, id: number }) => {
+        return {
+          label: d.name || '',
+          value: d.id || ''
+        }
+      });
+      resuscitationOverLay.active = (resuscitationOverLay.roomList[0] as any).value;
       resuscitationOverLay.show = true;
       resuscitationOverLay.row = taskView;
     };

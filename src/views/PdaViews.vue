@@ -9,7 +9,7 @@
       >
         <van-pull-refresh v-model="loading" @refresh="onRefresh(index)">
           <component :is="cmponentItem.component"
-                     :ref="setItemRef" />
+                     :ref="el => setItemRef(el,index)" />
         </van-pull-refresh>
       </van-tab>
     </van-tabs>
@@ -73,9 +73,9 @@ export default defineComponent({
     const componentsList = reactive(getComponentsList(defaultRole.value));
 
     const itemRefs: any[] = [];
-    const setItemRef = (el: HTMLElement) => {
+    const setItemRef = (el: HTMLElement, index:number) => {
       if (el) {
-        itemRefs.push(el);
+        itemRefs[index] = el;
       }
     };
     return {

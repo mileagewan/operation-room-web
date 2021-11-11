@@ -13,6 +13,7 @@
 
   // size
   --ihybrid--default-font-size: 24px;
+  --ihybrid--font-size--28: 28px;
   --ihybrid--font-size--30: 30px;
   --ihybrid--font-size--36: 36px;
   --ihybrid--font-size--48: 48px;
@@ -51,6 +52,10 @@
   justify-content: flex-end;
   button {
     width: 50%;
+
+    .iconfont {
+      font-size: var(--ihybrid--font-size--28);
+    }
 
     &.default-button {
       border: 2px solid #c0ebff;

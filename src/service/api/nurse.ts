@@ -104,6 +104,11 @@ const nurse: ServiceItem[] = [
     key: 'opStart',
     method: 'post',
   },
+  {
+    path: '/nurseOperate/getWardList',
+    key: 'getWardList',
+    method: 'post'
+  },
   // 手术结束
   {
     path: '/nurseOperate/opEnd',
