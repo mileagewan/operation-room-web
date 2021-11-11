@@ -43,7 +43,12 @@
               <div class="row">
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span class="text">{{ patientInfo.patientSex == 1 ? '男' : '女' }}</span>
+                  <span class="text">
+                    {{
+                      patientInfo.patientSex == 1 ? '男' :
+                        (patientInfo.patientSex == 2 ? '女' : '')
+                    }}
+                  </span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
@@ -52,42 +57,6 @@
                   >{{ patientInfo.patientAge ? (patientInfo.patientAge + '岁') : '' }}</span>
                 </div>
               </div>
-              <!-- <template #left-content>
-                <div class="item">
-                  <span class="title">手术室</span>
-                  <span
-                    class="text"
-                  >{{ patientInfo.departmentWardName }} - {{ patientInfo.oproomSubName }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">主刀医生</span>
-                  <span class="text">{{ patientInfo.surgeonName }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">麻醉医生</span>
-                  <span class="text">{{ patientInfo.anesthetistName }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者性别</span>
-                  <span class="text">{{ patientInfo.patientSex == 1 ? '男' : '女' }}</span>
-                </div>
-              </template>
-              <template #right-content>
-                <div class="item">
-                  <span class="title">巡回护士</span>
-                  <span class="text">{{ patientInfo.circulatingNurseName }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">器械护士</span>
-                  <span class="text">{{ patientInfo.instrumentNurseName }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">患者年龄</span>
-                  <span
-                    class="text"
-                  >{{ patientInfo.patientAge ? (patientInfo.patientAge + '岁') : '' }}</span>
-                </div>
-              </template>-->
             </oprat-info>
           </template>
           <template #content>

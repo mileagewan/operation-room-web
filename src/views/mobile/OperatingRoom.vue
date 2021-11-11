@@ -49,7 +49,9 @@
               <div class="row">
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span class="text">{{ item.patientSex == 1 ? '男' : '女' }}</span>
+                  <span
+                    class="text"
+                  >{{ item.patientSex == 1 ? '男' : (item.patientSex == 2 ? '女' : '') }}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
