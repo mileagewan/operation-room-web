@@ -104,9 +104,11 @@ import useTaskMixins, {
 } from '../../utils/task-mixins';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
+    const { updateTitleCount } = useTitleCount() as any;
     const loading = ref(false);
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
@@ -137,6 +139,7 @@ export default defineComponent({
           } else {
             taskList.value = [];
           }
+          updateTitleCount(taskList.value.length)
         })
         .finally(() => {
           loading.value = false;

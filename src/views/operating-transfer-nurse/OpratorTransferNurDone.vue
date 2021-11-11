@@ -10,9 +10,11 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'OpratorTransferNurDone',
   setup() {
+    const { updateTitleCount } = useTitleCount() as any;
     const options = reactive([
       {
         label: '送病人',
@@ -40,6 +42,7 @@ export default defineComponent({
             options[1].value = 0;
             taskList.value = [];
           }
+          updateTitleCount(taskList.value.length)
         })
         .finally(() => {
           loading.value = false;

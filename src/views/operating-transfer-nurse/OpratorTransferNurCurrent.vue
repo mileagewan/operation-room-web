@@ -39,7 +39,11 @@
       </KeyValueBlock>
 
       <template v-if="task.opInfo.opSectionCode === '5'">
-        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -61,12 +65,20 @@
       </template>
 
       <template v-if="task.opInfo.opSectionCode === '6'">
-        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
       </template>
 
       <!-- 从手术室接出 -->
       <template v-if="isBack(task.opInfo.opSectionCode)">
-        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -88,7 +100,11 @@
       </template>
 
       <template v-if="task.opInfo.opSectionCode === '14'">
-        <KeyValueBlock clear label="交接人" :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`" />
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+        />
       </template>
     </template>
   </TaskView>
@@ -120,9 +136,11 @@ import useTaskMixins, {
 } from '../../utils/task-mixins';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
+    const { updateTitleCount } = useTitleCount() as any;
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -208,7 +226,10 @@ export default defineComponent({
               infoItems: formatTask(d, infoItems),
             };
           });
+        } else {
+          taskList.value = [];
         }
+        updateTitleCount(taskList.value.length);
       });
     };
     getData();

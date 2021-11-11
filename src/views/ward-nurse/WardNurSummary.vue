@@ -50,10 +50,12 @@ import useTaskMixins, {
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
+import useTitleCount from '@/utils/useTitleCount';
 
 export default defineComponent({
   name: 'WardNurSummary',
   setup() {
+    const { updateTitleCount } = useTitleCount() as any;
     const loading = ref(false);
     const finished = ref(true);
     const { formatTask } = useTaskMixins();
@@ -86,6 +88,7 @@ export default defineComponent({
           } else {
             taskList.value = []
           }
+          updateTitleCount(taskList.value.length);
         })
         .finally(() => {
           loading.value = false;

@@ -72,9 +72,11 @@ import useTaskMixins, {
 } from '../../utils/task-mixins';
 import { useStore } from 'vuex';
 import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'TransferNurSummary',
   setup() {
+    const { updateTitleCount } = useTitleCount() as any;
     const store = useStore();
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -105,6 +107,7 @@ export default defineComponent({
           } else {
             taskList.value = [];
           }
+          updateTitleCount(taskList.value.length)
         })
         .finally(() => {
           loading.value = false;

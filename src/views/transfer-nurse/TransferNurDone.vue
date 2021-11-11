@@ -11,10 +11,11 @@
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'TransferNurDone',
   setup() {
-    // TODO 页面请求数据，并封装好DoneSummary所需要的options数据
+    const { updateTitleCount } = useTitleCount() as any;
     const options = reactive([
       {
         label: '送病人',
@@ -42,6 +43,7 @@ export default defineComponent({
             options[1].value = 0;
             taskList.value = [];
           }
+          updateTitleCount(taskList.value.length)
           // console.log(taskList);
         })
         .finally(() => {
