@@ -32,12 +32,12 @@ export default defineComponent({
     option: {
       type: Object,
       default: () => ({
-        name: '四个名字',
-        sex: '男',
-        age: '99',
-        status: 16,
-        type: 2,
-        room: '手术-01间-01台',
+        name: '',
+        sex: '',
+        age: '',
+        status: '',
+        type: '',
+        room: '',
       }),
     },
     showRight: {

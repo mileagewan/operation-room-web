@@ -6,8 +6,8 @@
         <PatientDetail :option="{
           status: opTaskDTO.opInfo.opSectionCode,
           name: opTaskDTO.patient.name,
-          sex: '男',
-          age: '99',
+          sex: opTaskDTO.patient.sex,
+          age: opTaskDTO.patient.age,
           type: opTaskDTO.opInfo.type,
           room: opTaskDTO.opInfo.oproomSubName,
         }" :show-right="false"/>
