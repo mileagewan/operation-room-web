@@ -5,7 +5,7 @@
     class="handle-overlay"
     position="bottom"
     @click-overlay="manualHandle"
-    teleport=".van-tabs__track"
+    teleport="#app"
   >
     <div class="handle-overlay_title">
       请输入交接人工号

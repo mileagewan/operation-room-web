@@ -123,7 +123,7 @@
   <van-popup
     v-model:show="resuscitationOverLay.show"
     round
-    teleport=".van-tabs__track"
+    teleport="#app"
     position="bottom"
   >
     <div class="itinerant-nur-to-resuscitation">
@@ -142,6 +142,7 @@
           @click="roomSelect(room)"
         >
           {{ room.label }}
+          <img src="/img/select-2.png" alt="">
         </div>
       </div>
       <div class="ihybrid-button-group">

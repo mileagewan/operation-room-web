@@ -35,22 +35,38 @@
 
   .room-select {
     display: flex;
-    justify-content: space-between;
     margin-bottom: 48px;
 
     > div {
-      width: 200px;
+      width: 100%;
       height: 120px;
       border-radius: 6px;
       background: #f7f7f7;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      >img {
+        display: none;
+      }
+
+      &:not(:first-child) {
+        margin-left: 12px;
+      }
 
       &.is-active {
         background: #e1f5fd;
         color: var(--ihybrid--primary-color);
         border: 1px solid #2ebdff;
+
+        img {
+          width: 48px;
+          height: 48px;
+          display: block;
+          position: absolute;
+          right: -1px;
+          bottom: -1px;
+        }
       }
     }
   }

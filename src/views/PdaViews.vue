@@ -16,7 +16,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue';
+import { computed, defineComponent, getCurrentInstance, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
@@ -27,19 +27,22 @@ export default defineComponent({
   components,
   setup() {
     const store = useStore();
-
+    const { ctx }: any = getCurrentInstance()
     const loading = ref<boolean>(false);
     const active = computed({
       get() {
+        const value = store.state.active
+        try {
+          ctx.$nextTick(() => {
+            itemRefs.length && itemRefs[value].getData();
+          })
+        } catch (e) {
+          console.log(e);
+        }
         return store.state.active;
       },
       set(value:number) {
         store.commit(SET_ACTIVE_MUTATION, value);
-        try {
-          itemRefs[value].getData();
-        } catch (e) {
-          console.log(e);
-        }
       },
     });
     const defaultRole = computed(() => {

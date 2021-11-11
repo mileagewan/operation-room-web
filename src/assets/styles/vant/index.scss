@@ -44,3 +44,13 @@
 .van-dialog__message {
   padding: 24px 72px;
 }
+
+.van-nav-bar__title {
+  font-size: var(--ihybrid--font-size--36);
+}
+.van-tab {
+  font-size: var(--ihybrid--font-size--30);
+}
+.van-tab--active {
+  font-size: var(--ihybrid--font-size--36);
+}
