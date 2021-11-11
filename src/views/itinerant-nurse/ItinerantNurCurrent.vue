@@ -50,6 +50,7 @@
           </van-button>
           <van-button
             icon="scan"
+            class="btn-operation"
             @click="codeHandle(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -60,6 +61,7 @@
         <template v-else-if="taskView.opInfo.opSectionCode === '7'">
           <van-button
             icon="passed"
+            class="btn-operation"
             @click="thirdPartyConfirm(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -70,6 +72,7 @@
         <template v-else-if="taskView.opInfo.opSectionCode === '8'">
           <van-button
             icon="pause-circle-o"
+            class="btn-operation"
             @click="operationBegan(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -90,6 +93,7 @@
           </van-button>
           <van-button
             icon="passed"
+            class="btn-operation"
             @click="resuscitationHandle(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -149,6 +153,7 @@
         <van-button round class="cancel-btn" color="#FAFAFA"> 取消 </van-button>
         <van-button
           round
+          class="btn-operation"
           @click="resuscitationOverLayHandleOk"
           color="linear-gradient(to right, #00D6FA, #00ACF2)"
         >

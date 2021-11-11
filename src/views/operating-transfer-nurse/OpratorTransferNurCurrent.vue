@@ -55,6 +55,7 @@
           </van-button>
           <van-button
             icon="scan"
+            class="btn-operation"
             @click="codeHandle(task)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -90,6 +91,7 @@
           </van-button>
           <van-button
             icon="scan"
+            class="btn-operation"
             @click="codeHandle(task)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"

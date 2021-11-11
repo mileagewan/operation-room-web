@@ -56,6 +56,7 @@
           </van-button>
           <van-button
             icon="scan"
+            class="btn-operation"
             @click="codeHandle(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -74,6 +75,7 @@
         <div class="ihybrid-button-center">
           <van-button
             icon="scan"
+            class="btn-operation"
             @click="callNurse(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
