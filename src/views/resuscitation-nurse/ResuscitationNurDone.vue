@@ -17,13 +17,13 @@ export default defineComponent({
     // TODO 页面请求数据，并封装好DoneSummary所需要的options数据
     const options = reactive([
       {
-        label: '送病人',
+        label: '复苏病人',
         value: 0,
       },
       {
-        label: '接病人',
+        label: '准时率',
         value: 0,
-      },
+      }
     ]);
     const taskList: any = ref([]);
     const loading = ref(false)
@@ -34,8 +34,8 @@ export default defineComponent({
           // console.log(r);
           if (r.code === 200) {
             const { data }: any = r;
-            options[0].value = data.sendPatient;
-            options[1].value = data.receivePatient;
+            options[0].value = data.patientNum;
+            options[1].value = data.onTimeRate;
             taskList.value = data.opTaskListingDTOList;
           } else {
             options[0].value = 0;

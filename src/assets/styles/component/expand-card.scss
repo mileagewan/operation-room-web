@@ -7,10 +7,12 @@
   transition: 0.2s ease-in-out;
 
   .expand-card-content {
-    height: 400px;
+    height: 448px;
     overflow: hidden;
+    transition: 0.2s height ease-in-out;
     &.expaned {
-      height: calc(100% - 72px);
+      height: calc(100% - 96px);
+      transition: 0.2s height ease-in-out;
     }
     .expand-card-list {
       padding: 0 24px;
@@ -18,6 +20,7 @@
   }
 
   .expand-card-todo {
+    transition: 0.2s all ease-in-out;
     height: 72px;
     border-top: 2px solid #f2f2f2;
     display: flex;
@@ -25,6 +28,17 @@
     justify-content: center;
     font-size: var(--ihybrid--default-font-size);
     color: #999;
+    position: relative;
+    &:before {
+      width: 100%;
+      height: 24px;
+      content: '';
+      display: block;
+      position: absolute;
+      background: #fff;
+      top: -26px;
+      left: 0;
+    }
     .iconfont {
       font-size: inherit;
     }

@@ -360,7 +360,7 @@ export default defineComponent({
         parentTaskId:
           (resuscitationOverLay.row as TaskViewItem).opTask.parentTaskId || '',
         resuscitationRoom: resuscitationOverLay.checked ? 1 : 2,
-        postoperativeLocation: resuscitationOverLay.active,
+        opEndWard: resuscitationOverLay.active,
       };
       const ret: ReturnData = await Request.xhr('opEnd', params);
       if (ret.code === 200) {

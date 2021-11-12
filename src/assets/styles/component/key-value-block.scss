@@ -9,6 +9,9 @@
       background: #fff;
     }
   }
+  &:not(.is-clear) {
+    box-shadow: 0px 12px 20px 0px rgba(217,220,221,0.5);
+  }
   display: flex;
   margin:44px -24px 36px -24px;
   align-items: center;
