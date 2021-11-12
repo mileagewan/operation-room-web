@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text">{{ item.departmentardName }} - {{ item.oproomSubName }}</span>
+                  <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
                 </div>
               </div>
               <div class="row">

@@ -26,7 +26,7 @@
             :class="[1 ? 'icons-current-select-white' : '']"
           />
           <IconFont
-            v-if="(item.status == null || item.status == 1)"
+            v-if="(item.status == null || item.status == 1 || item.status == 0)"
             icon="icon-daikaishi icons-default-color"
             :class="[item.doing ? 'icons-not-start' : '']"
           />
