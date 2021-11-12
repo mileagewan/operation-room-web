@@ -20,10 +20,10 @@ export default defineComponent({
 .oprat-info-warp {
   :deep(.row) {
     display: flex;
-    &:nth-child(n+2){
-      .item{
-       width: 312px;
-       overflow: hidden;
+    &:nth-child(n + 2) {
+      .item {
+        width: 312px;
+        overflow: hidden;
       }
     }
     .item {
