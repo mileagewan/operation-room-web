@@ -52,5 +52,16 @@
       }
     }
   }
+
+  button {
+    .van-button__content {
+      &>i {
+        margin-right: 12px;
+        font-weight: var(--ihybrid--important-weight);
+      }
+      font-size: var(--ihybrid--font-size--30);
+      font-weight: var(--ihybrid--important-weight);
+    }
+  }
 }
 

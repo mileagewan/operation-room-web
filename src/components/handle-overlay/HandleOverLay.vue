@@ -14,8 +14,8 @@
     <div class="ihybrid-button-group" >
       <van-button round
                   @click="manualHandle"
-                  class="default-button"
-                  color="#f0fafe">
+                  class="cancel-btn"
+                  color="#FAFAFA">
         取消
       </van-button>
       <van-button @click="codeHandle"

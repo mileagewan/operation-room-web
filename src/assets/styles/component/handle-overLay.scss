@@ -20,16 +20,38 @@
     background: #f0fafe;
     margin: 30px 0 48px 0;
     text-align: center;
+    padding: 0;
 
+    .van-field__value {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .van-field__body {
+        height: 100%;
+        line-height: 100%;
+      }
+    }
     input {
       text-align: center;
       font-size: 48px;
       color: #000;
+      height: 100%;
+      line-height: 100%;
+      vertical-align: middle;
+    }
+    .van-cell__value {
+      display: flex;
+      align-items: center;
+    }
+
+    .van-field__body {
+      align-items: center;
     }
   }
 
   .ihybrid-button-group {
     width: 100%;
-    padding: 0 24px;
+    padding: 0 48px;
   }
 }

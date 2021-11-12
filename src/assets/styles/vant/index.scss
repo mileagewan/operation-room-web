@@ -35,6 +35,11 @@
   --van-dialog-header-font-weight: 700;
 }
 
+:root {
+  --van-popup-round-border-radius: 12px;
+}
+
+
 .van-dialog__cancel {
   color: var(--ihybrid--default-label-color);
 }
@@ -54,4 +59,8 @@
 }
 .van-tab--active {
   font-size: var(--ihybrid--font-size--36);
+}
+
+.van-tag--round {
+  font-weight: var(--ihybrid--important-weight);
 }
