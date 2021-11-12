@@ -3,7 +3,7 @@ export default (code: string): string => {
   // const codeMap = {}
   const codeMap: any = {
     1: '手术排台',
-    2: '未开始手术',
+    2: '未开始',
     3: '术前准备',
     4: '送手术',
     5: '转送中',

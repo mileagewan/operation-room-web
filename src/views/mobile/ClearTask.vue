@@ -200,5 +200,8 @@ export default defineComponent({
   .clear-task-cards {
     margin-bottom: 24px;
   }
+  :deep(.empty-page) {
+    transform: translateY(-168px);
+  }
 }
 </style>

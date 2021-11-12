@@ -242,5 +242,8 @@ export default defineComponent({
       }
     }
   }
+  :deep(.empty-page) {
+    transform: translateY(-168px);
+  }
 }
 </style>
