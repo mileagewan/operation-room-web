@@ -180,7 +180,8 @@ export default defineComponent({
     font-family: PingFangSC, PingFangSC-Semibold;
     font-weight: 600;
     color: #000000;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
+    line-height: 48px;
   }
   :deep(.task-view) {
     .task-view-header {
