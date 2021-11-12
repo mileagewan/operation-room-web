@@ -69,14 +69,14 @@ export default defineComponent({
   margin: 0 24px;
   overflow: hidden;
   .container {
-    padding: 30px 24px 48px 24px;
+    padding: 30px 24px 36px 24px;
     &.hasFooter {
       padding-bottom: 12px;
     }
     .title-warp {
       display: flex;
       justify-content: space-between;
-      padding-bottom: 12px;
+      padding-bottom: 18px;
       .title {
         display: flex;
         flex-direction: column;
@@ -84,6 +84,7 @@ export default defineComponent({
         font-size: 36px;
         font-weight: 600;
         color: #000000;
+        line-height: 48px;
       }
       .state-bar {
         padding-top: 6px;
