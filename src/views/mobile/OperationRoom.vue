@@ -78,6 +78,7 @@ import { ReturnData } from '@/types/interface-model';
 import { getMonthDay } from '@/utils/date-formt'
 import { useRouter, useRoute } from 'vue-router'
 import JsToFlutter from '@/utils/js-to-flutter';
+import { Toast } from 'vant';
 
 export default defineComponent({
   name: 'OperationRoom',
@@ -116,7 +117,7 @@ export default defineComponent({
       onRefresh()
     })
     // 加载更多
-    const onLoad = async () => {
+    const onLoad = async (isTabClick?: Boolean) => {
       if (!state.refreshing && state.pageNo < state.totalPage) {
         console.log('加载更多')
         state.pageNo = state.pageNo + 1
@@ -126,20 +127,27 @@ export default defineComponent({
         listData.value = [];
         state.refreshing = false;
       }
-      loadData(state.active, state.pageNo, state.pageSize)
+      loadData(state.active, state.pageNo, state.pageSize, false, isTabClick)
     }
     // tab切换
     const onClickTab = ({ name }: any) => {
       state.active = name;
-      onRefresh()
+      onRefresh(true)
     }
     // 接口请求
-    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean) => {
+    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean, isTabClick?: Boolean) => {
       try {
         const params = {
           dateType: dateType,
           pageNo: pageNo,
           pageSize: pageSize,
+        }
+        if (isTabClick) {
+          Toast.loading({
+            duration: 0,
+            message: '加载中...',
+            forbidClick: true,
+          });
         }
         await Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
           if (r.code === 200) {
@@ -159,29 +167,35 @@ export default defineComponent({
           }
           console.log(r)
         })
+        if (isTabClick) {
+          Toast.clear()
+        }
+
       } catch (e) {
 
       }
     }
     // 下拉刷新
-    const onRefresh = async () => {
+    const onRefresh = async (isTabClick?: Boolean) => {
       state.refreshing = true
       state.finishedList = false
       state.loadingList = true
       state.pageNo = 1
-      onLoad()
+      onLoad(isTabClick)
     };
     // 点击跳转
     const cardTitleClick = (item: any) => {
       let path = '/operatDetail'
+      let id = item?.code ?? ''
       const _opSectionCode: number = item?.opSectionCode
       if (_opSectionCode < 3) {
         path = '/operatingRoom'
+        id = item.oproomSubId
       }
       router.push({
         path: path,
         query: {
-          id: item.code,
+          id: id,
           dateType: state.active ? state.active : ''
         }
       })

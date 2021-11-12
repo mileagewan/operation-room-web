@@ -74,7 +74,7 @@ export default defineComponent({
       onRefresh()
     })
     // 加载更多
-    const onLoad = async () => {
+    const onLoad = async (isTabClick?: Boolean) => {
       if (!state.refreshing && state.pageNo < state.totalPage) {
         console.log('加载更多')
         state.pageNo = state.pageNo + 1
@@ -84,15 +84,22 @@ export default defineComponent({
         listData.value = [];
         state.refreshing = false;
       }
-      loadData(state.active, state.pageNo, state.pageSize)
+      loadData(state.active, state.pageNo, state.pageSize, isTabClick)
     }
     // 接口请求
-    const loadData = async (taskStatus: string, pageNo: number, pageSize: number) => {
+    const loadData = async (taskStatus: string, pageNo: number, pageSize: number, isTabClick?: Boolean) => {
       try {
         const params = {
           taskStatus: taskStatus,
           pageNo: pageNo,
           pageSize: pageSize,
+        }
+        if (isTabClick) {
+          Toast.loading({
+            duration: 0,
+            message: '加载中...',
+            forbidClick: true,
+          });
         }
         await Request.xhr('getClearTask', params).then((r: ReturnData) => {
           if (r.code === 200) {
@@ -107,6 +114,9 @@ export default defineComponent({
           }
           console.log(r)
         })
+        if (isTabClick) {
+          Toast.clear()
+        }
       } catch (e) {
 
       }
@@ -117,12 +127,12 @@ export default defineComponent({
       onRefresh()
     }
     // 下拉刷新
-    const onRefresh = async () => {
+    const onRefresh = async (isTabClick?: Boolean) => {
       state.refreshing = true
       state.finishedList = false
       state.loadingList = true
       state.pageNo = 1
-      onLoad()
+      onLoad(isTabClick)
     };
     // 触发完成btn
     const doneBtn = (id: any) => {
