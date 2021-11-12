@@ -117,9 +117,8 @@ export default defineComponent({
       onRefresh()
     })
     // 加载更多
-    const onLoad = async (isTabClick?: Boolean) => {
+    const onLoad = async (isTabClick?: boolean) => {
       if (!state.refreshing && state.pageNo < state.totalPage) {
-        console.log('加载更多')
         state.pageNo = state.pageNo + 1
       }
       if (state.refreshing) {
@@ -135,7 +134,7 @@ export default defineComponent({
       onRefresh(true)
     }
     // 接口请求
-    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean, isTabClick?: Boolean) => {
+    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean, isTabClick?: boolean) => {
       try {
         const params = {
           dateType: dateType,
@@ -170,13 +169,10 @@ export default defineComponent({
         if (isTabClick) {
           Toast.clear()
         }
-
-      } catch (e) {
-
-      }
+      } catch (e) { console.log(e) }
     }
     // 下拉刷新
-    const onRefresh = async (isTabClick?: Boolean) => {
+    const onRefresh = async (isTabClick?: boolean) => {
       state.refreshing = true
       state.finishedList = false
       state.loadingList = true
