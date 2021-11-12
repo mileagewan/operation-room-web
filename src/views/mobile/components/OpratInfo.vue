@@ -22,7 +22,8 @@ export default defineComponent({
     display: flex;
     &:nth-child(n+2){
       .item{
-        width: 196px;
+       width: 312px;
+       overflow: hidden;
       }
     }
     .item {
@@ -45,9 +46,6 @@ export default defineComponent({
         font-weight: 400;
         color: #333333;
         line-height: 24px;
-      }
-      + .item {
-        margin-left: 160px;
       }
     }
   }
