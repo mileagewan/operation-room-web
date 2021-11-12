@@ -110,13 +110,13 @@ export default defineComponent({
         align-items: center;
         .date {
           font-size: 24px;
-          font-family: PingFangSC, PingFangSC-Regular;
+          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #333333;
         }
         .time {
           font-size: 20px;
-          font-family: PingFangSC, PingFangSC-Regular;
+          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #333333;
         }
@@ -138,7 +138,7 @@ export default defineComponent({
           display: inline-block;
           min-width: 120px;
           font-size: 24px;
-          font-family: PingFangSC, PingFangSC-Semibold;
+          // font-family: PingFangSC, PingFangSC-Semibold;
           font-weight: 600;
           color: #999999;
           padding: 0;
@@ -146,7 +146,7 @@ export default defineComponent({
         .name {
           margin-left: 24px;
           font-size: 24px;
-          font-family: PingFangSC, PingFangSC-Regular;
+          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #999999;
           max-width: 300px;

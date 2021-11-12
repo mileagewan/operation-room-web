@@ -105,7 +105,7 @@ export default defineComponent({
       background: rgba(255, 0, 0, 0.05);
 
       font-size: 24px;
-      font-family: PingFangSC, PingFangSC-Medium;
+      // font-family: PingFangSC, PingFangSC-Medium;
       font-weight: 500;
       color: #ff0000;
     }
@@ -117,7 +117,7 @@ export default defineComponent({
       height: inherit;
       padding-left: 16px;
       font-size: 24px;
-      font-family: PingFangSC, PingFangSC-Regular;
+      // font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       color: #ff0000;
     }

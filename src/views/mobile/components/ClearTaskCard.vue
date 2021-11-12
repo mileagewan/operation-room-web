@@ -1,8 +1,8 @@
 <template>
   <div class="clear-task-card">
     <div class="card-title">
-      <span>{{info.taskStartTime}}清洁任务</span>
-      <span>{{info.departmentWardName}}-{{info.oproomSubName}}</span>
+      <span>{{ info.taskStartTime }}清洁任务</span>
+      <span>{{ info.departmentWardName }}-{{ info.oproomSubName }}</span>
     </div>
     <div class="item-warp">
       <div class="item">
@@ -66,7 +66,7 @@ export default defineComponent({
     span {
       height: 48px;
       font-size: 36px;
-      font-family: PingFangSC, PingFangSC-Semibold;
+      // font-family: PingFangSC, PingFangSC-Semibold;
       font-weight: 600;
       color: #000000;
       line-height: 48px;
@@ -82,7 +82,7 @@ export default defineComponent({
       .title {
         width: 120px;
         font-size: 24px;
-        font-family: PingFangSC, PingFangSC-Regular;
+        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #999999;
       }
@@ -91,7 +91,7 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         font-size: 24px;
-        font-family: PingFangSC, PingFangSC-Regular;
+        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
       }

@@ -34,7 +34,7 @@ export default defineComponent({
         width: 96px;
         height: 24px;
         font-size: 24px;
-        font-family: PingFangSC, PingFangSC-Regular;
+        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #999999;
         line-height: 24px;
@@ -43,7 +43,7 @@ export default defineComponent({
       .text {
         height: 24px;
         font-size: 24px;
-        font-family: PingFangSC, PingFangSC-Regular;
+        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
         line-height: 24px;

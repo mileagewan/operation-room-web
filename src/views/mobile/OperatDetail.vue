@@ -177,7 +177,6 @@ export default defineComponent({
   }
   .date-title {
     font-size: 36px;
-    font-family: PingFangSC, PingFangSC-Semibold;
     font-weight: 600;
     color: #000000;
     margin-bottom: 18px;
@@ -196,7 +195,7 @@ export default defineComponent({
       padding-bottom: 24px;
       .title {
         font-size: 30px;
-        font-family: PingFangSC, PingFangSC-Semibold;
+        // font-family: PingFangSC, PingFangSC-Semibold;
         font-weight: 600;
         color: #000000;
         padding: 10px 0 24px 0;
