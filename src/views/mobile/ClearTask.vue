@@ -113,10 +113,11 @@ export default defineComponent({
             if (state.pageNo >= state.totalPage) state.finishedList = true
           }
           console.log(r)
+        }).finally(() => {
+          if (isTabClick) {
+            Toast.clear()
+          }
         })
-        if (isTabClick) {
-          Toast.clear()
-        }
       } catch (e) {
 
       }
@@ -149,6 +150,8 @@ export default defineComponent({
             Toast.clear()
             onRefresh()
           }
+        }).finally(() => {
+          Toast.clear()
         })
       } catch (e) {
         Toast.clear()

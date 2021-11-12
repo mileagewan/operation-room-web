@@ -165,10 +165,11 @@ export default defineComponent({
             }
           }
           console.log(r)
+        }).finally(() => {
+          if (isTabClick) {
+            Toast.clear()
+          }
         })
-        if (isTabClick) {
-          Toast.clear()
-        }
       } catch (e) { console.log(e) }
     }
     // 下拉刷新
