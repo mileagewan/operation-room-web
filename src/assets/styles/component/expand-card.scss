@@ -7,9 +7,10 @@
   transition: 0.2s ease-in-out;
 
   .expand-card-content {
-    height: 462px;
+    height: 390px;
     overflow: hidden;
     transition: 0.2s height ease-in-out;
+    padding-bottom: 24px;
     &.expaned {
       height: calc(100% - 96px);
       transition: 0.2s height ease-in-out;
