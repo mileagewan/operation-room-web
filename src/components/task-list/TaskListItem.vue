@@ -4,7 +4,7 @@
       <div class="flex flex-between header">
         <div class="flex-main">
           <span class="name">{{ task.patient.name }}</span>
-          <span>{{ task.patient.sex === 1 ? "男" : "女" }} 25岁</span>
+          <span>{{ task.patient.sex === 1 ? "男" : "女" }} {{task.patient.age}}岁</span>
         </div>
         <span class="task">{{
           task.listingType === 1 ? "送病人" : "接病人"
