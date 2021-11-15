@@ -151,7 +151,7 @@
         </div>
       </div>
       <div class="ihybrid-button-group">
-        <van-button round class="cancel-btn" color="#FAFAFA"> 取消 </van-button>
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="resuscitationOverLay.show = false"> 取消 </van-button>
         <van-button
           round
           class="btn-operation"

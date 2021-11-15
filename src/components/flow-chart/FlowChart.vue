@@ -21,8 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
-import { FlowData } from '@/utils/mock-test-data';
+import { defineComponent, reactive } from 'vue';
 import { findIndex, isNumber } from 'lodash';
 export default defineComponent({
   name: 'FlowChart',
