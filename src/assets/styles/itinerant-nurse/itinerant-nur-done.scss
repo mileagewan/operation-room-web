@@ -5,6 +5,29 @@
   .done-list {
     .van-cell {
       align-items: center;
+
+      .custom-title {
+        height: 48px;
+        font-size: var(--ihybrid--font-size--36);
+        font-weight: var(--ihybrid--important-weight);
+        text-align: left;
+        color: var(--ihybrid--default-color);
+        line-height: 48px;
+      }
+
+      .custom-sex,
+      .custom-age {
+        height: 24px;
+        font-size:  var(--ihybrid--default-font-size);
+        text-align: left;
+        color: var(--ihybrid--default-color);
+        line-height: 24px;
+        margin-left: 12px;
+      }
+
+      .van-cell__right-icon {
+        margin-left: 12px;
+      }
     }
   }
 }

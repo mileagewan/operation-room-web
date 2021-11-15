@@ -5,14 +5,14 @@
       <van-cell value="查看详情"
                 v-for="(list,index) in pageData.completeList"
                 :key="index"
-                :label="list.opInfo.departmentName"
+                :label="list.opInfo.opDescName"
                 @click="next(list)"
                 is-link>
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
           <span class="custom-title">{{list.patient.name}}</span>
-          <span>{{list.patient.sex}}</span>
-          <span>{{list.patient.age}}</span>
+          <span class="custom-sex">{{list.patient.sex === 1 ? '男' : '女'}}</span>
+          <span class="custom-age">{{list.patient.age}}岁</span>
         </template>
       </van-cell>
     </div>
