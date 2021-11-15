@@ -46,11 +46,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      .iconfont {
-        color: #b6ddff;
-        font-size: 8px;
-        line-height: 1;
-      }
+      background-image: url('~@/assets/images/bg-steps-right.png');
+      background-size: 24px 8px;
+      background-repeat: no-repeat;
+      background-position: center center;
     }
     .flow-chart-item_title {
       // position: absolute;

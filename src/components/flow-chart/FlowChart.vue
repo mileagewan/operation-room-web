@@ -10,7 +10,7 @@
       }"
     >
       <span class="flow-chart-line">
-        <IconFont icon="icon-jindujiantou" />
+        <!-- <IconFont icon="icon-jindujiantou" /> -->
       </span>
       <span class="flow-chart-circle">
         <IconFont :icon="item.icon" />

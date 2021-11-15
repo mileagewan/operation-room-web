@@ -42,6 +42,7 @@
         <van-button
           @click="recoveryTask(task)"
           round
+          class="btn-operation"
           color="linear-gradient(to right, #00D6FA, #00ACF2)"
         >
           <IconFont icon="icon-jierenwu" />
