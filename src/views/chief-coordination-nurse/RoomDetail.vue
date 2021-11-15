@@ -13,7 +13,7 @@
                       sex: list.patient.sex === 1 ? '男' : '女',
                       age: list.age,
                       type: list.opInfo.type,
-                      room: list.opInfo.opDescName,
+                      room: `${list.opInfo.departmentName||''}-${list.opInfo.oproomName||''}-${list.opInfo.seq||''}`,
                     }"
         >
           <KeyValue
