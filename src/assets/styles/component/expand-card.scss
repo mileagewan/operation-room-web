@@ -30,6 +30,7 @@
     font-size: var(--ihybrid--default-font-size);
     color: #999;
     position: relative;
+    z-index: 1000;
     &:before {
       width: 100%;
       height: 30px;

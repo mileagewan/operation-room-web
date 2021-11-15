@@ -9,7 +9,7 @@
           sex: opTaskDTO.patient.sex,
           age: opTaskDTO.patient.age,
           type: opTaskDTO.opInfo.type,
-          room: opTaskDTO.opInfo.oproomSubName,
+          room: opTaskDTO.opInfo.opDescName,
         }" :show-right="false"/>
       </template>
       <template #content>

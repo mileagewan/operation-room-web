@@ -2,8 +2,10 @@
   @extend .page-bg-line;
   padding: 24px;
   height: 100vh;
+  padding-top: 0;
 
   .task-view-contet {
     padding-top: 24px;
+    padding-bottom: 24px;
   }
 }

@@ -50,12 +50,12 @@ export default defineComponent({
         if (code === 200) {
           pageData.options = [
             {
-              label: '送病人',
-              value: data.sendPatient as any,
+              label: '手术病人',
+              value: data.patientNum as any,
             },
             {
-              label: '接病人',
-              value: data.receivePatient as any,
+              label: '准时率',
+              value: data.onTimeRate as any,
             }
           ];
           pageData.completeList = data.opTaskListingDTOList as any
