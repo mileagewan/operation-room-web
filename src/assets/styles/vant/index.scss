@@ -9,7 +9,7 @@
 // navbar
 :root {
   --van-nav-bar-background-color: var(--ihybrid--transparent--bg);
-  --van-nav-bar-height: 84px;
+  --van-nav-bar-height: 98px;
   --van-nav-bar-title-font-size: 36px;
   --van-nav-bar-title-text-color: var(--ihybrid--default-color);
   --van-nav-bar-icon-color: var(--ihybrid--default-color);
@@ -49,6 +49,11 @@
 }
 .van-dialog__message {
   padding: 24px 72px;
+}
+
+.van-nav-bar {
+  height: 98px;
+  line-height: 98px;
 }
 
 .van-nav-bar__title {

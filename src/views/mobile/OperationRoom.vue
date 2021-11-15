@@ -21,6 +21,7 @@
             :dateTime="`${getMonthDay(item.startDate)}${'(' + item.week + ')'} ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
             :tagCode="item.opSectionCode"
+            @click.stop="cardTitleClick(item)"
             @click-title="cardTitleClick(item)"
           >
             <template #content>

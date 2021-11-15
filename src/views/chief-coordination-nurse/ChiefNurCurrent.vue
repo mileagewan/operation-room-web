@@ -10,7 +10,7 @@
         sex: taskView.patient.sex === 1 ? '男' : '女',
         age: taskView.age,
         type: taskView.opInfo.type,
-        room: taskView.opInfo. oproomName,
+        room: `${taskView.opInfo.departmentName||''}-${taskView.opInfo.oproomName||''}-${taskView.opInfo.seq||''}`,
       }"/>
     </template>
     <template #content>
