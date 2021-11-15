@@ -95,6 +95,7 @@
             class="btn-operation"
             @click="resuscitationHandle(taskView)"
             round
+            :disabled="taskView.notifyNextOperation === 1 "
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
             <IconFont icon="icon-shoushuwancheng" />
