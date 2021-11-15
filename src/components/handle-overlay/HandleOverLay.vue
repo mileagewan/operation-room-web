@@ -20,6 +20,7 @@
       </van-button>
       <van-button @click="codeHandle"
                   round
+                  class="btn-operation"
                   color="linear-gradient(to right, #00D6FA, #00ACF2)">
         确定
       </van-button>
