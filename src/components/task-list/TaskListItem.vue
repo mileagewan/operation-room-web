@@ -54,9 +54,12 @@ export default defineComponent({
   color: #333;
   .header {
     margin-bottom: 18px;
+    align-items: flex-end;
+    line-height: 1;
     .name {
       margin-right: 12px;
       font-size: 36px;
+      font-weight: 600;
       color: #000;
     }
     .task {
@@ -74,7 +77,7 @@ export default defineComponent({
         color: #999999;
       }
       + .info-item {
-        margin-left: 100px;
+        margin-left: 102px;
       }
     }
   }
