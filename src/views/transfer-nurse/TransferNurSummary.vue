@@ -42,6 +42,7 @@
         <van-button
           @click="recoveryTask(task)"
           round
+          class="btn-operation"
           color="linear-gradient(to right, #00D6FA, #00ACF2)"
         >
           <IconFont icon="icon-jierenwu" />
@@ -94,7 +95,7 @@ export default defineComponent({
     const loading = ref(false);
     const getData = () => {
       loading.value = true;
-      return Request.xhr('queryTaskPoolList')
+      return Request.xhr('queryCurrentTaskList')
         .then((r: CurrentTaskViews) => {
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
