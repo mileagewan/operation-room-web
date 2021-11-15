@@ -46,7 +46,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-image: url('~@/assets/images/bg-steps-right.png');
+      background-image: url('~@/assets/images/steps-right.png');
       background-size: 24px 8px;
       background-repeat: no-repeat;
       background-position: center center;
@@ -90,9 +90,7 @@
         }
       }
       .flow-chart-line {
-        .iconfont {
-          color: var(--ihybrid--active-color);
-        }
+        background-image: url('~@/assets/images/steps-right-active.png');
       }
       .flow-chart-item_title {
         color: var(--ihybrid--active-color);
