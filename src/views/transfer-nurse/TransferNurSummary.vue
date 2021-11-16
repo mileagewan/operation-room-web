@@ -29,6 +29,11 @@
           {{ item.label }}
         </template>
       </KeyValue>
+      <KeyValue label="目的地" v-if="String(task.opInfo.opSectionCode) === '14'">
+        <template #value>
+          {{task.opTask?.destinationName || '无'}}
+        </template>
+      </KeyValue>
       <KeyValueBlock>
         <template #value>  {{ task.opTask.taskTipContent || "无" }} </template>
       </KeyValueBlock>
@@ -59,16 +64,11 @@ import { Toast } from 'vant';
 import Request from '../../service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
-  anesthesiaDicCode,
-  anesthetistName,
-  beforeDiseaseName,
   circulatingNurseName,
   departmentName,
   hospitalCode,
   infectType,
   opInfoCode,
-  opInfoName,
-  surgeonName,
 } from '../../utils/task-mixins';
 import { useStore } from 'vuex';
 import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
@@ -83,13 +83,8 @@ export default defineComponent({
       opInfoCode(),
       hospitalCode(),
       departmentName(),
-      surgeonName(),
-      circulatingNurseName(),
-      anesthetistName(),
-      anesthesiaDicCode(),
       infectType(),
-      opInfoName(),
-      beforeDiseaseName(),
+      circulatingNurseName(),
     ];
     const taskList: any = ref([]);
     const loading = ref(false);

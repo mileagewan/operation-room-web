@@ -314,7 +314,7 @@ export default defineComponent({
     const operationBegan = (taskView: TaskViewItem) => {
       console.log(taskView);
       Dialog.confirm({
-        message: '请确定手术已开始准备切片',
+        message: '请确定手术已开始准备切皮',
         confirmButtonText: '确 定',
         cancelButtonText: '取 消'
       })
@@ -382,6 +382,8 @@ export default defineComponent({
         Toast('手术完成');
         resuscitationOverLay.show = false;
         getData();
+      } else {
+        Toast(ret.msg as string)
       }
     };
     const getData = () => {
