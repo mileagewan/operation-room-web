@@ -233,7 +233,7 @@ export default defineComponent({
       anesthesiaDicCode(),
       infectType(),
       opInfoName(),
-      beforeDiseaseName(),
+      // beforeDiseaseName(),
     ];
     const taskViewsList = ref([]);
 
