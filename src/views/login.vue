@@ -15,6 +15,7 @@
       触发
     </button>
   </div>
+  <FlowChart :flow-data="chartData" :currentCode="6"/>
 </template>
 
 <script lang="ts">
@@ -25,6 +26,9 @@ import Request from '@/service/request';
 export default defineComponent({
   name: 'login',
   setup() {
+    const chartData = ref([
+      1, 6, 10, 7, 3
+    ])
     const users = reactive([
       {
         phone: '13266661111',
@@ -92,6 +96,7 @@ export default defineComponent({
       );
     };
     return {
+      chartData,
       user,
       users,
       opInfoId,
