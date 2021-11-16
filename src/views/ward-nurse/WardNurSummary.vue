@@ -60,16 +60,16 @@ export default defineComponent({
     const finished = ref(true);
     const { formatTask } = useTaskMixins();
     const infoItems = [
-      opInfoCode(),
-      hospitalCode(),
       departmentName(),
-      surgeonName(),
-      circulatingNurseName(),
-      anesthetistName(),
-      anesthesiaDicCode(),
+      hospitalCode(),
       infectType(),
+      surgeonName(),
       opInfoName(),
       beforeDiseaseName(),
+      anesthetistName(),
+      anesthesiaDicCode(),
+      opInfoCode(),
+      circulatingNurseName(),
     ];
     const taskList: any = ref([]);
     const getData = () => {

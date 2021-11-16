@@ -134,7 +134,9 @@
     <div class="itinerant-nur-to-resuscitation">
       <div class="select-title">
         <span>是否送至复苏室</span>
-        <van-switch v-model="resuscitationOverLay.checked" size="24px" />
+        <van-switch v-model="resuscitationOverLay.checked"
+                    active-color="#00acf2"
+                    size="24px" />
       </div>
       <div class="select-address">请选择患者术后地点</div>
       <div class="room-select">

@@ -1,13 +1,22 @@
 import { Task } from '@/types/interface-model';
 import { get } from 'lodash'
 
-export default function TaskMixins () {
+export default function TaskMixins ():any {
   const formatTask = (targetObj: any, task: Task[]): Task[] => {
     return task.map(t => {
+      let danger:any = t.danger;
+      if (!danger) {
+        danger = false
+      } else if (Object.prototype.toString.call(danger) === '[object Function]') {
+        danger = danger(targetObj, t);
+      } else {
+        danger = true
+      }
       return {
         ...t,
         value: t.format ? t.format(get(targetObj, t.key)) : get(targetObj, t.key),
-      }
+        danger
+      };
     })
   }
   return {
@@ -86,6 +95,9 @@ export const infectType = (key = 'opInfo.infectType'): Task => {
         case 7:
           return '结果未回(急诊)'
       }
+    },
+    danger (v:any, t:Task) {
+      return get(v, t.key) !== 1
     }
   }
 }
