@@ -95,16 +95,11 @@ import Request from '@/service/request';
 import { Toast } from 'vant';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
-  anesthesiaDicCode,
-  anesthetistName,
-  beforeDiseaseName,
   circulatingNurseName,
   departmentName,
   hospitalCode,
   infectType,
   opInfoCode,
-  opInfoName,
-  surgeonName,
 } from '../../utils/task-mixins';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
@@ -120,13 +115,8 @@ export default defineComponent({
       opInfoCode(),
       hospitalCode(),
       departmentName(),
-      surgeonName(),
-      circulatingNurseName(),
-      anesthetistName(),
-      anesthesiaDicCode(),
       infectType(),
-      opInfoName(),
-      beforeDiseaseName(),
+      circulatingNurseName(),
     ];
     const getData = () => {
       loading.value = true;
