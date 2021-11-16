@@ -11,11 +11,10 @@ export default function formatTime(seconds: number): string {
     mm = Math.floor(mm % 60);
   }
 
-  let result = ('00' + Math.floor(ss)).slice(-2);
-  if (mm > 0) result = ('00' + Math.floor(mm)).slice(-2) + ':' + result;
-  else result = '00:' + result;
+  let result = ss + '秒';
+  if (mm > 0) result = mm + '分' + result;
 
-  if (hh > 0) result = ('00' + Math.floor(hh)).slice(-2) + ':' + result;
+  if (hh > 0) result = hh + '时' + result;
   return result;
 
   // const hours = seconds / 3600;
