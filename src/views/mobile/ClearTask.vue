@@ -126,7 +126,7 @@ export default defineComponent({
     // tab切换
     const onClickTab = ({ name }: any) => {
       state.active = name;
-      onRefresh()
+      onRefresh(true)
     }
     // 下拉刷新
     const onRefresh = async (isTabClick?: boolean) => {
