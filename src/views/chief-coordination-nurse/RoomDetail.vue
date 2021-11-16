@@ -10,7 +10,7 @@
                     :option="{
                       status: list.opInfo.opSectionCode,
                       name: list.patient.name,
-                      sex: list.patient.sex === 1 ? '男' : '女',
+                      sex: list.patient.sex,
                       age: list.age,
                       type: list.opInfo.type,
                       room: `${list.opInfo.departmentName||''}-${list.opInfo.oproomName||''}-${list.opInfo.seq||''}`,

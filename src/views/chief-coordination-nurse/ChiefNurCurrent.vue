@@ -7,7 +7,7 @@
       <PatientDetail :option="{
         status: taskView.opInfo.opSectionCode,
         name: taskView.patient.name,
-        sex: taskView.patient.sex === 1 ? '男' : '女',
+        sex: taskView.patient.sex,
         age: taskView.age,
         type: taskView.opInfo.type,
         room: `${taskView.opInfo.departmentName||''}-${taskView.opInfo.oproomName||''}-${taskView.opInfo.seq||''}`,
