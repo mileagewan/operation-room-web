@@ -74,12 +74,12 @@
         />
         <div class="ihybrid-button-center">
           <van-button
-            icon="scan"
             class="btn-operation"
             @click="callNurse(taskView)"
             round
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
+            <IconFont icon="icon-hujiao" />
             呼叫转运护工
           </van-button>
         </div>
