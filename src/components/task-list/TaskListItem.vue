@@ -52,6 +52,11 @@ export default defineComponent({
   border-bottom: 1px solid #f2f2f2;
   font-size: 24px;
   color: #333;
+
+  .flex-main {
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
   .header {
     margin-bottom: 18px;
     align-items: flex-end;

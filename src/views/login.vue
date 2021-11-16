@@ -35,7 +35,7 @@ import Request from '@/service/request';
 export default defineComponent({
   name: 'login',
   setup() {
-    const chartData = ref([4, 6, 10, 7, 3]);
+    const chartData = ref([1, 6, 10, 7, 3]);
     const devUsers = reactive([
       {
         phone: '13266661111',
@@ -73,11 +73,6 @@ export default defineComponent({
         phone: '18912340010',
         password: '1',
         role: '病区护士',
-      },
-      {
-        phone: '18912340010',
-        password: '1',
-        role: '转运护工',
       },
       {
         phone: '18912340048',
