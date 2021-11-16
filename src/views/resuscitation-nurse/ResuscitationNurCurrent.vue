@@ -27,7 +27,7 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <div class="itinerant-flow-chart">
+      <div class="resuscitation-flow-chart">
         <FlowChart
           :flow-data="taskView.operatingStatusList"
           :current-code="taskView.currentOperatingStatus"

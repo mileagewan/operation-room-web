@@ -38,8 +38,8 @@
           {{ taskView.opTask.taskTipContent || "无" }}
         </template>
       </key-value-block>
-      <div class="ihybrid-button-group">
-        <template v-if="taskView.opInfo.opSectionCode === '6'">
+      <template v-if="taskView.opInfo.opSectionCode === '6'">
+        <div class="ihybrid-button-group">
           <van-button
             round
             @click="manualHandle(taskView)"
@@ -57,30 +57,36 @@
           >
             扫码交接
           </van-button>
-        </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === '7'">
+        </div>
+      </template>
+      <template v-else-if="taskView.opInfo.opSectionCode === '7'">
+        <div class="ihybrid-button-group">
           <van-button
-            class="btn-operation"
-            @click="thirdPartyConfirm(taskView)"
-            round
-            color="linear-gradient(to right, #00D6FA, #00ACF2)"
-          >
-            <IconFont icon="icon-sanfangqueren" />
-            三方确认
-          </van-button>
-        </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === '8'">
+          class="btn-operation"
+          @click="thirdPartyConfirm(taskView)"
+          round
+          color="linear-gradient(to right, #00D6FA, #00ACF2)"
+        >
+          <IconFont icon="icon-sanfangqueren" />
+          三方确认
+        </van-button>
+        </div>
+      </template>
+      <template v-else-if="taskView.opInfo.opSectionCode === '8'">
+        <div class="ihybrid-button-group">
           <van-button
-            class="btn-operation"
-            @click="operationBegan(taskView)"
-            round
-            color="linear-gradient(to right, #00D6FA, #00ACF2)"
-          >
-            <IconFont icon="icon-shoushukaishi1" />
-            手术开始
-          </van-button>
-        </template>
-        <template v-else-if="taskView.opInfo.opSectionCode === '9'">
+          class="btn-operation"
+          @click="operationBegan(taskView)"
+          round
+          color="linear-gradient(to right, #00D6FA, #00ACF2)"
+        >
+          <IconFont icon="icon-shoushukaishi1" />
+          手术开始
+        </van-button>
+        </div>
+      </template>
+      <template v-else-if="taskView.opInfo.opSectionCode === '9'">
+        <div class="ihybrid-button-group">
           <van-button
             round
             :disabled="taskView.notifyNextOperation === 2"
@@ -101,21 +107,23 @@
             <IconFont icon="icon-shoushuwancheng" />
             手术完成
           </van-button>
-        </template>
-      </div>
+        </div>
+      </template>
       <template v-if="taskView.opInfo.opSectionCode === '10'">
         <!-- <key-value label="交接人" value="接送护士"></key-value> -->
-        <key-value
+        <key-value-block
           label="交接人"
+          clear
           :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
-        ></key-value>
+        ></key-value-block>
       </template>
       <template v-if="taskView.opInfo.opSectionCode === '11'">
         <!-- <key-value label="交接人" value="复苏室护士"></key-value> -->
-        <key-value
+        <key-value-block
           label="交接人"
+          clear
           :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
-        ></key-value>
+        ></key-value-block>
       </template>
     </template>
   </TaskView>
@@ -285,6 +293,8 @@ export default defineComponent({
     const thirdPartyConfirm = (taskView: TaskViewItem) => {
       Dialog.confirm({
         message: '请确定手术医生和麻醉医生已到现场',
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消'
       })
         .then(async () => {
           const ret: ReturnData = await Request.xhr('tripartiteConfirmation', {
@@ -305,6 +315,8 @@ export default defineComponent({
       console.log(taskView);
       Dialog.confirm({
         message: '请确定手术已开始准备切片',
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消'
       })
         .then(async () => {
           const ret: ReturnData = await Request.xhr('opStart', {
