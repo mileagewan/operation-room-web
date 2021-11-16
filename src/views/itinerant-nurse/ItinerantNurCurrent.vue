@@ -190,7 +190,7 @@ import useTaskMixins, {
   anesthesiaDicCode,
   infectType,
   opInfoName,
-  beforeDiseaseName,
+  // beforeDiseaseName,
 } from '@/utils/task-mixins';
 import { ReturnData, Task } from '@/types/interface-model';
 import ToastCountdown from '@/utils/toast-countdown';
