@@ -38,7 +38,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs, onBeforeMount } from 'vue'
+import { defineComponent, reactive, ref, toRefs, onBeforeMount, provide, readonly } from 'vue'
 import ClearTaskCard from './components/ClearTaskCard.vue'
 import ClearCompletedCard from './components/ClearCompletedCard.vue'
 import Request from '@/service/request';
@@ -64,6 +64,7 @@ export default defineComponent({
       pageNo: 1,
       pageSize: 5,
     })
+    provide('tabsActive', readonly(state))
     const listData = ref<any[]>([])
     const goBack = (): void => {
       JsToFlutter.goback();
@@ -194,6 +195,7 @@ export default defineComponent({
 }
 :deep(.van-list) {
   padding: 0 24px;
+  margin-top: 24px;
   .clear-completed-card {
     margin-bottom: 24px;
   }

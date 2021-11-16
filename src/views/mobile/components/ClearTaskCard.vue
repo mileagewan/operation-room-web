@@ -20,7 +20,7 @@
         <div class="title">清洁护工</div>
         <div class="text">{{ info.receiveUserName }}</div>
       </div>
-      <div class="item">
+      <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
         <div class="text">{{ info.taskEndTime }}</div>
       </div>
@@ -28,7 +28,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, inject } from 'vue'
 import { getMonthDay } from '@/utils/date-formt'
 
 export default defineComponent({
@@ -46,11 +46,13 @@ export default defineComponent({
       const _week = info.value.week ? ('(' + info.value.week + ')') : ''
       const _startTime = info.value.startTime ? info.value.startTime : ''
       const _endTime = info.value.endTime ? info.value.endTime : ''
-      return _MonthDay + _week + _startTime + '-' + _endTime
+      return _MonthDay + _week + ' ' + _startTime + '-' + _endTime
     })
+    const tabsActive: any = inject('tabsActive')
     return {
       dateTime,
-      info
+      info,
+      tabsActive
     }
   },
 })
