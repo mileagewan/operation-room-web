@@ -28,6 +28,11 @@
           {{ item.label }}
         </template>
       </KeyValue>
+      <KeyValue
+        v-if="task.opInfo.opSectionCode === '15'"
+        label="目的地"
+        :value="task.opTask.destinationName"
+      />
       <FlowChart
         :flow-data="task.operatingStatusList"
         :current-code="task.currentOperatingStatus"
@@ -38,7 +43,6 @@
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
-
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -139,7 +143,7 @@ export default defineComponent({
           } else {
             taskList.value = [];
           }
-          updateTitleCount(taskList.value.length)
+          updateTitleCount(taskList.value.length);
         })
         .finally(() => {
           loading.value = false;
