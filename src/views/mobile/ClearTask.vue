@@ -4,7 +4,7 @@
       <nav-bar @goBack="goBack" :title="title" />
       <van-tabs v-model:active="active" @click-tab="onClickTab">
         <van-tab :title="`当前任务(${todayNum})`" name="UNDO" />
-        <van-tab :title="`已完成任务`" name="DONE" />
+        <van-tab :title="`已完成任务(${tomorrowNum})`" name="DONE" />
       </van-tabs>
     </div>
     <div class="content">
@@ -57,6 +57,7 @@ export default defineComponent({
       title: '手术室',
       active: 'UNDO',
       todayNum: 0,
+      tomorrowNum: 0,
       refreshing: false,
       loadingList: false,
       finishedList: false,
@@ -72,6 +73,10 @@ export default defineComponent({
     onBeforeMount(() => {
       // 获取当前任务数量
       // loadData('UNDO', 1, 100, true)
+      // 获取今日数量
+      loadData('UNDO', 1, 5, true)
+      // 获取已完成数量
+      loadData('DONE', 1, 5, true)
       onRefresh()
     })
     // 加载更多
@@ -85,10 +90,10 @@ export default defineComponent({
         listData.value = [];
         state.refreshing = false;
       }
-      loadData(state.active, state.pageNo, state.pageSize, isTabClick)
+      loadData(state.active, state.pageNo, state.pageSize, false, isTabClick)
     }
     // 接口请求
-    const loadData = async (taskStatus: string, pageNo: number, pageSize: number, isTabClick?: boolean) => {
+    const loadData = async (taskStatus: string, pageNo: number, pageSize: number, getNum?: boolean, isTabClick?: boolean) => {
       try {
         const params = {
           taskStatus: taskStatus,
@@ -105,13 +110,18 @@ export default defineComponent({
         await Request.xhr('getClearTask', params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            if (taskStatus === 'UNDO') {
-              state.todayNum = data.total
+            if (getNum) {
+              if (taskStatus === 'UNDO') {
+                state.todayNum = data.total
+              } else if (taskStatus === 'DONE') {
+                state.tomorrowNum = data.total
+              }
+            } else {
+              listData.value = listData.value.concat(data.records)
+              state.totalPage = Math.ceil(data.total / state.pageSize)
+              state.loadingList = false;
+              if (state.pageNo >= state.totalPage) state.finishedList = true
             }
-            listData.value = listData.value.concat(data.records)
-            state.totalPage = Math.ceil(data.total / state.pageSize)
-            state.loadingList = false;
-            if (state.pageNo >= state.totalPage) state.finishedList = true
           }
           console.log(r)
         }).finally(() => {

@@ -112,9 +112,9 @@ export default defineComponent({
         state.active = _dateType
       }
       // 获取今日数量
-      loadData('TODAY', 1, 1, true)
+      loadData('TODAY', 1, 5, true)
       // 获取明日数量
-      loadData('TOMORROW', 1, 1, true)
+      loadData('TOMORROW', 1, 5, true)
       onRefresh()
     })
     // 加载更多
