@@ -121,6 +121,11 @@ export default defineComponent({
               state.totalPage = Math.ceil(data.total / state.pageSize)
               state.loadingList = false;
               if (state.pageNo >= state.totalPage) state.finishedList = true
+              if (taskStatus === 'UNDO') {
+                state.todayNum = data.total
+              } else if (taskStatus === 'DONE') {
+                state.tomorrowNum = data.total
+              }
             }
           }
           console.log(r)
