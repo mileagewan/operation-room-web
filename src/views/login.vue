@@ -20,9 +20,8 @@
   </div>
 
   <div>
-    触发手术任务：<input v-model="opInfoId" /><button @click="begin">
-      触发
-    </button>
+    触发手术任务：测试数据(传入opCode就从此台手术后加数据,不传重置默认数据)
+    <input v-model="opCode" /><button @click="begin">触发</button>
   </div>
   <FlowChart :flow-data="chartData" :currentCode="6" />
 </template>
@@ -38,12 +37,12 @@ export default defineComponent({
     const chartData = ref([1, 6, 10, 7, 3]);
     const devUsers = reactive([
       {
-        phone: '13266661111',
+        phone: '18812341210',
         password: '1',
         role: '病区护士',
       },
       {
-        phone: '13266662222',
+        phone: '18812341573',
         password: '1',
         role: '转运护工',
       },
@@ -130,21 +129,23 @@ export default defineComponent({
     };
 
     // 触发手术任务
-    const opInfoId = ref('');
+    const opCode = ref('');
     const begin = () => {
-      Request.xhr('notifyNextOperation', {}, `opInfoId=${opInfoId.value}`).then(
-        (r: any) => {
-          // const { code, data } = r;
-          console.log(r);
-        }
-      );
+      Request.xhr(
+        'nurseOperateTest',
+        {},
+        opCode.value ? `opCode=${opCode.value}` : ''
+      ).then((r: any) => {
+        // const { code, data } = r;
+        console.log(r);
+      });
     };
     return {
       chartData,
       user,
       devUsers,
       testUsers,
-      opInfoId,
+      opCode,
       login,
       begin,
     };

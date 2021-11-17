@@ -43,6 +43,13 @@
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTask.handoverUserName || ''} ${
+            task.opTask.handoverUserPhone || ''
+          }`"
+        />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -69,14 +76,18 @@
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+          :value="`${task.opTask.handoverUserName || ''} ${
+            task.opTask.handoverUserPhone || ''
+          }`"
         />
       </template>
       <template v-if="task.opInfo.opSectionCode === '15'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+          :value="`${task.opTask.handoverUserName || ''} ${
+            task.opTask.handoverUserPhone || ''
+          }`"
         />
       </template>
     </template>

@@ -38,12 +38,12 @@
         <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
       </KeyValueBlock>
 
-      <template v-if="task.opInfo.opSectionCode === '5'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
+          :value="`${task.opTask.handoverUserName||''} ${task.opTask.handoverUserPhone||''}`"
         />
+      <template v-if="task.opInfo.opSectionCode === '5'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -63,23 +63,10 @@
             扫码交接
           </van-button>
         </div>
-      </template>
-
-      <template v-if="task.opInfo.opSectionCode === '6'">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
-        />
       </template>
 
       <!-- 从手术室接出 -->
       <template v-if="isBack(task.opInfo.opSectionCode)">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
-        />
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -101,13 +88,6 @@
         </div>
       </template>
 
-      <template v-if="task.opInfo.opSectionCode === '14'">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTask.handoverUserName} ${task.opTask.handoverUserPhone}`"
-        />
-      </template>
     </template>
   </TaskView>
   <HandleOverLay

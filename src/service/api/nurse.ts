@@ -115,9 +115,10 @@ const nurse: ServiceItem[] = [
     key: 'opEnd',
     method: 'post',
   },
+  // 测试数据(传入opCode就从此台手术后加数据,不传重置默认数据)
   {
-    path: '/nurseOperate/notifyNextOperation',
-    key: 'notifyNextOperation',
+    path: '/nurseOperate/test',
+    key: 'nurseOperateTest',
     method: 'post',
   },
 
