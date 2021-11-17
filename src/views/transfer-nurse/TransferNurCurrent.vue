@@ -81,7 +81,8 @@
           }`"
         />
       </template>
-      <template v-if="task.opInfo.opSectionCode === '15'">
+      <!-- 10:手术后直接出来，15：手术后复苏出来 -->
+      <template v-if="task.opInfo.opSectionCode === '10'||task.opInfo.opSectionCode === '15'">
         <KeyValueBlock
           clear
           label="交接人"
