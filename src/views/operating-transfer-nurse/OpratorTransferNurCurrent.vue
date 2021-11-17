@@ -123,14 +123,14 @@ import { Toast } from 'vant';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
-  anesthesiaDicCode,
-  anesthetistName,
-  beforeDiseaseName,
   circulatingNurseName,
   departmentName,
   hospitalCode,
   infectType,
   opInfoCode,
+  anesthesiaDicCode,
+  anesthetistName,
+  beforeDiseaseName,
   opInfoName,
   surgeonName,
 } from '../../utils/task-mixins';
@@ -208,13 +208,14 @@ export default defineComponent({
       opInfoCode(),
       hospitalCode(),
       departmentName(),
-      surgeonName(),
-      circulatingNurseName(),
-      anesthetistName(),
-      anesthesiaDicCode(),
       infectType(),
-      opInfoName(),
-      beforeDiseaseName(),
+      circulatingNurseName(),
+
+      // surgeonName(),
+      // anesthetistName(),
+      // anesthesiaDicCode(),
+      // opInfoName(),
+      // beforeDiseaseName(),
     ];
     const getData = () => {
       return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
