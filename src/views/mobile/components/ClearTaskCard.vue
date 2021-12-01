@@ -20,6 +20,10 @@
         <div class="title">清洁护工</div>
         <div class="text">{{ info.receiveUserName }}</div>
       </div>
+      <div class="item" v-if="tabsActive.active == 'UNDO'">
+        <div class="title">状态</div>
+        <div class="text time-out">{{ info.taskEndTime }}</div>
+      </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
         <div class="text">{{ info.taskEndTime }}</div>
@@ -28,34 +32,36 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, inject } from 'vue'
-import { getMonthDay } from '@/utils/date-formt'
+import { defineComponent, ref, computed, inject } from "vue";
+import { getMonthDay } from "@/utils/date-formt";
 
 export default defineComponent({
-  name: 'ClearTaskCard',
+  name: "ClearTaskCard",
   props: {
     data: {
       type: Object,
-      default: () => { }
-    }
+      default: () => {},
+    },
   },
   setup(props) {
-    const info = ref<any>(props.data)
+    const info = ref<any>(props.data);
     const dateTime = computed(() => {
-      const _MonthDay = info.value.startDate ? getMonthDay(info.value.startDate) : ''
-      const _week = info.value.week ? ('(' + info.value.week + ')') : ''
-      const _startTime = info.value.startTime ? info.value.startTime : ''
-      const _endTime = info.value.endTime ? info.value.endTime : ''
-      return _MonthDay + _week + ' ' + _startTime + '-' + _endTime
-    })
-    const tabsActive: any = inject('tabsActive')
+      const _MonthDay = info.value.startDate
+        ? getMonthDay(info.value.startDate)
+        : "";
+      const _week = info.value.week ? "(" + info.value.week + ")" : "";
+      const _startTime = info.value.startTime ? info.value.startTime : "";
+      const _endTime = info.value.endTime ? info.value.endTime : "";
+      return _MonthDay + _week + " " + _startTime + "-" + _endTime;
+    });
+    const tabsActive: any = inject("tabsActive");
     return {
       dateTime,
       info,
-      tabsActive
-    }
+      tabsActive,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .clear-task-card {
@@ -96,6 +102,13 @@ export default defineComponent({
         // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
+        .time-out {
+          height: 24px;
+          font-size: 24px;
+          font-weight: 600;
+          color: #ff0000;
+          line-height: 24px;
+        }
       }
     }
   }
