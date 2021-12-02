@@ -17,7 +17,9 @@ module.exports = {
     'space-before-function-paren': 0,
     'no-trailing-spaces':'off',
     'comma-dangle':'off',
-    semi: 0,
+    '@typescript-eslint/semi': 'off',
+    'quotes':[0,'off'],
+    'semi':'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-explicit-any': 'off'
   }

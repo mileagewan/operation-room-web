@@ -36,9 +36,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "operationRoom" */ '../views/mobile/OperationRoom.vue')
   },
   {
-    path: '/clearTask',
-    name: 'ClearTask',
-    component: () => import(/* webpackChunkName: "clearTask" */ '../views/mobile/ClearTask.vue')
+    path: '/cleanTask',
+    name: 'CleanTask',
+    component: () => import(/* webpackChunkName: "cleanTask" */ '../views/mobile/ClearTask.vue')
   },
   {
     path: '/login',
