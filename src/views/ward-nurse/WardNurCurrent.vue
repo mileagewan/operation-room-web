@@ -14,6 +14,7 @@
           age: task.patient.age,
           type: task.opInfo.type,
           room: task.opInfo.opDescName,
+          planTime: 1,
         }"
       />
     </template>

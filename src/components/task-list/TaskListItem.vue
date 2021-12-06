@@ -29,6 +29,9 @@
           <label>用时</label>
           <span>{{ $filters.formatTime(task.taskTime) }}</span>
         </div>
+        <div class="info-plantime">
+          超时3分10秒
+        </div>
       </div>
     </div>
   </div>
@@ -81,6 +84,7 @@ export default defineComponent({
   }
   .info {
     margin-top: 48px;
+    align-items: center;
     .info-item {
       label {
         margin-right: 24px;
@@ -89,6 +93,13 @@ export default defineComponent({
       + .info-item {
         margin-left: 102px;
       }
+    }
+
+    .info-plantime {
+      font-size: 24px;
+      font-weight: var(--ihybrid--important-weight);
+      color: #ff0000;
+      margin-left: 8px;
     }
   }
 }

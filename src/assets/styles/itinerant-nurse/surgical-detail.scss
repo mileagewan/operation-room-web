@@ -8,4 +8,16 @@
     padding-top: 48px;
     padding-bottom: 24px;
   }
+
+  .task-view-content-hide {
+    .clean-task-title {
+      height: 48px;
+      font-size: var(--ihybrid--font-size--48);
+      font-family: PingFangSC, PingFangSC-Semibold;
+      font-weight: var(--ihybrid--important-weight);
+      color: #000000;
+      line-height: 48px;
+      margin-bottom: 24px;
+    }
+  }
 }

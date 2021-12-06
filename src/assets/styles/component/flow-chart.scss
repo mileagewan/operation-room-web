@@ -1,13 +1,13 @@
 .flow-chart {
   display: flex;
-  padding: 60px 36px 12px 0;
+  padding: 60px 36px 0px 0;
   margin-left: -24px;
   .flow-chart-item {
     position: relative;
     display: flex;
     flex-direction: row-reverse;
     overflow: visible;
-    height: 48px;
+    //height: 48px;
     &:not(:first-child) {
       flex: 1;
       .flow-chart-item_title {
@@ -56,10 +56,11 @@
       // top: 100%;
       // left: 100%;
       margin-right: -50%;
-      padding: 12px 6px;
+      padding: 12px 6px 0 6px;
       width: 100%;
       min-width: 48px;
       font-size: 18px;
+      line-height: 1;
       color: #999;
       text-align: center;
     }

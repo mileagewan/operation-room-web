@@ -104,3 +104,9 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.is-danger {
+  color: var(--ihybrid--danger-color);
+  font-weight: var(--ihybrid--important-weight);
+  font-size: var(--ihybrid--default-font-size);
+}

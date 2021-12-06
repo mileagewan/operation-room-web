@@ -24,7 +24,8 @@ import {
   Toast,
   Field,
   Switch,
-  Loading
+  Loading,
+  Overlay,
 } from 'vant'
 const plugins = [
   Button,
@@ -51,7 +52,8 @@ const plugins = [
   Toast,
   Field,
   Switch,
-  Loading
+  Loading,
+  Overlay,
 ]
 
 export const vantPlugins = {

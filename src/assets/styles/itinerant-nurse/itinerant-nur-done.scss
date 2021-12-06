@@ -33,6 +33,21 @@
       .van-cell__right-icon {
         margin-left: 12px;
       }
+
+      .van-cell__title {
+        .van-cell__label {
+          color: var(--ihybrid--default-label-color);
+          font-size: var(--ihybrid--default-font-size);
+        }
+      }
+      .van-cell__value {
+        color: var(--ihybrid--default-label-color);
+        span {
+          font-size: var(--ihybrid--default-font-size);
+          line-height: 1;
+          margin-left: 12px;
+        }
+      }
     }
   }
 }

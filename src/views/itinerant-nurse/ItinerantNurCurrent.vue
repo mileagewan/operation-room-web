@@ -3,6 +3,7 @@
     class="itinerant-nur-current"
     v-for="(taskView, index) in taskViewsList"
     :key="index"
+    :show-header="!taskView.isClean"
   >
     <template #header>
       <PatientDetail
@@ -13,10 +14,11 @@
           age: taskView.patient.age,
           type: taskView.opInfo.type,
           room: taskView.opInfo.opDescName,
+          planTime: 1,
         }"
       />
     </template>
-    <template #content>
+    <template #content v-if="!taskView.isClean">
       <KeyValue
         v-for="(item, i) in taskView.taskList"
         :value="item.value"
@@ -42,6 +44,7 @@
         <div class="ihybrid-button-group">
           <van-button
             round
+            :disabled="!!taskView.opInfo"
             @click="manualHandle(taskView)"
             class="default-button"
             color="#f0fafe"
@@ -50,6 +53,7 @@
           </van-button>
           <van-button
             icon="scan"
+            :disabled="!!taskView.opInfo"
             class="btn-operation"
             @click="codeHandle(taskView)"
             round
@@ -74,6 +78,14 @@
       </template>
       <template v-else-if="taskView.opInfo.opSectionCode === '8'">
         <div class="ihybrid-button-group">
+          <van-button
+            round
+            class="default-button"
+            color="rgba(0,172,242,0.05)"
+            @click="broadcast(taskView)"
+          >
+            广播家属
+          </van-button>
           <van-button
           class="btn-operation"
           @click="operationBegan(taskView)"
@@ -126,6 +138,62 @@
         ></key-value-block>
       </template>
     </template>
+    <template #content v-else-if="taskView.isClean">
+      <div class="clean-task-title">
+        手术-01间-01台
+      </div>
+      <KeyValue label="清洁开始时间" value="16：30" />
+      <div class="itinerant-flow-chart">
+        <FlowChart
+          :flow-data="[
+            {
+              title: '开始',
+              icon: 'icon-kaishi',
+              code: 1
+            },
+            {
+              title: '清洁工清洁',
+              icon: 'icon-shoushuzhong',
+              code: 2
+            },
+            {
+              title: '消毒',
+              icon: 'icon-shoushuzhong',
+              code: 3
+            },
+            {
+              title: '消毒结束',
+              icon: 'icon-jieshu',
+              code: 4
+            },
+          ]"
+          :current-code="1"
+        />
+      </div>
+      <key-value-block>
+        <template #value>
+          {{ taskView.opTask.taskTipContent || "无" }}
+        </template>
+      </key-value-block>
+      <key-value-block
+        label="清洁工"
+        clear
+        :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+      ></key-value-block>
+      <template v-if="true">
+        <div class="ihybrid-button-center">
+          <van-button
+            @click="disinfect(task)"
+            round
+            class="btn-operation"
+            color="linear-gradient(to right, #00D6FA, #00ACF2)"
+          >
+            <IconFont icon="icon-jierenwu" />
+            <span>开始消毒</span>
+          </van-button>
+        </div>
+      </template>
+    </template>
   </TaskView>
   <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length" />
   <HandleOverLay
@@ -142,9 +210,22 @@
     <div class="itinerant-nur-to-resuscitation">
       <div class="select-title">
         <span>是否送至复苏室</span>
-        <van-switch v-model="resuscitationOverLay.checked"
-                    active-color="#00acf2"
-                    size="24px" />
+<!--        <van-switch v-model="resuscitationOverLay.checked"-->
+<!--                    active-color="#00acf2"-->
+<!--                    size="24px" />-->
+        <div class="room-checked">
+          <div
+            v-for="room in resuscitationOverLay.checkedList"
+            :key="room.value"
+            :class="{
+            'is-active': room.value === resuscitationOverLay.checked,
+          }"
+            @click="resuscitationOverLay.checked = room.value"
+          >
+            {{ room.label }}
+            <img src="/img/select-2.png" alt="">
+          </div>
+        </div>
       </div>
       <div class="select-address">请选择患者术后地点</div>
       <div class="room-select">
@@ -166,6 +247,74 @@
           round
           class="btn-operation"
           @click="resuscitationOverLayHandleOk"
+          color="linear-gradient(to right, #00D6FA, #00ACF2)"
+        >
+          确 定
+        </van-button>
+      </div>
+    </div>
+  </van-popup>
+  <van-popup
+    v-model:show="broadcastOverLay.show"
+    round
+    teleport="#app"
+    position="bottom"
+  >
+    <div class="itinerant-nur-to-resuscitation">
+      <div class="select-address">广播通知家属到</div>
+      <div class="room-select">
+        <div
+          v-for="room in broadcastOverLay.roomList"
+          :key="room.value"
+          :class="{
+            'is-active': room.value === broadcastOverLay.active,
+          }"
+          @click="broadcastOverLay.active = room.value"
+        >
+          {{ room.label }}
+          <img src="/img/select-2.png" alt="">
+        </div>
+      </div>
+      <div class="ihybrid-button-group">
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="broadcastOverLay.show = false"> 取 消 </van-button>
+        <van-button
+          round
+          class="btn-operation"
+          @click="broadcastOverLayHandleOk"
+          color="linear-gradient(to right, #00D6FA, #00ACF2)"
+        >
+          确 定
+        </van-button>
+      </div>
+    </div>
+  </van-popup>
+  <van-popup
+    v-model:show="disinfectOverLay.show"
+    round
+    teleport="#app"
+    position="bottom"
+  >
+    <div class="itinerant-nur-to-disinfect">
+      <div class="select-address">请选择消毒时间</div>
+      <div class="room-select">
+        <div
+          v-for="room in disinfectOverLay.roomList"
+          :key="room.value"
+          :class="{
+            'is-active': room.value === disinfectOverLay.active,
+          }"
+          @click="disinfectOverLay.active = room.value"
+        >
+          {{ room.label }}
+          <img src="/img/select-2.png" alt="">
+        </div>
+      </div>
+      <div class="ihybrid-button-group">
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="disinfectOverLay.show = false"> 取 消 </van-button>
+        <van-button
+          round
+          class="btn-operation"
+          @click="disinfectOverLayHandleOk"
           color="linear-gradient(to right, #00D6FA, #00ACF2)"
         >
           确 定
@@ -209,18 +358,62 @@ export default defineComponent({
     });
     const resuscitationOverLay = reactive({
       show: false,
-      checked: false,
-      roomList: [
-        // {
-        //   label: '原科室',
-        //   value: 1,
-        // },
-        // {
-        //   label: 'ICU',
-        //   value: 2,
-        // },
+      checked: 2,
+      checkedList: [
+        {
+          label: '否',
+          value: 2
+        },
+        {
+          label: '是',
+          value: 1
+        }
       ],
+      roomList: [],
       active: '',
+      row: {},
+    });
+    const broadcastOverLay = reactive({
+      show: false,
+      roomList: [
+        {
+          label: '原科室',
+          value: 1,
+        },
+        {
+          label: '手术室门口',
+          value: 2,
+        },
+      ],
+      active: 1,
+      row: {},
+    });
+    const disinfectOverLay = reactive({
+      show: false,
+      roomList: [
+        {
+          label: '15分钟',
+          value: 1,
+        },
+        {
+          label: '25分钟',
+          value: 2,
+        },
+        {
+          label: '30分钟',
+          value: 3,
+        },
+        {
+          label: '40分钟',
+          value: 4,
+        },
+        {
+          label: '60分钟',
+          value: 5,
+        },
+
+      ],
+      active: 1,
       row: {},
     });
     const taskList: Task[] = [
@@ -311,6 +504,23 @@ export default defineComponent({
         });
     };
 
+    const broadcast = (taskView:any):void => {
+      broadcastOverLay.show = true;
+      broadcastOverLay.row = taskView;
+    }
+
+    const broadcastOverLayHandleOk = async (): Promise<void> => {
+      const ret: ReturnData = await Request.xhr('', {});
+      const { code } = ret;
+      if (code === 200) {
+        Toast('一统志患者家属');
+        broadcastOverLay.show = false;
+        getData();
+      } else {
+        Toast(ret.msg as string)
+      }
+    }
+
     const operationBegan = (taskView: TaskViewItem) => {
       console.log(taskView);
       Dialog.confirm({
@@ -374,7 +584,7 @@ export default defineComponent({
           (resuscitationOverLay.row as TaskViewItem).opTask.id || '',
         parentTaskId:
           (resuscitationOverLay.row as TaskViewItem).opTask.parentTaskId || '',
-        resuscitationRoom: resuscitationOverLay.checked ? 1 : 2,
+        resuscitationRoom: resuscitationOverLay.checked,
         opEndWard: resuscitationOverLay.active,
       };
       const ret: ReturnData = await Request.xhr('opEnd', params);
@@ -386,6 +596,20 @@ export default defineComponent({
         Toast(ret.msg as string)
       }
     };
+
+    const Events = {
+
+      disinfect: (task:any) => {
+        disinfectOverLay.show = true;
+        disinfectOverLay.row = task;
+      },
+
+      disinfectOverLayHandleOk() {
+        alert('开始消毒');
+        disinfectOverLay.show = false;
+        getData();
+      }
+    }
     const getData = () => {
       // eslint-disable-next-line no-undef
       return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
@@ -393,12 +617,14 @@ export default defineComponent({
           taskViewsList.value = r.data.map((d) => {
             return {
               ...d,
+              isClean: false,
               taskList: formatTask(d, taskList),
             };
           }) as any;
         } else {
           taskViewsList.value = [];
         }
+
         updateTitleCount(taskViewsList.value.length)
       });
     };
@@ -408,18 +634,24 @@ export default defineComponent({
     return {
       handleOverLay,
       resuscitationOverLay,
+      broadcastOverLay,
       taskViewsList,
+      disinfectOverLay,
+
       manualHandle,
       resuscitationHandle,
       manualOk,
       codeHandle,
       roomSelect,
       thirdPartyConfirm,
+      broadcast,
       operationBegan,
       noticeNext,
       resuscitationOverLayHandleOk,
+      broadcastOverLayHandleOk,
       getData,
       onMounted,
+      ...Events,
     };
   },
 });

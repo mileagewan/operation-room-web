@@ -56,3 +56,11 @@
   }
 }
 
+.opration-tag-plantime {
+  @extend .opration-tag;
+  color: #fff;
+  background: #f00;
+  float: left;
+  margin-right: 10px;
+}
+

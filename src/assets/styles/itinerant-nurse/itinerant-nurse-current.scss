@@ -2,8 +2,6 @@
   padding: 0 24px 0 24px;
   .itinerant-flow-chart {
     width: 100%;
-    height: 100px;
-    margin-bottom: 96px;
   }
 
   .resuscitation-flow-chart {
@@ -11,14 +9,22 @@
       padding-bottom: 0;
     }
   }
+
+  .clean-task-title {
+    height: 48px;
+    font-size: var(--ihybrid--font-size--48);
+    font-family: PingFangSC, PingFangSC-Semibold;
+    font-weight: var(--ihybrid--important-weight);
+    color: #000000;
+    line-height: 48px;
+    margin-bottom: 24px;
+  }
 }
 
 .itinerant-nur-to-resuscitation {
   padding: 54px 48px 0 38px;
 
   .select-title {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 48px;
     span {
       height: 36px;
@@ -27,6 +33,21 @@
       text-align: left;
       color: #000000;
       line-height: 36px;
+    }
+
+    .room-checked {
+      @extend .room-select;
+      margin-top: 24px;
+      > div {
+        height: 60px!important;
+        &.is-active {
+          img {
+            width: 37px!important;
+            height: 37px!important;
+          }
+        }
+      }
+
     }
   }
   .select-address {
@@ -80,5 +101,25 @@
 
   .ihybrid-button-group {
     margin-bottom: 72px;
+  }
+}
+
+.itinerant-nur-to-disinfect {
+  @extend .itinerant-nur-to-resuscitation;
+  .room-select {
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    > div {
+      width: 200px;
+      margin-bottom: 24px;
+      &:not(:first-child) {
+        margin-left: 0;
+      }
+
+      &:not(:nth-child(3n + 1)) {
+        margin-left: 12px;
+      }
+
+    }
   }
 }

@@ -11,6 +11,7 @@
         age: taskView.age,
         type: taskView.opInfo.type,
         room: `${taskView.opInfo.departmentName||''}-${taskView.opInfo.oproomName||''}-${taskView.opInfo.seq||''}`,
+        planTime: '2'
       }"/>
     </template>
     <template #content>

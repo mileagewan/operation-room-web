@@ -8,7 +8,20 @@
         }}</span>
         <span class="patient-pesonal-old">{{ option.age }}岁</span>
       </div>
-      <TagStatus :code="option.status" />
+      <div v-if="showRight">
+        <van-tag
+          round
+          class="opration-tag-plantime"
+          type="primary"
+          v-if="option.planTime"
+        >
+          超时{{option.planTime}}分钟
+        </van-tag>
+        <TagStatus :code="option.status" />
+      </div>
+      <div v-if="$slots['title-right']">
+        <slot name="title-right"></slot>
+      </div>
     </div>
     <div class="patient-label">
       <span class="patient-label-title">{{ option.room }}</span>
@@ -18,8 +31,9 @@
         type="primary"
         v-if="showRight"
         :class="[option.type === 2 ? 'emergency' : 'normal']"
-        >{{ option.type === 2 ? "急诊" : "平诊" }}</van-tag
-      >
+        >
+        {{ option.type === 2 ? "急诊" : "平诊" }}
+      </van-tag>
     </div>
   </div>
 </template>
@@ -38,6 +52,7 @@ export default defineComponent({
         status: '',
         type: '',
         room: '',
+        planTime: 0
       }),
     },
     showRight: {

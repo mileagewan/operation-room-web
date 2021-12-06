@@ -2,8 +2,7 @@
   <div class="itinerant-nur-done">
     <DoneSummary :options="pageData.options" v-if="pageData.completeList.length" />
     <div class="done-list" v-if="pageData.completeList.length">
-      <van-cell value="查看详情"
-                v-for="(list,index) in pageData.completeList"
+      <van-cell v-for="(list,index) in pageData.completeList"
                 :key="index"
                 :label="list.opInfo.opDescName"
                 @click="next(list)"
@@ -13,6 +12,12 @@
           <span class="custom-title">{{list.patient.name}}</span>
           <span class="custom-sex">{{list.patient.sex === 1 ? '男' : '女'}}</span>
           <span class="custom-age">{{list.patient.age}}岁</span>
+        </template>
+        <template #value>
+          <span class="info-plantime is-danger">
+            超时3分10秒
+          </span>
+          <span>查看详情</span>
         </template>
       </van-cell>
     </div>

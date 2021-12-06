@@ -39,5 +39,14 @@
       left: auto;
       right: 48px;
     }
+
+    &.task-view-content-hide {
+      &::after,
+      &::before{
+        display: none;
+      }
+    }
   }
+
+
 }

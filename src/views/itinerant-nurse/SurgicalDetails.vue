@@ -1,7 +1,7 @@
 <template>
   <div class="surgical-detail" v-if="isReady">
     <nav-bar :title="title" @goBack="goBack"/>
-    <TaskView>
+    <TaskView :show-header="false">
       <template #header>
         <PatientDetail :option="{
           status: opTaskDTO.opInfo.opSectionCode,
@@ -10,9 +10,13 @@
           age: opTaskDTO.patient.age,
           type: opTaskDTO.opInfo.type,
           room: opTaskDTO.opInfo.opDescName,
-        }" :show-right="false"/>
+        }" :show-right="false">
+          <template #title-right>
+            <span class="is-danger" >超时3min</span>
+          </template>
+        </PatientDetail>
       </template>
-      <template #content>
+      <template #content v-if="false">
         <KeyValue
           v-for="(item, i) in opTaskDTO.taskList"
           :value="item.value"
@@ -23,6 +27,16 @@
             {{ item.label }}
           </template>
         </KeyValue>
+      </template>
+      <template #content v-else-if="true">
+       <div class="clean-task-title">
+         手术-01间-01台
+       </div>
+       <KeyValue label="清洁人员" value="江杨子正" />
+       <KeyValue label="清洁开始时间" value="16：15" />
+       <KeyValue label="清洁开始时间" value="16：15" />
+       <KeyValue label="清洁开始时间" value="16：15" />
+       <KeyValue label="清洁开始时间" value="16：15" />
       </template>
     </TaskView>
   </div>
