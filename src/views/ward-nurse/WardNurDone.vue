@@ -16,7 +16,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'WardNurDone',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const options: any[] = reactive([
       {
         label: '送病人',
@@ -33,7 +33,6 @@ export default defineComponent({
       loading.value = true;
       return Request.xhr('queryCompletedTaskList')
         .then((r: CurrentTaskViews) => {
-          // console.log(r);
           if (r.code === 200) {
             const { data }: any = r;
             options[0].value = data.sendPatient;
@@ -45,23 +44,13 @@ export default defineComponent({
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length);
+          updateCardCacheData(taskList.value);
         })
         .finally(() => {
           loading.value = false;
         });
     };
     getData();
-
-    // const hospitalCode = ref('');
-    // const { appContext }: any = getCurrentInstance();
-    // const emitter: any = appContext.config.globalProperties.emitter;
-    // emitter.on('scan-code-success', (data: any) => {
-    //   console.log(data);
-    //   if (data) {
-    //     // TODO 过滤列表
-    //     hospitalCode.value = data;
-    //   }
-    // });
     return {
       loading,
       options,

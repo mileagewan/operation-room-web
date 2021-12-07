@@ -89,6 +89,8 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useStore();
+    const doList = ref([])
+
     const refresh = (e: MouseEvent) => {
       e.stopPropagation();
       Dialog.confirm({
@@ -106,7 +108,6 @@ export default defineComponent({
           console.log('Cancel')
         });
     };
-    const doList = ref([])
     const getData = async () => {
       const ret = await Request.xhr('itinerGetoproomlist')
       doList.value = ret.data.map((d:any) => {
@@ -129,14 +130,18 @@ export default defineComponent({
       }))
     }
 
+    const Events = {
+      next,
+      getData,
+      refresh
+    }
+
     onMounted(() => {
       getData()
     })
     return {
-      refresh,
       doList,
-      next,
-      getData,
+      ...Events,
       onMounted
     };
   },

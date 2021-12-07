@@ -4,7 +4,7 @@
       <template #left>
         <IconFont icon="icon-fanhui" />
       </template>
-      <template #right v-if="rightComponentRef && false">
+      <template #right v-if="rightComponentRef">
         <component :is="rightComponentRef"></component>
       </template>
     </van-nav-bar>

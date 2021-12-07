@@ -3,6 +3,7 @@
     class="itinerant-nur-current"
     v-for="(taskView, index) in taskViewsList"
     :key="index"
+    :id="taskView.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail
@@ -127,7 +128,7 @@ export default defineComponent({
   name: 'ResuscitationNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
-    const { updateTitleCount } = useTitleCount();
+    const { updateTitleCount, updateCardCacheData } = useTitleCount();
 
     const handleOverLay = reactive({
       show: false,
@@ -171,8 +172,10 @@ export default defineComponent({
         getData();
       }
     };
-    const codeHandle = async (row: any) => {
-      const ret: string = await JsToFlutter.startScanQRCode();
+    const codeHandle = async (row: any, ret:any) => {
+      if (!ret) {
+        ret = await JsToFlutter.startScanQRCode()
+      }
       const data: ReturnData = await Request.xhr(
         'circuitNurseHandoverToRecovery',
         {
@@ -230,6 +233,7 @@ export default defineComponent({
           taskViewsList.value = []
         }
         updateTitleCount(taskViewsList.value.length);
+        updateCardCacheData(taskViewsList.value);
       });
     };
     onMounted(() => {

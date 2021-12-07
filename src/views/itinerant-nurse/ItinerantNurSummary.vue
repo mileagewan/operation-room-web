@@ -7,6 +7,7 @@
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in list" :key="index">
+      <a href="" :id="`_${task.patient.hospitalCode}`"></a>
       <ExpandCard
         :option="{
           status: task.opInfo.opSectionCode,
@@ -53,7 +54,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ItinerantNurSummary',
   setup() {
-    const { updateTitleCount } = useTitleCount();
+    const { updateTitleCount, updateCardCacheData } = useTitleCount();
 
     const loading = ref(false);
     const finished = ref(true);
@@ -84,6 +85,7 @@ export default defineComponent({
           list.value = []
         }
         updateTitleCount(list.value.length)
+        updateCardCacheData(list.value);
         // TODO 数据list赋值处理
       });
     };

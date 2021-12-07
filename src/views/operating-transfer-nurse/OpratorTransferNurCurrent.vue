@@ -5,6 +5,7 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
+    :id="task.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail
@@ -120,7 +121,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -132,11 +133,8 @@ export default defineComponent({
       currentTask = task;
     };
     const manualOk = () => {
-      // console.log(handleOverLay);
       handleOverLay.show = false;
-      // console.log(handleOverLay);
       handleOverLay.show = false;
-      // console.log(currentTask);
 
       const data = {
         opInfoId: currentTask.opInfo.id,
@@ -165,21 +163,21 @@ export default defineComponent({
         }
       });
     };
-    const codeHandle = (task: any) => {
+    const codeHandle = async (task: any, res:any) => {
       currentTask = task;
-      JsToFlutter.startScanQRCode().then((res) => {
-        console.log('扫码结果：', res);
-        if (res) {
-          // TODO 调接口推进下一阶段
-          const data = {
-            opInfoId: currentTask.opInfo.id,
-            currentTaskId: currentTask.opTask.id,
-            parentTaskId: currentTask.opTask.parentTaskId,
-            hospitalCode: res,
-          };
-          next(data);
-        }
-      });
+      if (!res) {
+        res = await JsToFlutter.startScanQRCode()
+      }
+      if (res) {
+        // TODO 调接口推进下一阶段
+        const data = {
+          opInfoId: currentTask.opInfo.id,
+          currentTaskId: currentTask.opTask.id,
+          parentTaskId: currentTask.opTask.parentTaskId,
+          hospitalCode: res,
+        };
+        next(data);
+      }
     };
 
     const taskList: any = ref([]);
@@ -190,12 +188,6 @@ export default defineComponent({
       departmentName(),
       infectType(),
       circulatingNurseName(),
-
-      // surgeonName(),
-      // anesthetistName(),
-      // anesthesiaDicCode(),
-      // opInfoName(),
-      // beforeDiseaseName(),
     ];
     const getData = () => {
       return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
@@ -211,6 +203,7 @@ export default defineComponent({
           taskList.value = [];
         }
         updateTitleCount(taskList.value.length);
+        updateCardCacheData(taskList.value);
       });
     };
     getData();

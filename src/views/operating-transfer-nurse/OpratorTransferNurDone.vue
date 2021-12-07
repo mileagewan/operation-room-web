@@ -14,7 +14,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'OpratorTransferNurDone',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const options = reactive([
       {
         label: '送病人',
@@ -42,7 +42,8 @@ export default defineComponent({
             options[1].value = 0;
             taskList.value = [];
           }
-          updateTitleCount(taskList.value.length)
+          updateTitleCount(taskList.value.length);
+          updateCardCacheData(taskList.value);
         })
         .finally(() => {
           loading.value = false;

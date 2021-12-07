@@ -11,10 +11,11 @@
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
+import cloneDeep from 'lodash/cloneDeep';
 export default defineComponent({
   name: 'TransferNurDone',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const options = reactive([
       {
         label: '送病人',
@@ -43,7 +44,7 @@ export default defineComponent({
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length)
-          // console.log(taskList);
+          updateCardCacheData(taskList.value)
         })
         .finally(() => {
           loading.value = false;

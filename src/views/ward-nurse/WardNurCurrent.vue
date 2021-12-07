@@ -4,6 +4,7 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
+    :id="task.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail
@@ -111,18 +112,14 @@ import useTaskMixins, {
   surgeonName,
 } from '../../utils/task-mixins';
 import useTitleCount from '@/utils/useTitleCount';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const taskList: any = ref([]);
     const loading = ref(false);
-    // onMounted(() => {
-    //   Request.xhr('getSso').then((r: ReturnData) => {
-    //     console.log(r);
-    //   });
-    // });
 
     const { formatTask } = useTaskMixins();
     const infoItems = [
@@ -141,7 +138,6 @@ export default defineComponent({
       loading.value = true;
       return Request.xhr('queryCurrentTaskList')
         .then((r: CurrentTaskViews) => {
-          // console.log(r);
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
               return {
@@ -153,6 +149,7 @@ export default defineComponent({
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length);
+          updateCardCacheData(taskList.value);
         })
         .finally(() => {
           loading.value = false;
@@ -179,21 +176,22 @@ export default defineComponent({
       };
       next(data);
     };
-    const codeHandle = (task: any) => {
+    const codeHandle = async (task: any, res:any) => {
+      // Toast('呼叫护工成功');
       currentTask = task;
-      JsToFlutter.startScanQRCode().then((res) => {
-        console.log('扫码结果：', res);
-        // TODO 调接口推进下一阶段
-        if (res) {
-          const data = {
-            opInfoId: currentTask.opInfo.id,
-            currentTaskId: currentTask.opTask.id,
-            parentTaskId: currentTask.opTask.parentTaskId,
-            hospitalCode: res,
-          };
-          next(data);
-        }
-      });
+      if (!res) {
+        res = await JsToFlutter.startScanQRCode()
+      }
+      // TODO 调接口推进下一阶段
+      if (res) {
+        const data = {
+          opInfoId: currentTask.opInfo.id,
+          currentTaskId: currentTask.opTask.id,
+          parentTaskId: currentTask.opTask.parentTaskId,
+          hospitalCode: res,
+        };
+        next(data);
+      }
     };
     const next = (data: any) => {
       // TODO

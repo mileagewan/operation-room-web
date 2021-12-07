@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="src/assets/styles/component/task-view.scss">
 <template>
   <div class="task-view">
+    <a :href="`#${String(id)}`" :id="`_${id}`"></a>
     <div class="task-view-header" v-if="showHeader">
       <slot name="header"></slot>
     </div>
@@ -20,6 +21,10 @@ export default defineComponent({
     showHeader: {
       type: Boolean,
       default: true
+    },
+    id: {
+      type: [String, Number],
+      default: '1'
     }
   }
 })

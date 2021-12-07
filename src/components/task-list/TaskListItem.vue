@@ -1,6 +1,7 @@
 <template>
   <div class="task-list-item">
     <div class="task-item">
+      <a :href="`#${task.patient.hospitalCode}`" :id="`_${task.patient.hospitalCode}`"></a>
       <div class="flex flex-between header">
         <div class="flex-main">
           <span class="name">{{ task.patient.name }}</span>

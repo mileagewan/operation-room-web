@@ -2,6 +2,7 @@
   <TaskView class="chiefnur-current"
             v-for="(taskView, index) in taskViewsList"
             :key="index"
+            :id="taskView.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail :option="{
@@ -62,7 +63,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ChiefNurCurrent',
   setup() {
-    const { updateTitleCount } = useTitleCount();
+    const { updateTitleCount, updateCardCacheData } = useTitleCount();
 
     const map = new Map<number, any>([
       [6, {
@@ -104,7 +105,6 @@ export default defineComponent({
     const taskViewsList = ref([])
 
     const getData = () => {
-      // eslint-disable-next-line no-undef
       return Request.xhr('roomGettotaltask', {
         pageNo: 1,
         pageSize: 300
@@ -174,7 +174,7 @@ export default defineComponent({
           taskViewsList.value = []
         }
         updateTitleCount(taskViewsList.value.length)
-        console.log(taskViewsList.value)
+        updateCardCacheData(taskViewsList.value);
       })
     }
     onMounted(() => {

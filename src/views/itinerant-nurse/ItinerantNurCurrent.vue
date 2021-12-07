@@ -4,6 +4,7 @@
     v-for="(taskView, index) in taskViewsList"
     :key="index"
     :show-header="!taskView.isClean"
+    :id="taskView.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail
@@ -350,7 +351,7 @@ export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
-    const { updateTitleCount } = useTitleCount();
+    const { updateTitleCount, updateCardCacheData } = useTitleCount();
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -426,7 +427,6 @@ export default defineComponent({
       anesthesiaDicCode(),
       infectType(),
       opInfoName(),
-      // beforeDiseaseName(),
     ];
     const taskViewsList = ref([]);
 
@@ -452,8 +452,10 @@ export default defineComponent({
         Toast(ret.msg as string)
       }
     };
-    const codeHandle = async (row: any) => {
-      const ret: string = await JsToFlutter.startScanQRCode();
+    const codeHandle = async (row: any, ret:any) => {
+      if (!ret) {
+        ret = await JsToFlutter.startScanQRCode()
+      }
       const data: ReturnData = await Request.xhr('pickupNurseHandover', {
         opInfoId: row.opInfo.id || '',
         currentTaskId: row.opTask.id || '',
@@ -626,6 +628,7 @@ export default defineComponent({
         }
 
         updateTitleCount(taskViewsList.value.length)
+        updateCardCacheData(taskViewsList.value);
       });
     };
     onMounted(() => {

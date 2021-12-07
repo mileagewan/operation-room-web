@@ -9,6 +9,7 @@
                 is-link>
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
+          <a href="" :id="`_${list.patient.hospitalCode}`"></a>
           <span class="custom-title">{{list.patient.name}}</span>
           <span class="custom-sex">{{list.patient.sex === 1 ? '男' : '女'}}</span>
           <span class="custom-age">{{list.patient.age}}岁</span>
@@ -36,7 +37,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {
-    const { updateTitleCount } = useTitleCount()
+    const { updateTitleCount, updateCardCacheData } = useTitleCount()
     const router = useRouter();
     const store = useStore();
     const pageData:any = reactive({
@@ -69,6 +70,7 @@ export default defineComponent({
           pageData.completeList = []
         }
         updateTitleCount(pageData.completeList.length)
+        updateCardCacheData(pageData.completeList);
       })
     }
 

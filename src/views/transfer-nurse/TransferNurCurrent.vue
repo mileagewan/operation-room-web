@@ -4,6 +4,7 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
+    :id="task.patient.hospitalCode"
   >
     <template #header>
       <PatientDetail
@@ -119,7 +120,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const loading = ref(false);
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
@@ -146,6 +147,7 @@ export default defineComponent({
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length);
+          updateCardCacheData(taskList.value);
         })
         .finally(() => {
           loading.value = false;
@@ -162,7 +164,6 @@ export default defineComponent({
     const manualHandle = (task: any) => {
       handleOverLay.show = true;
       currentTask = task;
-      console.log(currentTask);
     };
     const manualOk = () => {
       handleOverLay.show = false;
@@ -176,22 +177,22 @@ export default defineComponent({
     };
 
     // 扫码交接
-    const codeHandle = (task: any) => {
+    const codeHandle = async (task: any, res:any) => {
       // Toast('呼叫护工成功');
       currentTask = task;
-      JsToFlutter.startScanQRCode().then((res) => {
-        console.log('扫码结果：', res);
-        if (res) {
-          // TODO 调接口推进下一阶段
-          const data = {
-            opInfoId: currentTask.opInfo.id,
-            currentTaskId: currentTask.opTask.id,
-            parentTaskId: currentTask.opTask.parentTaskId,
-            hospitalCode: res,
-          };
-          next(data);
-        }
-      });
+      if (!res) {
+        res = await JsToFlutter.startScanQRCode()
+      }
+      if (res) {
+        // TODO 调接口推进下一阶段
+        const data = {
+          opInfoId: currentTask.opInfo.id,
+          currentTaskId: currentTask.opTask.id,
+          parentTaskId: currentTask.opTask.parentTaskId,
+          hospitalCode: res,
+        };
+        next(data);
+      }
     };
 
     const next = (data: any) => {
@@ -222,10 +223,6 @@ export default defineComponent({
         task.opInfo.opSectionCode === '4' || task.opInfo.opSectionCode === '14'
       );
     };
-
-    // onMounted(() => {
-    //   getData();
-    // });
     return {
       loading,
       taskList,

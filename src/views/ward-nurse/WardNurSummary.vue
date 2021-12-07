@@ -1,6 +1,6 @@
 <template>
   <!-- 任务汇总 -->
-  <EmptyPage message="暂无手术任务" v-if="!taskList.length && !loading" />
+  <EmptyPage message="暂无手术任务" v-if="!taskList.length && !loading"/>
   <van-list
     v-model:loading="loading"
     :finished="finished"
@@ -9,6 +9,7 @@
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in taskList" :key="index">
+      <a href="" :id="`_${task.patient.hospitalCode}`"></a>
       <ExpandCard
         :option="{
           status: task.opInfo.opSectionCode,
@@ -55,7 +56,7 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'WardNurSummary',
   setup() {
-    const { updateTitleCount } = useTitleCount() as any;
+    const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
     const loading = ref(false);
     const finished = ref(true);
     const { formatTask } = useTaskMixins();
@@ -89,6 +90,7 @@ export default defineComponent({
             taskList.value = []
           }
           updateTitleCount(taskList.value.length);
+          updateCardCacheData(taskList.value)
         })
         .finally(() => {
           loading.value = false;
