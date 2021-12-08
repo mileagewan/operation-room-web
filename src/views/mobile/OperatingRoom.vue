@@ -8,14 +8,15 @@
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
-          @load="onLoad"
           finished-text="没有更多了"
         >
           <oprat-room-card
-            v-for="(item,index) in listData"
+            v-for="(item, index) in listData"
             :key="index"
             :dateTime="`${item.startDate ? getMonthDay(item.startDate) : ''}
-            ${item.week ? '(' + item.week + ')' : ''} ${item.startTime + '-' + item.endTime}`"
+            ${item.week ? '(' + item.week + ')' : ''} ${
+              item.startTime + '-' + item.endTime
+            }`"
             :name="item.name"
             :tagCode="item.opSectioode"
           >
@@ -23,7 +24,10 @@
               <div class="row">
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
+                  <span class="text"
+                    >{{ item.departmentWardName }} -
+                    {{ item.oproomSubName }}</span
+                  >
                 </div>
               </div>
               <div class="row">
@@ -49,13 +53,19 @@
               <div class="row">
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span
-                    class="text"
-                  >{{ item.patientSex == 1 ? '男' : (item.patientSex == 2 ? '女' : '') }}</span>
+                  <span class="text">{{
+                    item.patientSex == 1
+                      ? "男"
+                      : item.patientSex == 2
+                      ? "女"
+                      : ""
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
-                  <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
+                  <span class="text">{{
+                    item.patientAge ? item.patientAge + "岁" : ""
+                  }}</span>
                 </div>
               </div>
             </template>
@@ -66,104 +76,126 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
-import OpratRoomCard from './components/OpratRoomCard.vue'
-import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
-import { getMonthDay } from '@/utils/date-formt'
-import { useRoute, useRouter } from 'vue-router'
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from "vue";
+import OpratRoomCard from "./components/OpratRoomCard.vue";
+import Request from "@/service/request";
+import { ReturnData } from "@/types/interface-model";
+import { getMonthDay } from "@/utils/date-formt";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'OperatingRoom',
+  name: "OperatingRoom",
   components: {
     OpratRoomCard,
   },
   setup() {
-    const router = useRouter()
-    const route = useRoute()
+    const router = useRouter();
+    const route = useRoute();
     const state = reactive({
-      title: '手术间',
+      title: "手术间",
       refreshing: false,
       loadingList: false,
-      finishedList: false,
+      finishedList: true,
       totalPage: 0,
       pageNo: 1,
       pageSize: 5,
-      subRoomId: 0
-    })
-    const listData = ref<any[]>([])
+      subRoomId: 0,
+    });
+    const listData = ref<any[]>([]);
     onBeforeMount(() => {
       if (route.query?.id) {
-        state.subRoomId = route.query.id as any
+        state.subRoomId = route.query.id as any;
       }
-    })
+    });
     // 加载更多
-    const onLoad = async () => {
-      if (!state.refreshing && state.pageNo < state.totalPage) {
-        console.log('加载更多')
-        state.pageNo = state.pageNo + 1
-      }
-      if (state.refreshing) {
-        console.log('----refreshing---')
-        listData.value = [];
-        state.refreshing = false;
-      }
-      console.log('加载更12多')
-      loadData()
-    }
-    // 接口请求
-    const loadData = async () => {
+    // const onLoad = async () => {
+    //   if (!state.refreshing && state.pageNo < state.totalPage) {
+    //     console.log("加载更多");
+    //     state.pageNo = state.pageNo + 1;
+    //   }
+    //   if (state.refreshing) {
+    //     console.log("----refreshing---");
+    //     listData.value = [];
+    //     state.refreshing = false;
+    //   }
+    //   console.log("加载更12多");
+    //   loadData();
+    // };
+    const queryData = async () => {
       try {
         const params = {
           subRoomId: state.subRoomId,
           pageNo: state.pageNo,
           pageSize: state.pageSize,
-        }
-        await Request.xhr('getOperatingRoom', params).then((r: ReturnData) => {
+        };
+        await Request.xhr("getOperatingRoom", params).then((r: ReturnData) => {
           if (r.code === 200) {
             const data = r.data;
-            listData.value = listData.value.concat(data.records)
-            if (listData?.value[0]) {
-              state.title = listData?.value[0]?.oproomSubName ?? '手术间1'
-            }
-            state.totalPage = Math.ceil(data.total / state.pageSize)
+            listData.value = [1, 2, 3, 4];
+            // if (listData?.value[0]) {
+            //   state.title = listData?.value[0]?.oproomSubName ?? "手术间1";
+            // }
+            // state.totalPage = Math.ceil(data.total / state.pageSize);
             state.loadingList = false;
-            if (state.pageNo >= state.totalPage) state.finishedList = true
+            state.refreshing = false
+            // if (state.pageNo >= state.totalPage) state.finishedList = true;
+            console.log(r, data);
           }
-          console.log(r)
-        })
-      } catch (e) {
-
-      }
-    }
+        });
+      } catch (e) {}
+    };
+    // 接口请求
+    // const loadData = async () => {
+    //   try {
+    //     const params = {
+    //       subRoomId: state.subRoomId,
+    //       pageNo: state.pageNo,
+    //       pageSize: state.pageSize,
+    //     };
+    //     await Request.xhr("getOperatingRoom", params).then((r: ReturnData) => {
+    //       if (r.code === 200) {
+    //         const data = r.data;
+    //         listData.value = listData.value.concat(data.records);
+    //         if (listData?.value[0]) {
+    //           state.title = listData?.value[0]?.oproomSubName ?? "手术间1";
+    //         }
+    //         state.totalPage = Math.ceil(data.total / state.pageSize);
+    //         state.loadingList = false;
+    //         if (state.pageNo >= state.totalPage) state.finishedList = true;
+    //       }
+    //       console.log(r);
+    //     });
+    //   } catch (e) {}
+    // };
     const goBack = (): void => {
-      const _dateType: any = route?.query?.dateType
+      const _dateType: any = route?.query?.dateType;
       // router.back()
       router.push({
-        path: 'operationRoom',
+        path: "operationRoom",
         query: {
-          dateType: _dateType || ''
-        }
-      })
-    }
+          dateType: _dateType || "",
+        },
+      });
+    };
     // 下拉刷新
     const onRefresh = async () => {
-      state.refreshing = true
-      state.finishedList = false
-      state.loadingList = true
-      state.pageNo = 1
-      onLoad()
+      state.refreshing = true;
+      // state.finishedList = false;
+      state.loadingList = true;
+      state.pageNo = 1;
+      queryData();
+      // onLoad();
     };
     return {
       onRefresh,
       goBack,
-      onLoad,
+      // onLoad,
       ...toRefs(state),
       listData,
-      getMonthDay
-    }
+      getMonthDay,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .operating-room {
@@ -184,6 +216,7 @@ export default defineComponent({
       margin-top: 12px;
     }
     .van-pull-refresh {
+      height: calc(100vh - 90px);
       overflow: visible;
     }
   }

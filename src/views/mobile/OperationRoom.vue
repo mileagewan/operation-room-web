@@ -8,17 +8,22 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh" v-if="listData.length > 0">
+      <van-pull-refresh
+        v-model="refreshing"
+        @refresh="onRefresh"
+        v-if="listData.length > 0"
+      >
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
-          @load="onLoad"
           finished-text="没有更多了"
         >
           <oprat-room-card
-            v-for="(item,index) in listData"
+            v-for="(item, index) in listData"
             :key="index"
-            :dateTime="`${getMonthDay(item.startDate)}${'(' + item.week + ')'} ${item.startTime + '-' + item.endTime}`"
+            :dateTime="`${getMonthDay(item.startDate)}${
+              '(' + item.week + ')'
+            } ${item.startTime + '-' + item.endTime}`"
             :name="item.name"
             :tagCode="item.opSectionCode"
             @click.stop="cardTitleClick(item)"
@@ -28,39 +33,56 @@
               <div class="row">
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text">{{ item.departmentWardName }} - {{ item.oproomSubName }}</span>
+                  <span class="text"
+                    >{{ item.departmentWardName }} -
+                    {{ item.oproomSubName }}</span
+                  >
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">主刀医生</span>
-                  <span class="text">{{ item.surgeonName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.surgeonName
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">巡回护士</span>
-                  <span class="text">{{ item.circulatingNurseName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.circulatingNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">麻醉医生</span>
-                  <span class="text">{{ item.anesthetistName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.anesthetistName
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">器械护士</span>
-                  <span class="text">{{ item.instrumentNurseName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.instrumentNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">患者性别</span>
-                  <span
-                    class="text"
-                  >{{ item.patientSex == 1 ? '男' : (item.patientSex == 2 ? '女' : '') }}</span>
+                  <span class="text">{{
+                    item?.opPatientDTO?.sex == 1
+                      ? "男"
+                      : item?.opPatientDTO?.sex == 2
+                      ? "女"
+                      : ""
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
-                  <span class="text">{{ item.patientAge ? (item.patientAge + '岁') : '' }}</span>
+                  <span class="text">{{
+                    item.opPatientDTO?.age ? item.opPatientDTO?.age + "岁" : ""
+                  }}</span>
                 </div>
               </div>
             </template>
@@ -72,26 +94,26 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onBeforeMount } from 'vue'
-import OpratRoomCard from './components/OpratRoomCard.vue'
-import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
-import { getMonthDay } from '@/utils/date-formt'
-import { useRouter, useRoute } from 'vue-router'
-import JsToFlutter from '@/utils/js-to-flutter';
-import { Toast } from 'vant';
+import { defineComponent, reactive, toRefs, ref, onBeforeMount } from "vue";
+import OpratRoomCard from "./components/OpratRoomCard.vue";
+import Request from "@/service/request";
+import { ReturnData } from "@/types/interface-model";
+import { getMonthDay } from "@/utils/date-formt";
+import { useRouter, useRoute } from "vue-router";
+import JsToFlutter from "@/utils/js-to-flutter";
+import { Toast } from "vant";
 
 export default defineComponent({
-  name: 'OperationRoom',
+  name: "OperationRoom",
   components: {
     OpratRoomCard,
   },
   setup() {
-    const router = useRouter()
-    const route = useRoute()
+    const router = useRouter();
+    const route = useRoute();
     const state = reactive({
-      title: '手术室',
-      active: 'TODAY',
+      title: "手术室",
+      active: "TODAY",
       todayNum: 0,
       tomorrowNum: 0,
       refreshing: false,
@@ -100,116 +122,180 @@ export default defineComponent({
       totalPage: 0,
       pageNo: 1,
       pageSize: 5,
-    })
-    const listData = ref<any[]>([])
+    });
+    const listData = ref<any[]>([]);
     // 返回
     const goBack = (): void => {
       JsToFlutter.goback();
-    }
+    };
     onBeforeMount(() => {
       if (route.query?.dateType) {
-        const _dateType: any = route.query.dateType
-        state.active = _dateType
+        const _dateType: any = route.query.dateType;
+        state.active = _dateType;
       }
       // 获取今日数量
-      loadData('TODAY', 1, 5, true)
+      // loadData("TODAY", 1, 5, true);
+      queryOpList(true, "TODAY");
       // 获取明日数量
-      loadData('TOMORROW', 1, 5, true)
-      onRefresh()
-    })
+      // loadData("TOMORROW", 1, 5, true);
+      queryOpList(true, "TOMORROW");
+      onRefresh();
+    });
     // 加载更多
-    const onLoad = async (isTabClick?: boolean) => {
-      if (!state.refreshing && state.pageNo < state.totalPage) {
-        state.pageNo = state.pageNo + 1
-      }
-      if (state.refreshing) {
-        console.log('----refreshing---')
-        listData.value = [];
-        state.refreshing = false;
-      }
-      loadData(state.active, state.pageNo, state.pageSize, false, isTabClick)
-    }
+    // const onLoad = async (isTabClick?: boolean) => {
+    //   if (!state.refreshing && state.pageNo < state.totalPage) {
+    //     state.pageNo = state.pageNo + 1;
+    //   }
+    //   if (state.refreshing) {
+    //     console.log("----refreshing---");
+    //     listData.value = [];
+    //     state.refreshing = false;
+    //   }
+    //   loadData(state.active, state.pageNo, state.pageSize, false, isTabClick);
+    // };
     // tab切换
     const onClickTab = ({ name }: any) => {
       state.active = name;
-      onRefresh(true)
-    }
+      onRefresh(true);
+    };
     // 接口请求
-    const loadData = async (dateType: string, pageNo: number, pageSize: number, getNum?: boolean, isTabClick?: boolean) => {
+    const queryOpList = async (
+      getNum = false,
+      type: string,
+      isTabClick?: boolean
+    ) => {
       try {
-        const params = {
-          dateType: dateType,
-          pageNo: pageNo,
-          pageSize: pageSize,
-        }
         if (isTabClick) {
           Toast.loading({
             duration: 0,
-            message: '加载中...',
+            message: "加载中...",
             forbidClick: true,
           });
         }
-        await Request.xhr('getOperationRoom', params).then((r: ReturnData) => {
-          if (r.code === 200) {
-            const data = r.data;
-            if (getNum) {
-              if (dateType === 'TODAY') {
-                state.todayNum = data.total
-              } else if (dateType === 'TOMORROW') {
-                state.tomorrowNum = data.total
-              }
-            } else {
-              listData.value = listData.value.concat(data.records)
-              state.totalPage = Math.ceil(data.total / state.pageSize)
-              state.loadingList = false;
-              if (state.pageNo >= state.totalPage) state.finishedList = true
-            }
-          }
-          console.log(r)
-        }).finally(() => {
-          if (isTabClick) {
-            Toast.clear()
-          }
+        let xhrName = "";
+        if (type === "TODAY") {
+          xhrName = "getOperationRoom";
+        } else if (type === "TOMORROW") {
+          xhrName = "getOperationRoom";
+        }
+        await Request.xhr(xhrName, {
+          dateType: "TOMORROW",
+          pageNo: 1,
+          pageSize: 10,
         })
-      } catch (e) { console.log(e) }
-    }
+          .then((r: ReturnData) => {
+            if (r.code === 200) {
+              if (type === "TODAY") {
+                state.todayNum = 1;
+              } else if (type === "TOMORROW") {
+                // state.tomorrowNum = r.data.length;
+                state.tomorrowNum = 2;
+              }
+              if (!getNum) {
+                // listData.value = r.data;
+                listData.value = [1, 2];
+                state.finishedList = true;
+                state.refreshing = false;
+              }
+            }
+          })
+          .finally(() => {
+            if (isTabClick) {
+              Toast.clear();
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    // 接口请求
+    // const loadData = async (
+    //   dateType: string,
+    //   pageNo: number,
+    //   pageSize: number,
+    //   getNum?: boolean,
+    //   isTabClick?: boolean
+    // ) => {
+    //   try {
+    //     const params = {
+    //       dateType: dateType,
+    //       pageNo: pageNo,
+    //       pageSize: pageSize,
+    //     };
+    //     if (isTabClick) {
+    //       Toast.loading({
+    //         duration: 0,
+    //         message: "加载中...",
+    //         forbidClick: true,
+    //       });
+    //     }
+    //     await Request.xhr("getOperationRoom", params)
+    //       .then((r: ReturnData) => {
+    //         if (r.code === 200) {
+    //           const data = r.data;
+    //           if (getNum) {
+    //             if (dateType === "TODAY") {
+    //               state.todayNum = data.total;
+    //             } else if (dateType === "TOMORROW") {
+    //               state.tomorrowNum = data.total;
+    //             }
+    //           } else {
+    //             listData.value = listData.value.concat(data.records);
+    //             state.totalPage = Math.ceil(data.total / state.pageSize);
+    //             state.loadingList = false;
+    //             if (state.pageNo >= state.totalPage) state.finishedList = true;
+    //           }
+    //         }
+    //         console.log(r);
+    //       })
+    //       .finally(() => {
+    //         if (isTabClick) {
+    //           Toast.clear();
+    //         }
+    //       });
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // };
     // 下拉刷新
     const onRefresh = async (isTabClick?: boolean) => {
-      state.refreshing = true
-      state.finishedList = false
-      state.loadingList = true
-      state.pageNo = 1
-      onLoad(isTabClick)
+      state.refreshing = true;
+      state.finishedList = false;
+      state.loadingList = true;
+      state.pageNo = 1;
+      // onLoad(isTabClick);
+      queryOpList(false, state.active, isTabClick);
+      console.log(state.active);
     };
     // 点击跳转
     const cardTitleClick = (item: any) => {
-      let path = '/operatDetail'
-      let id = item?.code ?? ''
-      const _opSectionCode: number = item?.opSectionCode
+      let path = "/operatDetail";
+      let id = item?.code ?? "";
+      const _opSectionCode: number = item?.opSectionCode;
       if (_opSectionCode < 3) {
-        path = '/operatingRoom'
-        id = item.oproomSubId
+        path = "/operatingRoom";
+        id = item.oproomSubId;
       }
       router.push({
         path: path,
         query: {
           id: id,
-          dateType: state.active ? state.active : ''
-        }
-      })
-    }
+          dateType: state.active ? state.active : "",
+        },
+      });
+    };
     return {
-      onLoad,
+      // onLoad,
       onRefresh,
       goBack,
       listData,
       ...toRefs(state),
       onClickTab,
       getMonthDay,
-      cardTitleClick
-    }
+      cardTitleClick,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .operation-room {

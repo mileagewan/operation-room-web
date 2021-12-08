@@ -8,16 +8,19 @@
       </van-tabs>
     </div>
     <div class="content">
-      <DoneSummary class="done-summary-m" :options="options" v-if="active === 'DONE'" />
       <van-pull-refresh
         v-model="refreshing"
         @refresh="onRefresh"
         v-if="listData.length > 0"
       >
+      <DoneSummary
+        class="done-summary-m"
+        :options="options"
+        v-if="active === 'DONE'"
+      />
         <van-list
           v-model:loading="loadingList"
           :finished="finishedList"
-          @load="onLoad"
           finished-text="没有更多了"
         >
           <template v-if="active === 'UNDO'">
@@ -76,7 +79,7 @@ export default defineComponent({
       tomorrowNum: 0,
       refreshing: false,
       loadingList: false,
-      finishedList: false,
+      finishedList: true,
       totalPage: 0,
       pageNo: 1,
       pageSize: 5,
@@ -87,7 +90,7 @@ export default defineComponent({
         },
         {
           label: "准时率",
-          value: '4/7',
+          value: "4/7",
         },
       ],
     });
@@ -100,38 +103,43 @@ export default defineComponent({
       // 获取当前任务数量
       // loadData('UNDO', 1, 100, true)
       // 获取今日数量
-      loadData("UNDO", 1, 5, true);
+      // loadData("UNDO", 1, 5, true);
+      queryCleanTaskList(true, "UNDO");
       // 获取已完成数量
-      loadData("DONE", 1, 5, true);
+      // loadData("DONE", 1, 5, true);
+      queryCleanTaskList(true, "DONE");
       onRefresh();
     });
     // 加载更多
-    const onLoad = async (isTabClick?: boolean) => {
-      if (!state.refreshing && state.pageNo < state.totalPage) {
-        console.log("加载更多");
-        state.pageNo = state.pageNo + 1;
-      }
-      if (state.refreshing) {
-        console.log("----refreshing---");
-        listData.value = [];
-        state.refreshing = false;
-      }
-      loadData(state.active, state.pageNo, state.pageSize, false, isTabClick);
-    };
-    // 接口请求
-    const loadData = async (
-      taskStatus: string,
-      pageNo: number,
-      pageSize: number,
-      getNum?: boolean,
+    // const onLoad = async (isTabClick?: boolean) => {
+    //   if (!state.refreshing && state.pageNo < state.totalPage) {
+    //     console.log("加载更多");
+    //     state.pageNo = state.pageNo + 1;
+    //   }
+    //   if (state.refreshing) {
+    //     console.log("----refreshing---");
+    //     listData.value = [];
+    //     state.refreshing = false;
+    //   }
+    //   loadData(state.active, state.pageNo, state.pageSize, false, isTabClick);
+    // };
+    const queryCleanTaskList = async (
+      getNum = false,
+      type: string,
       isTabClick?: boolean
     ) => {
       try {
         const params = {
-          taskStatus: taskStatus,
-          pageNo: pageNo,
-          pageSize: pageSize,
+          taskStatus: 1,
+          pageNo: 1,
+          pageSize: 10,
         };
+        let xhrName = "";
+        if (type === "UNDO") {
+          xhrName = "getClearTask";
+        } else if (type === "DONE") {
+          xhrName = "getClearTask";
+        }
         if (isTabClick) {
           Toast.loading({
             duration: 0,
@@ -139,29 +147,24 @@ export default defineComponent({
             forbidClick: true,
           });
         }
-        await Request.xhr("getClearTask", params)
+        await Request.xhr(xhrName, params)
           .then((r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;
-              if (getNum) {
-                if (taskStatus === "UNDO") {
-                  state.todayNum = data.total;
-                } else if (taskStatus === "DONE") {
-                  state.tomorrowNum = data.total;
-                }
-              } else {
-                listData.value = listData.value.concat(data.records);
-                state.totalPage = Math.ceil(data.total / state.pageSize);
-                state.loadingList = false;
-                if (state.pageNo >= state.totalPage) state.finishedList = true;
-                if (taskStatus === "UNDO") {
-                  state.todayNum = data.total;
-                } else if (taskStatus === "DONE") {
-                  state.tomorrowNum = data.total;
-                }
+              if (type === "UNDO") {
+                state.todayNum = 1;
+              } else if (type === "DONE") {
+                // state.tomorrowNum = r.data.length;
+                state.tomorrowNum = 2;
               }
+              if (!getNum) {
+                // listData.value = r.data;
+                listData.value = [1, 2, 3, 4, 5];
+                state.finishedList = true;
+                state.refreshing = false;
+              }
+              console.log(data);
             }
-            console.log(r);
           })
           .finally(() => {
             if (isTabClick) {
@@ -170,6 +173,58 @@ export default defineComponent({
           });
       } catch (e) {}
     };
+    // 接口请求
+    // const loadData = async (
+    //   taskStatus: string,
+    //   pageNo: number,
+    //   pageSize: number,
+    //   getNum?: boolean,
+    //   isTabClick?: boolean
+    // ) => {
+    //   try {
+    //     const params = {
+    //       taskStatus: taskStatus,
+    //       pageNo: pageNo,
+    //       pageSize: pageSize,
+    //     };
+    //     if (isTabClick) {
+    //       Toast.loading({
+    //         duration: 0,
+    //         message: "加载中...",
+    //         forbidClick: true,
+    //       });
+    //     }
+    //     await Request.xhr("getClearTask", params)
+    //       .then((r: ReturnData) => {
+    //         if (r.code === 200) {
+    //           const data = r.data;
+    //           if (getNum) {
+    //             if (taskStatus === "UNDO") {
+    //               state.todayNum = data.total;
+    //             } else if (taskStatus === "DONE") {
+    //               state.tomorrowNum = data.total;
+    //             }
+    //           } else {
+    //             listData.value = listData.value.concat(data.records);
+    //             state.totalPage = Math.ceil(data.total / state.pageSize);
+    //             state.loadingList = false;
+    //             if (state.pageNo >= state.totalPage) state.finishedList = true;
+    //             if (taskStatus === "UNDO") {
+    //               state.todayNum = data.total;
+    //             } else if (taskStatus === "DONE") {
+    //               state.tomorrowNum = data.total;
+    //             }
+    //           }
+    //         }
+    //         console.log(r);
+    //       })
+    //       .finally(() => {
+    //         if (isTabClick) {
+    //           Toast.clear();
+    //         }
+    //       });
+    //   } catch (e) {}
+    // };
     // tab切换
     const onClickTab = ({ name }: any) => {
       state.active = name;
@@ -181,7 +236,9 @@ export default defineComponent({
       state.finishedList = false;
       state.loadingList = true;
       state.pageNo = 1;
-      onLoad(isTabClick);
+      queryCleanTaskList(false, state.active, isTabClick);
+      console.log(state.active);
+      // onLoad(isTabClick);
     };
     // 触发完成btn
     const doneBtn = (id: any) => {
@@ -210,7 +267,7 @@ export default defineComponent({
     return {
       onClickTab,
       listData,
-      onLoad,
+      // onLoad,
       onRefresh,
       goBack,
       ...toRefs(state),
@@ -255,7 +312,7 @@ export default defineComponent({
     transform: translateY(-168px);
   }
 }
-.done-summary-m{
+.done-summary-m {
   margin-top: 24px;
 }
 :deep(.empty-page-h) {
