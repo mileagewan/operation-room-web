@@ -43,4 +43,15 @@ export default class JsToFlutter {
       console.log(e)
     }
   }
+
+  static notifyFlutterRead(id:string):void {
+    try {
+      window.flutter_inappwebview.callHandler(
+        'jsCallFlutter',
+        'setMessageRead', id
+      )
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="pda-views">
-    <nav-bar @goBack="goBack" right-component="ScanQrCode"/>
+    <nav-bar @goBack="goBack" :right-component="ScanQrCode"/>
     <van-tabs v-model:active="active" swipeable :lazy-render="false">
       <van-tab
         v-for="(cmponentItem, index) in componentsList"
@@ -23,15 +23,19 @@ import { RoleModuleItem } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
 import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
 import { Toast } from 'vant';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'PdaViews',
   components,
   setup() {
     const store = useStore();
+    const route = useRoute();
     const loading = ref<boolean>(false);
-    const { appContext, ctx }: any = getCurrentInstance();
+    const { appContext, }: any = getCurrentInstance();
     const emitter: any = appContext.config.globalProperties.emitter;
+
+    const ScanQrCode = ref<string>('ScanQrCode');
 
     const active = computed({
       get() {
@@ -60,15 +64,6 @@ export default defineComponent({
       return store.state.cardCacheData
     })
 
-    const goBack = (): void => {
-      JsToFlutter.goback();
-    };
-    const onRefresh = (index: number): void => {
-      itemRefs[index].getData().finally(() => {
-        loading.value = false;
-      });
-    };
-
     const getComponentsList = (defaultRole: string) => {
       const map = new Map<string, RoleModuleItem[]>();
       for (const item of RoleModuleInject) {
@@ -86,6 +81,16 @@ export default defineComponent({
       if (el) {
         itemRefs[index] = el;
       }
+    };
+
+    const goBack = (): void => {
+      JsToFlutter.goback();
+    };
+
+    const onRefresh = (index: number): void => {
+      itemRefs[index].getData().finally(() => {
+        loading.value = false;
+      });
     };
 
     const findSanCodeDataIndex = (id: string): any => {
@@ -117,6 +122,25 @@ export default defineComponent({
       };
     }
 
+    const Events = {
+      goBack,
+      onRefresh,
+      setItemRef,
+
+      setScanQrCode() {
+        if (defaultRole.value === 'CoordinateNurse') {
+          ScanQrCode.value = ''
+        }
+      },
+
+      notifyFlutterRead() {
+        const { query } = route;
+        if (query.id) {
+          JsToFlutter.notifyFlutterRead(query.id as string);
+        }
+      }
+    }
+
     onMounted(() => {
       emitter.on('scan-code-success', (id: string) => {
         const { data, index } = findSanCodeDataIndex(id);
@@ -141,18 +165,20 @@ export default defineComponent({
             }, 500)
           }
         }
-      })
+      });
+      Events.notifyFlutterRead();
+      Events.setScanQrCode();
     })
+
     return {
       loading,
       active,
+      ScanQrCode,
       defaultRole,
       getComponentsList,
       componentsList,
-      goBack,
-      onRefresh,
-      setItemRef,
       titleCount,
+      ...Events,
       onMounted
     };
   },

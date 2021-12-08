@@ -18,11 +18,13 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isReady = ref<boolean>(false);
+
     const beforeEach = async () => {
       const ret: any = await Request.xhr('getMenuTree');
       isReady.value = true;
       store.dispatch(SET_USER_INFO_ACTION, ret.data);
     };
+
     onMounted(() => {
       // 监听flutter透传的刷新操作
       window.addEventListener(
