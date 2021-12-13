@@ -1,7 +1,7 @@
 import { ServiceItem } from '@/types/interface-model';
 
 const nurse: ServiceItem[] = [
-  {
+  /* {
     path: '/itinerantnurse/getcurrenttask',
     key: 'itinerGetcurrenttask',
     method: 'post',
@@ -150,6 +150,40 @@ const nurse: ServiceItem[] = [
     path: '/tOpSyncInfo/syncOpDatas',
     key: 'syncOpDatas',
     method: 'post',
+  }, */
+
+  {
+    path: '/opTask/queryCurrentOpTaskList',
+    method: 'post',
+    key: 'queryCurrentOpTaskList'
+  },
+
+  {
+    path: '/opInfo/queryOpSummaryList',
+    method: 'post',
+    key: 'queryOpSummaryList'
+  },
+
+  {
+    path: '/opTask/queryCurrentAbnormalOpTaskList',
+    method: 'post',
+    key: 'queryCurrentAbnormalOpTaskList'
+  },
+
+  {
+    path: '/flowRever/normal/next',
+    method: 'post',
+    key: 'flowReverNormalNext'
+  },
+  {
+    path: '/flowRever/input/next',
+    method: 'post',
+    key: 'flowReverInputNext'
+  },
+  {
+    path: '/flowRever/scan/next',
+    method: 'post',
+    key: 'flowReverScanNext'
   },
 ];
 export { nurse };

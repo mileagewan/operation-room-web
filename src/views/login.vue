@@ -11,6 +11,13 @@
     <span>{{ item.role }}</span>
     <button @click="login(item)">登录</button>
   </div>
+  <h3>最近开发</h3>
+  <div v-for="item in testUsers2" :key="item.phone">
+    <span>{{ item.phone }}</span>
+    <span>---></span>
+    <span>{{ item.role }}</span>
+    <button @click="login(item)">登录</button>
+  </div>
   <h3>开发用户</h3>
   <div v-for="item in devUsers" :key="item.phone">
     <span>{{ item.phone }}</span>
@@ -104,6 +111,38 @@ export default defineComponent({
         role: '总协调护士',
       },
     ]);
+    const testUsers2 = reactive([
+      {
+        phone: '13266660001',
+        password: '1',
+        role: '病区护士',
+      },
+      {
+        phone: '13266660002',
+        password: '1',
+        role: '转运护工',
+      },
+      {
+        phone: '13266660003',
+        password: '1',
+        role: '接送护士',
+      },
+      {
+        phone: '13266660004',
+        password: '1',
+        role: '巡回护士',
+      },
+      {
+        phone: '13266660005',
+        password: '1',
+        role: '复苏室护士',
+      },
+      {
+        phone: '13266660006',
+        password: '1',
+        role: '总协调护士',
+      },
+    ]);
     const user = reactive({
       phone: '',
       password: '',
@@ -145,6 +184,7 @@ export default defineComponent({
       user,
       devUsers,
       testUsers,
+      testUsers2,
       opCode,
       login,
       begin,

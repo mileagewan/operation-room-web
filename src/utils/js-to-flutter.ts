@@ -36,6 +36,7 @@ export default class JsToFlutter {
     })
   }
 
+  // 退出登录
   static logout(): void {
     try {
       window.flutter_inappwebview.callHandler('jsCallFlutter', 'logout', false)
@@ -44,6 +45,7 @@ export default class JsToFlutter {
     }
   }
 
+  // 通知flutter更新红点
   static notifyFlutterRead(id:string):void {
     try {
       window.flutter_inappwebview.callHandler(
@@ -53,5 +55,16 @@ export default class JsToFlutter {
     } catch (e) {
       console.log(e)
     }
+  }
+
+  // 首次进去获取是否是扫码进入
+  static getPatientIdByWorkspace(): Promise<string> {
+    return new Promise(resolve => {
+      window.flutter_inappwebview
+        .callHandler('jsCallFlutter', 'getPatientId')
+        .then((result:string) => {
+          resolve(result)
+        });
+    })
   }
 }

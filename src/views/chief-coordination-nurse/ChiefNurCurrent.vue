@@ -105,77 +105,75 @@ export default defineComponent({
     const taskViewsList = ref([])
 
     const getData = () => {
-      return Request.xhr('roomGettotaltask', {
-        pageNo: 1,
-        pageSize: 300
-      }).then((r: CurrentTaskViews) => {
-        const { code, data } = r;
-        if (code === 200) {
-          taskViewsList.value = data.map((d) => {
-            const currentCode = Number(d.opInfo.opSectionCode);
-            let flowData: any[] = []
-            d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
-            d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }
-            if (currentCode > 6 && currentCode < 10) {
-              flowData = [
-                {
-                  ...map.get(currentCode - 1) as any,
-                  code: currentCode - 1,
-                },
-                {
-                  ...map.get(currentCode),
-                  code: currentCode
-                },
-                {
-                  ...map.get(currentCode + 1),
-                  code: currentCode + 1
-                }
-              ]
-            } else if (currentCode === 6) {
-              flowData = [
-                {
-                  ...map.get(currentCode),
-                  code: currentCode
-                },
-                {
-                  ...map.get(currentCode + 1),
-                  code: currentCode + 1
-                },
-                {
-                  ...map.get(currentCode + 2),
-                  code: currentCode + 2
-                }
-              ]
-            } else if (currentCode === 10) {
-              flowData = [
-                {
-                  ...map.get((currentCode - 2)),
-                  code: currentCode - 2
-                },
-                {
-                  ...map.get(currentCode - 1),
-                  code: currentCode - 1
-                },
-                {
-                  ...map.get(currentCode),
-                  code: (currentCode)
-                }
-              ]
-            }
+      return Request.xhr('queryCurrentOpTaskList', {})
+        .then((r: CurrentTaskViews) => {
+          const { code, data } = r;
+          if (code === 200) {
+            taskViewsList.value = data.map((d) => {
+              const currentCode = Number(d.opInfo.opSectionCode);
+              let flowData: any[] = []
+              d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
+              d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }
+              if (currentCode > 6 && currentCode < 10) {
+                flowData = [
+                  {
+                    ...map.get(currentCode - 1) as any,
+                    code: currentCode - 1,
+                  },
+                  {
+                    ...map.get(currentCode),
+                    code: currentCode
+                  },
+                  {
+                    ...map.get(currentCode + 1),
+                    code: currentCode + 1
+                  }
+                ]
+              } else if (currentCode === 6) {
+                flowData = [
+                  {
+                    ...map.get(currentCode),
+                    code: currentCode
+                  },
+                  {
+                    ...map.get(currentCode + 1),
+                    code: currentCode + 1
+                  },
+                  {
+                    ...map.get(currentCode + 2),
+                    code: currentCode + 2
+                  }
+                ]
+              } else if (currentCode === 10) {
+                flowData = [
+                  {
+                    ...map.get((currentCode - 2)),
+                    code: currentCode - 2
+                  },
+                  {
+                    ...map.get(currentCode - 1),
+                    code: currentCode - 1
+                  },
+                  {
+                    ...map.get(currentCode),
+                    code: (currentCode)
+                  }
+                ]
+              }
 
-            return {
-              ...d,
-              taskList: formatTask(d, taskList),
-              currentCode,
-              flowData: flowData
-            };
-          }) as any
-        } else {
-          taskViewsList.value = []
-        }
-        updateTitleCount(taskViewsList.value.length)
-        updateCardCacheData(taskViewsList.value);
-      })
+              return {
+                ...d,
+                taskList: formatTask(d, taskList),
+                currentCode,
+                flowData: flowData
+              };
+            }) as any
+          } else {
+            taskViewsList.value = []
+          }
+          updateTitleCount(taskViewsList.value.length)
+          updateCardCacheData(taskViewsList.value);
+        })
     }
     onMounted(() => {
       getData()

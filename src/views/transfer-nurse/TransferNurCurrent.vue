@@ -4,17 +4,17 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
-    :id="task.patient.hospitalCode"
+    :id="task.opPatientDTO.hospitalCode"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: task.opInfo.opSectionCode,
-          name: task.patient.name,
-          sex: task.patient.sex,
-          age: task.patient.age,
-          type: task.opInfo.type,
-          room: task.opInfo.opDescName,
+          status: task.opInfoDTO.opSectionCode,
+          name: task.opPatientDTO.name,
+          sex: task.opPatientDTO.sex,
+          age: task.opPatientDTO.age,
+          type: task.opInfoDTO.type,
+          room: task.opInfoDTO.descName,
         }"
       />
     </template>
@@ -30,9 +30,9 @@
         </template>
       </KeyValue>
       <KeyValue
-        v-if="task.opInfo.opSectionCode === '15'"
+        v-if="task.opPatientDTO.opSectionCode === '15'"
         label="目的地"
-        :value="task.opTask.destinationName"
+        :value="task.opPatientDTO.afterDepartmentName"
       />
       <FlowChart
         :flow-data="task.operatingStatusList"
@@ -40,15 +40,17 @@
       />
       <!-- 任务描述 -->
       <KeyValueBlock>
-        <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
+        <template #value>
+          {{ task.description || "无" }}
+        </template>
       </KeyValueBlock>
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName || ''} ${
-            task.opTask.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handoverUserName || ''} ${
+            task.opTaskDTO.handoverUserPhone || ''
           }`"
         />
         <div class="ihybrid-button-group">
@@ -73,22 +75,22 @@
       </template>
 
       <!-- 转送中 -->
-      <template v-if="task.opInfo.opSectionCode === '5'">
+      <template v-if="task.opPatientDTO.opSectionCode === '5'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName || ''} ${
-            task.opTask.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handoverUserName || ''} ${
+            task.opTaskDTO.handoverUserPhone || ''
           }`"
         />
       </template>
       <!-- 10:手术后直接出来，15：手术后复苏出来 -->
-      <template v-if="task.opInfo.opSectionCode === '10'||task.opInfo.opSectionCode === '15'">
+      <template v-if="task.opPatientDTO.opSectionCode === '10'||task.opPatientDTO.opSectionCode === '15'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName || ''} ${
-            task.opTask.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handoverUserName || ''} ${
+            task.opTaskDTO.handoverUserPhone || ''
           }`"
         />
       </template>
@@ -133,13 +135,19 @@ export default defineComponent({
     ];
     const getData = () => {
       loading.value = true;
-      return Request.xhr('queryCurrentTaskList')
+      return Request.xhr('queryCurrentOpTaskList')
         .then((r: CurrentTaskViews) => {
-          // console.log(r);
           if (r.code === 200) {
             taskList.value = r.data.map((d: any) => {
+              // 需要处理当前的节点
+              const { taskFlowPointDetailsDTOList }: any = d;
+              const pointIndex = taskFlowPointDetailsDTOList.findIndex((t:any) => {
+                return t.pointStatus === 1;
+              });
+              const point = taskFlowPointDetailsDTOList[pointIndex];
               return {
                 ...d,
+                description: point.description,
                 infoItems: formatTask(d, infoItems),
               };
             });
@@ -167,12 +175,17 @@ export default defineComponent({
     };
     const manualOk = () => {
       handleOverLay.show = false;
+      // const data = {
+      //   opInfoId: currentTask.opPatientDTO.id,
+      //   currentTaskId: currentTask.opTaskDTO.id,
+      //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
+      //   userCode: handleOverLay.value,
+      // };
       const data = {
-        opInfoId: currentTask.opInfo.id,
-        currentTaskId: currentTask.opTask.id,
-        parentTaskId: currentTask.opTask.parentTaskId,
-        userCode: handleOverLay.value,
-      };
+        opInfoId: currentTask.opTaskDTO.id,
+        workId: handleOverLay.value,
+        opTaskId: currentTask.opTaskDTO.id,
+      }
       next(data);
     };
 
@@ -185,34 +198,34 @@ export default defineComponent({
       }
       if (res) {
         // TODO 调接口推进下一阶段
+        // const data = {
+        //   opInfoId: currentTask.opPatientDTO.id,
+        //   currentTaskId: currentTask.opTaskDTO.id,
+        //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
+        //   hospitalCode: res,
+        // };
         const data = {
-          opInfoId: currentTask.opInfo.id,
-          currentTaskId: currentTask.opTask.id,
-          parentTaskId: currentTask.opTask.parentTaskId,
+          opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
-        };
-        next(data);
+          opTaskId: currentTask.opTaskDTO.id,
+        }
+        next(data, 'flowReverScanNext');
       }
     };
 
-    const next = (data: any) => {
+    const next = (data: any, key = 'flowReverScanNext') => {
       // TODO 区分送手术室与送回病区操作
-      const type: string =
-        currentTask.opInfo.opSectionCode === '4'
-          ? 'wardNurseHandover'
-          : 'pickupNurseHandoverToWard';
-      Request.xhr(type, data)
-        .then((res: any) => {
-          if (res.code === 200) {
-            getData();
-            ToastCountdown({
-              message: '患者匹配成功，交接完成',
-              seconds: 3,
-            });
-          } else {
-            Toast(res.msg);
-          }
-        })
+      Request.xhr(key, data).then((res: any) => {
+        if (res.code === 200) {
+          getData();
+          ToastCountdown({
+            message: '患者匹配成功，交接完成',
+            seconds: 3,
+          });
+        } else {
+          Toast(res.msg);
+        }
+      })
         .catch(() => {
           Toast('患者匹配失败');
         });
@@ -220,7 +233,7 @@ export default defineComponent({
 
     const checkEditable = (task: any) => {
       return (
-        task.opInfo.opSectionCode === '4' || task.opInfo.opSectionCode === '14'
+        task.opInfoDTO.opSectionCode === '4' || task.opInfoDTO.opSectionCode === '14'
       );
     };
     return {

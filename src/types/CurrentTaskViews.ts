@@ -98,3 +98,11 @@ export interface CurrentTaskViews {
   msg: string;
   data: TaskViewItem[];
 }
+
+export interface TaskItem {
+  opTaskDTO?: any;
+  opInfoDTO?: any;
+  opInfoExtDTO?: any;
+  opPatientDTO?: any;
+  flowPointMap?: any;
+}

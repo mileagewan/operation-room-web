@@ -4,17 +4,17 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
-    :id="task.patient.hospitalCode"
+    :id="task.opPatientDTO.hospitalCode"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: task.opInfo.opSectionCode,
-          name: task.patient.name,
-          sex: task.patient.sex,
-          age: task.patient.age,
-          type: task.opInfo.type,
-          room: task.opInfo.opDescName,
+          status: task.opInfoDTO.opSectionCode,
+          name: task.opPatientDTO.name,
+          sex: task.opPatientDTO.sex,
+          age: task.opPatientDTO.age,
+          type: task.opInfoDTO.type,
+          room: task.opInfoDTO.descName,
           planTime: 1,
         }"
       />
@@ -32,9 +32,11 @@
       </KeyValue>
       <!-- 任务描述 -->
       <KeyValueBlock>
-        <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
+        <template #value>
+          {{ task.description || "无" }}
+        </template>
       </KeyValueBlock>
-      <template v-if="task.opInfo.opSectionCode === '3'">
+      <template v-if="task.opTaskDTO.opSectionCode === '3'">
         <div class="ihybrid-button-center">
           <van-button
             round
@@ -49,19 +51,19 @@
       </template>
       <template
         v-if="
-          task.opInfo.opSectionCode === '4' ||
-          task.opInfo.opSectionCode === '15'
+          task.opTaskDTO.opSectionCode === '4' ||
+          task.opTaskDTO.opSectionCode === '15'
         "
       >
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName || ''} ${
-            task.opTask.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handUserName || ''} ${
+            task.opTaskDTO.handUserPhone || ''
           }`"
         />
       </template>
-      <template v-if="task.opInfo.opSectionCode === '15'">
+      <template v-if="task.opTaskDTO.opSectionCode === '15'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -98,7 +100,7 @@ import { Toast } from 'vant';
 import Request from '@/service/request';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
-import { CurrentTaskViews } from '@/types/CurrentTaskViews';
+import { CurrentTaskViews, TaskItem } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   anesthesiaDicCode,
   anesthetistName,
@@ -112,7 +114,7 @@ import useTaskMixins, {
   surgeonName,
 } from '../../utils/task-mixins';
 import useTitleCount from '@/utils/useTitleCount';
-import cloneDeep from 'lodash/cloneDeep';
+import { findNode } from '@/utils/utils';
 
 export default defineComponent({
   name: 'WardNurCurrent',
@@ -136,12 +138,17 @@ export default defineComponent({
     ];
     const getData = () => {
       loading.value = true;
-      return Request.xhr('queryCurrentTaskList')
+      return Request.xhr('queryCurrentOpTaskList')
         .then((r: CurrentTaskViews) => {
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
+              const { taskFlowPointDetailsDTOList }: any = d;
+              const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
+                return d.pointStatus === 1;
+              })
               return {
                 ...d,
+                description: point.description,
                 infoItems: formatTask(d, infoItems),
               };
             });
@@ -161,22 +168,27 @@ export default defineComponent({
       show: false,
       value: '',
     });
-    const manualHandle = (task: any) => {
+    const manualHandle = (task: TaskItem) => {
       currentTask = task;
       handleOverLay.show = true;
     };
     const manualOk = () => {
       console.log(handleOverLay);
       handleOverLay.show = false;
+      // const data = {
+      //   opInfoId: currentTask.opTaskDTO.id,
+      //   currentTaskId: currentTask.opTaskDTO.id,
+      //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
+      //   userCode: handleOverLay.value,
+      // };
       const data = {
-        opInfoId: currentTask.opInfo.id,
-        currentTaskId: currentTask.opTask.id,
-        parentTaskId: currentTask.opTask.parentTaskId,
-        userCode: handleOverLay.value,
-      };
-      next(data);
+        opInfoId: currentTask.opTaskDTO.id,
+        workId: handleOverLay.value,
+        opTaskId: currentTask.opTaskDTO.id,
+      }
+      next(data, 'flowReverInputNext');
     };
-    const codeHandle = async (task: any, res:any) => {
+    const codeHandle = async (task: TaskItem, res:any) => {
       // Toast('呼叫护工成功');
       currentTask = task;
       if (!res) {
@@ -184,18 +196,23 @@ export default defineComponent({
       }
       // TODO 调接口推进下一阶段
       if (res) {
+        // const data = {
+        //   opInfoId: currentTask.opTaskDTO.id,
+        //   currentTaskId: currentTask.opTaskDTO.id,
+        //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
+        //   hospitalCode: res,
+        // };
         const data = {
-          opInfoId: currentTask.opInfo.id,
-          currentTaskId: currentTask.opTask.id,
-          parentTaskId: currentTask.opTask.parentTaskId,
+          opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
-        };
-        next(data);
+          opTaskId: currentTask.opTaskDTO.id,
+        }
+        next(data, 'flowReverScanNext');
       }
     };
-    const next = (data: any) => {
+    const next = (data: any, key = 'flowReverNormalNext') => {
       // TODO
-      Request.xhr('wardNurseReceive', data).then((res: any) => {
+      Request.xhr(key, data).then((res: any) => {
         if (res.code === 200) {
           getData();
           ToastCountdown({
@@ -209,13 +226,16 @@ export default defineComponent({
     };
 
     // 呼叫转运护工
-    const callNurse = (task: any) => {
+    const callNurse = (task: TaskItem) => {
+      // const data = {
+      //   opInfoId: task.opTaskDTO.id,
+      //   currentTaskId: task.opTaskDTO.id,
+      //   parentTaskId: task.opTaskDTO.parentTaskId,
+      // };
       const data = {
-        opInfoId: task.opInfo.id,
-        currentTaskId: task.opTask.id,
-        parentTaskId: task.opTask.parentTaskId,
-      };
-      Request.xhr('wardNurseCall', data).then((res: any) => {
+        opTaskId: task.opTaskDTO.id
+      }
+      Request.xhr('flowReverNormalNext', data).then((res: any) => {
         // console.log(res);
         if (res.code === 200) {
           Toast('呼叫护工成功');

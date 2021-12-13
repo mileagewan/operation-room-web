@@ -28,10 +28,10 @@ export const RoleModuleInject: RoleModuleMap[] = [
         label: '当前任务',
         component: 'TransferNurCurrent'
       },
-      {
-        label: '任务池',
-        component: 'TransferNurSummary'
-      },
+      // {
+      //   label: '任务池',
+      //   component: 'TransferNurSummary'
+      // },
       {
         label: '已完成任务',
         component: 'TransferNurDone'
