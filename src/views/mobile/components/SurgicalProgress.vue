@@ -1,6 +1,6 @@
 <template>
   <div class="surgical-progress">
-    <div class="progress-warp" v-for="(item,index) in data" :key="index">
+    <div class="progress-warp" v-for="(item, index) in data" :key="index">
       <div class="arrow" v-if="index != 0">
         <div class="bar">
           <IconFont
@@ -14,8 +14,11 @@
           <span class="date">{{ getMonthDays(item.startDate) }}</span>
           <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
         </div>
-        <div class="icon-warp" :class="[item.status == 2 ? 'icons-current-select-green-bg' : '']">
-          <IconFont
+        <div
+          class="icon-warp"
+          :class="[item.status == 2 ? 'icons-current-select-green-bg' : '']"
+        >
+          <!-- <IconFont
             v-if="item.status == 3"
             icon="icon-yiwancheng icons-default-color"
             :class="[item.doing ? 'icons-end' : '']"
@@ -26,53 +29,119 @@
             :class="[1 ? 'icons-current-select-white' : '']"
           />
           <IconFont
-            v-if="(item.status == null || item.status == 1 || item.status == 0)"
+            v-if="item.status == null || item.status == 1 || item.status == 0"
             icon="icon-daikaishi icons-default-color"
             :class="[item.doing ? 'icons-not-start' : '']"
+          /> -->
+          <IconFont
+            :icon="`${getIconType(item.pointName)} icons-default-color `"
+            :class="[item.doing ? 'icons-end' : '']"
           />
         </div>
         <div class="text-warp">
-          <span class="title">{{ item.sectionName }}</span>
-          <span class="name">{{ item.receiveUserName }}</span>
+          <span class="title">{{ item.pointName }}</span>
+          <span class="name">{{ item.pointExeUserName }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, PropType } from 'vue'
+import { defineComponent, ref, PropType } from "vue";
 
 export default defineComponent({
-  name: 'SurgicalProgress',
+  name: "SurgicalProgress",
   props: {
     data: {
       type: Array as PropType<any[]>,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   setup() {
-    const aa = '1'
-    const itemList = ref([])
-    const currentSelect = ref(true)
+    const aa = "1";
+    const itemList = ref([]);
+    const currentSelect = ref(true);
     const getMonthDays = (item: string) => {
-      if (!item) return ''
-      const _s = item.substring(5, 10)
-      return _s
-    }
+      if (!item) return "";
+      const _s = item.substring(5, 10);
+      return _s;
+    };
     const getMinuteSeconds = (item: string) => {
-      if (!item) return ''
-      const _s = item.substring(11, 16)
-      return _s
-    }
+      if (!item) return "";
+      const _s = item.substring(11, 16);
+      return _s;
+    };
+    const getIconType = (type: string) => {
+      let value = "";
+      if (type == null) return value;
+      switch (type) {
+        case "手术排台":
+          value = "";
+          break;
+        case "未开始手术":
+          value = "";
+          break;
+        case "术前准备":
+          value = "";
+          break;
+        case "送手术":
+          value = "";
+          break;
+        case "转送中":
+          value = "";
+          break;
+        case "到手术室":
+          value = "icon-shoushushi1";
+          break;
+        case "到手术间":
+          value = "icon-shoushujian";
+          break;
+        case "麻醉":
+          value = "icon-mazui";
+          break;
+        case "手术中":
+          value = "icon-shoushuzhong";
+          break;
+        case "苏醒":
+          value = "icon-suxing";
+          break;
+        case "进复苏室":
+          value = "icon-rufusushi";
+          break;
+        case "复苏室苏醒":
+          value = "";
+          break;
+        case "出复苏室":
+          value = "";
+          break;
+        case "出手术室":
+          value = "";
+          break;
+        case "回病房":
+          value = "";
+          break;
+        case "手术结束":
+          value = "icon-shoushujieshu";
+          break;
+        case "手术取消":
+          value = "";
+          break;
+        default:
+          value = "";
+          break;
+      }
+      return value
+    };
     return {
       aa,
       itemList,
       currentSelect,
       getMonthDays,
-      getMinuteSeconds
-    }
+      getMinuteSeconds,
+      getIconType,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .surgical-progress {
@@ -125,10 +194,15 @@ export default defineComponent({
         background: rgba(238, 247, 255);
         opacity: 1;
         border-radius: 48px;
+        width: 48px;
+        height: 48px;
         position: relative;
         z-index: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         i {
-          font-size: 48px;
+          font-size: 30px;
         }
       }
       .text-warp {

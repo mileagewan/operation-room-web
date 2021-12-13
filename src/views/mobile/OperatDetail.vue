@@ -8,36 +8,41 @@
         <TaskView>
           <template #header>
             <div class="date-title">
-              <div>{{ dateTime }}</div>
-              <div>{{ patientInfo.name }}</div>
+              <div>{{ "dateTime" }}</div>
+              <div>{{ opInfoDTO.name }}</div>
             </div>
             <oprat-info>
               <div class="row">
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span
-                    class="text"
-                  >{{ patientInfo.departmentWardName }} - {{ patientInfo.oproomSubName }}</span>
+                  <span class="text">
+                    <!-- {{ opInfoDTO.departmentWardName }} - {{ opInfoDTO.oproomSubName }} -->
+                    {{opInfoDTO.descName}}
+                  </span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">主刀医生</span>
-                  <span class="text">{{ patientInfo.surgeonName }}</span>
+                  <span class="text">{{ opInfoExtDTO.surgeonName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">巡回护士</span>
-                  <span class="text">{{ patientInfo.circulatingNurseName }}</span>
+                  <span class="text">{{
+                    opInfoExtDTO.circulatingNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">麻醉医生</span>
-                  <span class="text">{{ patientInfo.anesthetistName }}</span>
+                  <span class="text">{{ opInfoExtDTO.anesthetistName }}</span>
                 </div>
                 <div class="item">
                   <span class="title">器械护士</span>
-                  <span class="text">{{ patientInfo.instrumentNurseName }}</span>
+                  <span class="text">{{
+                    opInfoExtDTO.instrumentNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
@@ -45,23 +50,26 @@
                   <span class="title">患者性别</span>
                   <span class="text">
                     {{
-                      patientInfo.patientSex == 1 ? '男' :
-                        (patientInfo.patientSex == 2 ? '女' : '')
+                      opPatientDTO.sex == 1
+                        ? "男"
+                        : opPatientDTO.sex == 2
+                        ? "女"
+                        : ""
                     }}
                   </span>
                 </div>
                 <div class="item">
                   <span class="title">患者年龄</span>
-                  <span
-                    class="text"
-                  >{{ patientInfo.patientAge ? (patientInfo.patientAge + '岁') : '' }}</span>
+                  <span class="text">{{
+                    opPatientDTO.age ? opPatientDTO.age + "岁" : ""
+                  }}</span>
                 </div>
               </div>
             </oprat-info>
           </template>
           <template #content>
             <div class="title">手术进度</div>
-            <surgical-progress :data="surgicalProgressData" />
+            <surgical-progress :data="opFlowPointDetailsDTOList" />
           </template>
         </TaskView>
       </van-pull-refresh>
@@ -69,92 +77,105 @@
   </div>
 </template>
 <script lang="ts">
-import SurgicalProgress from './components/SurgicalProgress.vue'
-import OpratInfo from './components/OpratInfo.vue'
-import { useRouter, useRoute } from 'vue-router'
-import { defineComponent, reactive, toRefs, ref, computed, onMounted } from 'vue'
-import Request from '@/service/request';
-import { ReturnData } from '@/types/interface-model';
-import { getMonthDay } from '@/utils/date-formt'
-import JsToFlutter from '@/utils/js-to-flutter';
+import SurgicalProgress from "./components/SurgicalProgress.vue";
+import OpratInfo from "./components/OpratInfo.vue";
+import { useRouter, useRoute } from "vue-router";
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  ref,
+  computed,
+  onMounted,
+} from "vue";
+import Request from "@/service/request";
+import { ReturnData } from "@/types/interface-model";
+import { getMonthDay } from "@/utils/date-formt";
+import JsToFlutter from "@/utils/js-to-flutter";
 
 export default defineComponent({
-  name: 'OperatDetail',
+  name: "OperatDetail",
   components: {
     SurgicalProgress,
-    OpratInfo
+    OpratInfo,
   },
   setup() {
-    const router = useRouter()
-    const route = useRoute()
+    const router = useRouter();
+    const route = useRoute();
     const state = reactive({
-      title: '手术详情',
+      title: "手术详情",
       loadingRefresh: false,
-    })
-    const patientInfo = ref<any>({})
-    const surgicalProgressData = ref<any[]>([])
+    });
+    const opInfoDTO = ref<any>({}); // 手术信息
+    const opPatientDTO = ref<any>({}); // 手术患者信息
+    const opFlowPointDetailsDTOList = ref<any[]>([]); // 手术流程节点详情列表
+    const opInfoExtDTO = ref<any>({}); // 手术扩展信息
     onMounted(() => {
       if (route.query?.id) {
-        loadData(route.query.id)
+        loadData(route.query.id);
       }
-    })
+    });
     // 接口请求
     const loadData = async (id: any) => {
       try {
         // const params = {
         //   opCode: id
         // }
-        const params = `opCode=${id}`
-        await Request.xhr('getOperatDetail', {}, params).then((r: ReturnData) => {
-          if (r.code === 200) {
-            const data = r.data;
-            patientInfo.value = data
-            surgicalProgressData.value = data.sectionVoList
+        const params = `opInfoId=${id}`;
+        await Request.xhr("getOperatDetail", {}, params).then(
+          (r: ReturnData) => {
+            if (r.code === 200) {
+              const data = r.data;
+              opInfoDTO.value = data.opInfoDTO;
+              opInfoExtDTO.value = data.opInfoExtDTO;
+              opPatientDTO.value = data.opPatientDTO;
+              opFlowPointDetailsDTOList.value = data.opFlowPointDetailsDTOList;
+            }
+            console.log(r);
           }
-          console.log(r)
-        })
-      } catch (e) {
-
-      }
-    }
-    const dateTime = computed(() => {
-      const _MonthDay = patientInfo.value.startDate ? getMonthDay(patientInfo.value.startDate) : ''
-      const _week = patientInfo.value.week ? ('(' + patientInfo.value.week + ')') : ''
-      const _startTime = patientInfo.value.startTime ? patientInfo.value.startTime : ''
-      const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
-      return _MonthDay + _week + _startTime + '-' + _endTime
-    })
+        );
+      } catch (e) {}
+    };
+    // const dateTime = computed(() => {
+    //   const _MonthDay = patientInfo.value.startDate ? getMonthDay(patientInfo.value.startDate) : ''
+    //   const _week = patientInfo.value.week ? ('(' + patientInfo.value.week + ')') : ''
+    //   const _startTime = patientInfo.value.startTime ? patientInfo.value.startTime : ''
+    //   const _endTime = patientInfo.value.endTime ? patientInfo.value.endTime : ''
+    //   return _MonthDay + _week + _startTime + '-' + _endTime
+    // })
 
     const goBack = (): void => {
-      if (route.query?.type === 'app') {
+      if (route.query?.type === "app") {
         JsToFlutter.goback();
       } else {
-        const _dateType: any = route?.query?.dateType
+        const _dateType: any = route?.query?.dateType;
         router.push({
-          path: 'operationRoom',
+          path: "operationRoom",
           query: {
-            dateType: _dateType || ''
-          }
-        })
+            dateType: _dateType || "",
+          },
+        });
         // router.back()
       }
-    }
+    };
     // 下拉刷新
     const onRefresh = async () => {
-      await loadData(route.query.id)
-      state.loadingRefresh = false
+      await loadData(route.query.id);
+      state.loadingRefresh = false;
     };
     return {
       onRefresh,
       goBack,
       ...toRefs(state),
-      patientInfo,
+      opPatientDTO,
       getMonthDay,
-      dateTime,
-      surgicalProgressData
-    }
+      opInfoDTO,
+      // dateTime,
+      opFlowPointDetailsDTOList,
+      opInfoExtDTO,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .operat-detail {

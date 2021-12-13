@@ -8,17 +8,15 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh
-        v-model="refreshing"
-        @refresh="onRefresh"
-        v-if="listData.length > 0"
-      >
-      <DoneSummary
-        class="done-summary-m"
-        :options="options"
-        v-if="active === 'DONE'"
-      />
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+        <!-- v-if="listData.length > 0" -->
+        <DoneSummary
+          class="done-summary-m"
+          :options="options"
+          v-if="active === 'DONE'"
+        />
         <van-list
+          v-if="listData.length > 0"
           v-model:loading="loadingList"
           :finished="finishedList"
           finished-text="没有更多了"
@@ -40,11 +38,11 @@
             />
           </template>
         </van-list>
+        <EmptyPage
+          :class="[active === 'DONE' ? 'empty-page-h' : '']"
+          v-else-if="!loadingList && listData.length == 0"
+        />
       </van-pull-refresh>
-      <EmptyPage
-        :class="[active === 'DONE' ? 'empty-page-h' : '']"
-        v-else-if="!loadingList && listData.length == 0"
-      />
     </div>
   </div>
 </template>
@@ -103,42 +101,23 @@ export default defineComponent({
       // 获取当前任务数量
       // loadData('UNDO', 1, 100, true)
       // 获取今日数量
-      // loadData("UNDO", 1, 5, true);
       queryCleanTaskList(true, "UNDO");
       // 获取已完成数量
-      // loadData("DONE", 1, 5, true);
       queryCleanTaskList(true, "DONE");
       onRefresh();
     });
-    // 加载更多
-    // const onLoad = async (isTabClick?: boolean) => {
-    //   if (!state.refreshing && state.pageNo < state.totalPage) {
-    //     console.log("加载更多");
-    //     state.pageNo = state.pageNo + 1;
-    //   }
-    //   if (state.refreshing) {
-    //     console.log("----refreshing---");
-    //     listData.value = [];
-    //     state.refreshing = false;
-    //   }
-    //   loadData(state.active, state.pageNo, state.pageSize, false, isTabClick);
-    // };
     const queryCleanTaskList = async (
       getNum = false,
       type: string,
       isTabClick?: boolean
     ) => {
       try {
-        const params = {
-          taskStatus: 1,
-          pageNo: 1,
-          pageSize: 10,
-        };
+        const params = {};
         let xhrName = "";
         if (type === "UNDO") {
-          xhrName = "getClearTask";
+          xhrName = "queryCurrentCleanTaskList";
         } else if (type === "DONE") {
-          xhrName = "getClearTask";
+          xhrName = "queryCompletedCleanTask";
         }
         if (isTabClick) {
           Toast.loading({
@@ -151,19 +130,23 @@ export default defineComponent({
           .then((r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;
-              if (type === "UNDO") {
-                state.todayNum = 1;
-              } else if (type === "DONE") {
-                // state.tomorrowNum = r.data.length;
-                state.tomorrowNum = 2;
-              }
-              if (!getNum) {
-                // listData.value = r.data;
-                listData.value = [1, 2, 3, 4, 5];
-                state.finishedList = true;
+              if (getNum) {
+                if (type === "UNDO") {
+                  state.todayNum = data?.length ?? 0;
+                } else if (type === "DONE") {
+                  state.tomorrowNum = data?.cleanTaskDTOList.length ?? 0;
+                }
+              } else if (!getNum) {
+                if (type === "UNDO") {
+                  listData.value = data;
+                } else if (type === "DONE") {
+                  state.options[0].value = data?.cleanNum ?? 0;
+                  state.options[1].value = data?.onTimeNum ?? 0;
+                  listData.value = data?.cleanTaskDTOList ?? [];
+                }
                 state.refreshing = false;
+                state.loadingList = false;
               }
-              console.log(data);
             }
           })
           .finally(() => {
@@ -173,72 +156,20 @@ export default defineComponent({
           });
       } catch (e) {}
     };
-    // 接口请求
-    // const loadData = async (
-    //   taskStatus: string,
-    //   pageNo: number,
-    //   pageSize: number,
-    //   getNum?: boolean,
-    //   isTabClick?: boolean
-    // ) => {
-    //   try {
-    //     const params = {
-    //       taskStatus: taskStatus,
-    //       pageNo: pageNo,
-    //       pageSize: pageSize,
-    //     };
-    //     if (isTabClick) {
-    //       Toast.loading({
-    //         duration: 0,
-    //         message: "加载中...",
-    //         forbidClick: true,
-    //       });
-    //     }
-    //     await Request.xhr("getClearTask", params)
-    //       .then((r: ReturnData) => {
-    //         if (r.code === 200) {
-    //           const data = r.data;
-    //           if (getNum) {
-    //             if (taskStatus === "UNDO") {
-    //               state.todayNum = data.total;
-    //             } else if (taskStatus === "DONE") {
-    //               state.tomorrowNum = data.total;
-    //             }
-    //           } else {
-    //             listData.value = listData.value.concat(data.records);
-    //             state.totalPage = Math.ceil(data.total / state.pageSize);
-    //             state.loadingList = false;
-    //             if (state.pageNo >= state.totalPage) state.finishedList = true;
-    //             if (taskStatus === "UNDO") {
-    //               state.todayNum = data.total;
-    //             } else if (taskStatus === "DONE") {
-    //               state.tomorrowNum = data.total;
-    //             }
-    //           }
-    //         }
-    //         console.log(r);
-    //       })
-    //       .finally(() => {
-    //         if (isTabClick) {
-    //           Toast.clear();
-    //         }
-    //       });
-    //   } catch (e) {}
-    // };
     // tab切换
     const onClickTab = ({ name }: any) => {
       state.active = name;
+      listData.value = [];
       onRefresh(true);
     };
     // 下拉刷新
     const onRefresh = async (isTabClick?: boolean) => {
-      state.refreshing = true;
-      state.finishedList = false;
+      if (!isTabClick) {
+        state.refreshing = true;
+      }
       state.loadingList = true;
       state.pageNo = 1;
       queryCleanTaskList(false, state.active, isTabClick);
-      console.log(state.active);
-      // onLoad(isTabClick);
     };
     // 触发完成btn
     const doneBtn = (id: any) => {
@@ -248,9 +179,12 @@ export default defineComponent({
     // 按钮触发接口
     const updateData = async (id: number) => {
       try {
-        const params = `id=${id}`;
+        // const params = `id=${id}`;
+        const params = {
+          opTaskId: id,
+        };
         Toast.loading({ message: "加载中...", forbidClick: true });
-        await Request.xhr("getClearTaskUpdate", {}, params)
+        await Request.xhr("getClearTaskUpdate", params)
           .then((r: ReturnData) => {
             if (r.code === 200) {
               Toast.clear();
@@ -296,6 +230,7 @@ export default defineComponent({
     }
     .van-pull-refresh {
       overflow: visible;
+      height:calc(100% - 24px);
     }
   }
 }

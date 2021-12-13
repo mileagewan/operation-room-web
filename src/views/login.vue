@@ -73,6 +73,16 @@ export default defineComponent({
         password: '1',
         role: '总协调护士',
       },
+      {
+        phone: '13266660007',
+        password: '1',
+        role: '手术医生',
+      },
+      {
+        phone: '13266660010',
+        password: '1',
+        role: '清洁护工',
+      },
     ]);
     const testUsers = reactive([
       {

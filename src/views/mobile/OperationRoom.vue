@@ -173,16 +173,13 @@ export default defineComponent({
           });
         }
         let xhrName = "";
+        const params = {}
         if (type === "TODAY") {
-          xhrName = "getOperationRoom";
+          xhrName = "queryTodayOpList";
         } else if (type === "TOMORROW") {
-          xhrName = "getOperationRoom";
+          xhrName = "queryTomorrowOpList";
         }
-        await Request.xhr(xhrName, {
-          dateType: "TOMORROW",
-          pageNo: 1,
-          pageSize: 10,
-        })
+        await Request.xhr(xhrName, params)
           .then((r: ReturnData) => {
             if (r.code === 200) {
               if (type === "TODAY") {

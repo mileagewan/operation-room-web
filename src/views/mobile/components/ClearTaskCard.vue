@@ -1,28 +1,28 @@
 <template>
   <div class="clear-task-card">
     <div class="card-title">
-      <span>{{ info.taskStartTime }}清洁任务</span>
-      <span>{{ info.departmentWardName }}-{{ info.oproomSubName }}</span>
+      <span>{{ getHourMinute(info.publishTime) }} 清洁任务</span>
+      <span>{{ info.opDepartmentName }}-{{ info.opRoomName }}</span>
     </div>
     <div class="item-warp">
       <div class="item">
         <div class="title">手术名称</div>
         <div class="text">
-          <span>{{ dateTime }}</span>
+          <span>{{ getMonthDayWeek(info.publishTime) }}</span>
           <span>{{ info.opName }}</span>
         </div>
       </div>
       <div class="item">
         <div class="title">任务发起人</div>
-        <div class="text">{{ info.initiatorUserName }}</div>
+        <div class="text">{{ info.publishUserName }}</div>
       </div>
       <div class="item">
         <div class="title">清洁护工</div>
-        <div class="text">{{ info.receiveUserName }}</div>
+        <div class="text">{{ info.exeUserName }}</div>
       </div>
       <div class="item" v-if="tabsActive.active == 'UNDO'">
         <div class="title">状态</div>
-        <div class="text time-out">{{ info.taskEndTime }}</div>
+        <div class="text time-out">超时{{ info.overTime }}分钟</div>
       </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
@@ -34,6 +34,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, inject } from "vue";
 import { getMonthDay } from "@/utils/date-formt";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "ClearTaskCard",
@@ -55,10 +56,54 @@ export default defineComponent({
       return _MonthDay + _week + " " + _startTime + "-" + _endTime;
     });
     const tabsActive: any = inject("tabsActive");
+    const getHourMinute = (date: string) => {
+      if (!date) return "";
+      const hour = dayjs(date).hour();
+      const minute = dayjs(date).minute();
+      return hour + ":" + minute;
+    };
+    const getMonthDayWeek = (date: string) => {
+      if (!date) return "";
+      const month = dayjs(date).month();
+      const day = dayjs(date).date();
+      const week = dayjs(date).day();
+      const weekZh = "(" + getWeekZh(week) + ")";
+      return month + "月" + day + "日" + weekZh;
+    };
+    const getWeekZh = (week: number) => {
+      let value = "";
+      if (week == null) return value;
+      switch (week) {
+        case 0:
+          value = "周天";
+          break;
+        case 1:
+          value = "周一";
+          break;
+        case 2:
+          value = "周二";
+          break;
+        case 3:
+          value = "周三";
+          break;
+        case 4:
+          value = "周四";
+          break;
+        case 5:
+          value = "周五";
+          break;
+        case 6:
+          value = "周六";
+          break;
+      }
+      return value;
+    };
     return {
       dateTime,
       info,
       tabsActive,
+      getHourMinute,
+      getMonthDayWeek,
     };
   },
 });
@@ -102,7 +147,7 @@ export default defineComponent({
         // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
-        .time-out {
+        &.time-out {
           height: 24px;
           font-size: 24px;
           font-weight: 600;

@@ -2,8 +2,13 @@ import { ServiceItem } from '@/types/interface-model';
 
 const mobile: ServiceItem[] = [
   {
-    path: '/beforeOp/op/list',
-    key: 'getOperationRoom', // 手术室
+    path: '/opInfo/queryTodayOpList',
+    key: 'queryTodayOpList', // 今日手术
+    method: 'post',
+  },
+  {
+    path: '/opInfo/queryTomorrowOpList',
+    key: 'queryTomorrowOpList', // 明日手术
     method: 'post',
   },
   {
@@ -12,18 +17,23 @@ const mobile: ServiceItem[] = [
     method: 'post',
   },
   {
-    path: '/todayOp/op/detail', // 手术详情
+    path: '/opInfo/queryStartedOpDetails', // 手术详情
     key: 'getOperatDetail',
     method: 'post',
   },
   {
-    path: '/todayOp/task/list', // 清洁任务
-    key: 'getClearTask',
+    path: '/opTask/queryCurrentCleanTaskList', // 清洁任务
+    key: 'queryCurrentCleanTaskList',
     method: 'post',
   },
   {
-    path: '/todayOp/task/update', // 清洁任务完成
+    path: '/flowRever/next/cleanFinish', // 清洁任务触发完成
     key: 'getClearTaskUpdate',
+    method: 'post',
+  },
+  {
+    path: '/opTask/queryCompletedCleanTask', // 清洁任务完成
+    key: 'queryCompletedCleanTask',
     method: 'post',
   },
 ];
