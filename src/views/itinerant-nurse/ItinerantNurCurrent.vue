@@ -4,17 +4,17 @@
     v-for="(taskView, index) in taskViewsList"
     :key="index"
     :show-header="!taskView.isClean"
-    :id="taskView.patient.hospitalCode"
+    :id="taskView?.opPatientDTO?.hospitalCode"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: taskView.opInfo.opSectionCode,
-          name: taskView.patient.name,
-          sex: taskView.patient.sex,
-          age: taskView.patient.age,
-          type: taskView.opInfo.type,
-          room: taskView.opInfo.opDescName,
+          status: taskView.opInfoDTO.opSectionCode,
+          name: taskView.opPatientDTO.name,
+          sex: taskView.opPatientDTO.sex,
+          age: taskView.opPatientDTO.age,
+          type: taskView.opInfoDTO.type,
+          room: taskView.opInfoDTO.descName,
           planTime: 1,
         }"
       />
@@ -38,14 +38,14 @@
       </div>
       <key-value-block>
         <template #value>
-          {{ taskView.opTask.taskTipContent || "无" }}
+          {{ taskView.description || "无" }}
         </template>
       </key-value-block>
-      <template v-if="taskView.opInfo.opSectionCode === '6'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '6'">
         <div class="ihybrid-button-group">
           <van-button
             round
-            :disabled="!!taskView.opInfo"
+            :disabled="taskView.opRoomStatus !== 1"
             @click="manualHandle(taskView)"
             class="default-button"
             color="#f0fafe"
@@ -54,7 +54,7 @@
           </van-button>
           <van-button
             icon="scan"
-            :disabled="!!taskView.opInfo"
+            :disabled="taskView.opRoomStatus !== 1"
             class="btn-operation"
             @click="codeHandle(taskView)"
             round
@@ -64,20 +64,20 @@
           </van-button>
         </div>
       </template>
-      <template v-else-if="taskView.opInfo.opSectionCode === '7'">
+      <template v-else-if="taskView.opInfoDTO.opSectionCode === '7'">
         <div class="ihybrid-button-group">
           <van-button
-          class="btn-operation"
-          @click="thirdPartyConfirm(taskView)"
-          round
-          color="linear-gradient(to right, #00D6FA, #00ACF2)"
-        >
-          <IconFont icon="icon-sanfangqueren" />
-          三方确认
-        </van-button>
+            class="btn-operation"
+            @click="thirdPartyConfirm(taskView)"
+            round
+            color="linear-gradient(to right, #00D6FA, #00ACF2)"
+          >
+            <IconFont icon="icon-sanfangqueren"/>
+            三方确认
+          </van-button>
         </div>
       </template>
-      <template v-else-if="taskView.opInfo.opSectionCode === '8'">
+      <template v-else-if="taskView.opInfoDTO.opSectionCode === '8'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -88,17 +88,17 @@
             广播家属
           </van-button>
           <van-button
-          class="btn-operation"
-          @click="operationBegan(taskView)"
-          round
-          color="linear-gradient(to right, #00D6FA, #00ACF2)"
-        >
-          <IconFont icon="icon-shoushukaishi1" />
-          手术开始
-        </van-button>
+            class="btn-operation"
+            @click="operationBegan(taskView)"
+            round
+            color="linear-gradient(to right, #00D6FA, #00ACF2)"
+          >
+            <IconFont icon="icon-shoushukaishi1"/>
+            手术开始
+          </van-button>
         </div>
       </template>
-      <template v-else-if="taskView.opInfo.opSectionCode === '9'">
+      <template v-else-if="taskView.opInfoDTO.opSectionCode === '9'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -108,7 +108,7 @@
             class="default-button"
             color="#f0fafe"
           >
-           {{taskView.notifyNextOperation === 2 ? '已通知下一台手术' : '通知下一台术前准备'}}
+            {{ taskView.notifyNextOperation === 2 ? '已通知下一台手术' : '通知下一台术前准备' }}
           </van-button>
           <van-button
             class="btn-operation"
@@ -117,25 +117,25 @@
             :disabled="taskView.notifyNextOperation === 1 "
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
-            <IconFont icon="icon-shoushuwancheng" />
+            <IconFont icon="icon-shoushuwancheng"/>
             手术完成
           </van-button>
         </div>
       </template>
-      <template v-if="taskView.opInfo.opSectionCode === '10'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '10'">
         <!-- <key-value label="交接人" value="接送护士"></key-value> -->
         <key-value-block
           label="交接人"
           clear
-          :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+          :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
         ></key-value-block>
       </template>
-      <template v-if="taskView.opInfo.opSectionCode === '11'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '11'">
         <!-- <key-value label="交接人" value="复苏室护士"></key-value> -->
         <key-value-block
           label="交接人"
           clear
-          :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+          :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
         ></key-value-block>
       </template>
     </template>
@@ -143,7 +143,7 @@
       <div class="clean-task-title">
         手术-01间-01台
       </div>
-      <KeyValue label="清洁开始时间" value="16：30" />
+      <KeyValue label="清洁开始时间" value="16：30"/>
       <div class="itinerant-flow-chart">
         <FlowChart
           :flow-data="[
@@ -173,13 +173,13 @@
       </div>
       <key-value-block>
         <template #value>
-          {{ taskView.opTask.taskTipContent || "无" }}
+          {{ taskView.description || "无" }}
         </template>
       </key-value-block>
       <key-value-block
         label="清洁工"
         clear
-        :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+        :value="`${taskView.cleanExeUserName} ${taskView.cleanExeUserPhone}`"
       ></key-value-block>
       <template v-if="true">
         <div class="ihybrid-button-center">
@@ -189,14 +189,14 @@
             class="btn-operation"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
-            <IconFont icon="icon-jierenwu" />
+            <IconFont icon="icon-jierenwu"/>
             <span>开始消毒</span>
           </van-button>
         </div>
       </template>
     </template>
   </TaskView>
-  <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length" />
+  <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length"/>
   <HandleOverLay
     v-model:visible="handleOverLay.show"
     @ok="manualOk"
@@ -211,9 +211,6 @@
     <div class="itinerant-nur-to-resuscitation">
       <div class="select-title">
         <span>是否送至复苏室</span>
-<!--        <van-switch v-model="resuscitationOverLay.checked"-->
-<!--                    active-color="#00acf2"-->
-<!--                    size="24px" />-->
         <div class="room-checked">
           <div
             v-for="room in resuscitationOverLay.checkedList"
@@ -243,7 +240,8 @@
         </div>
       </div>
       <div class="ihybrid-button-group">
-        <van-button round class="cancel-btn" color="#FAFAFA" @click="resuscitationOverLay.show = false"> 取 消 </van-button>
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="resuscitationOverLay.show = false"> 取 消
+        </van-button>
         <van-button
           round
           class="btn-operation"
@@ -266,18 +264,18 @@
       <div class="room-select">
         <div
           v-for="room in broadcastOverLay.roomList"
-          :key="room.value"
+          :key="room.itemCode"
           :class="{
-            'is-active': room.value === broadcastOverLay.active,
+            'is-active': room.itemCode === broadcastOverLay.active,
           }"
-          @click="broadcastOverLay.active = room.value"
+          @click="broadcastOverLay.active = room.itemCode"
         >
-          {{ room.label }}
+          {{ room.itemName }}
           <img src="/img/select-2.png" alt="">
         </div>
       </div>
       <div class="ihybrid-button-group">
-        <van-button round class="cancel-btn" color="#FAFAFA" @click="broadcastOverLay.show = false"> 取 消 </van-button>
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="broadcastOverLay.show = false"> 取 消</van-button>
         <van-button
           round
           class="btn-operation"
@@ -311,7 +309,7 @@
         </div>
       </div>
       <div class="ihybrid-button-group">
-        <van-button round class="cancel-btn" color="#FAFAFA" @click="disinfectOverLay.show = false"> 取 消 </van-button>
+        <van-button round class="cancel-btn" color="#FAFAFA" @click="disinfectOverLay.show = false"> 取 消</van-button>
         <van-button
           round
           class="btn-operation"
@@ -329,7 +327,7 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { Dialog, Toast } from 'vant';
-import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
+import { CurrentTaskViews, TaskItem } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   opInfoCode,
   hospitalCode,
@@ -346,6 +344,7 @@ import { ReturnData, Task } from '@/types/interface-model';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
 import useTitleCount from '@/utils/useTitleCount';
+import { findNode } from '@/utils/utils';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
@@ -371,21 +370,13 @@ export default defineComponent({
         }
       ],
       roomList: [],
+      room: {},
       active: '',
       row: {},
     });
     const broadcastOverLay = reactive({
       show: false,
-      roomList: [
-        {
-          label: '原科室',
-          value: 1,
-        },
-        {
-          label: '手术室门口',
-          value: 2,
-        },
-      ],
+      roomList: [],
       active: 1,
       row: {},
     });
@@ -435,11 +426,10 @@ export default defineComponent({
       handleOverLay.row = taskView;
     };
     const manualOk = async () => {
-      const ret: ReturnData = await Request.xhr('pickupNurseHandover', {
-        userCode: handleOverLay.value,
-        opInfoId: (handleOverLay.row as any)?.opInfo?.id || '',
-        currentTaskId: (handleOverLay.row as any)?.opTask?.id || '',
-        parentTaskId: (handleOverLay.row as any)?.opTask?.parentTaskId || '',
+      const ret: ReturnData = await Request.xhr('flowReverInputNext', {
+        workId: handleOverLay.value,
+        opInfoId: (handleOverLay.row as any)?.opInfoDTO?.id || '',
+        opTaskId: (handleOverLay.row as any)?.opTaskDTO?.id || '',
       });
       if (ret.code === 200) {
         ToastCountdown({
@@ -449,17 +439,16 @@ export default defineComponent({
         handleOverLay.show = false;
         getData();
       } else {
-        Toast(ret.msg as string)
+        Toast(ret.msg as string);
       }
     };
-    const codeHandle = async (row: any, ret:any) => {
+    const codeHandle = async (row: any, ret: any) => {
       if (!ret) {
-        ret = await JsToFlutter.startScanQRCode()
+        ret = await JsToFlutter.startScanQRCode();
       }
-      const data: ReturnData = await Request.xhr('pickupNurseHandover', {
-        opInfoId: row.opInfo.id || '',
-        currentTaskId: row.opTask.id || '',
-        parentTaskId: row.opTask.parentTaskId || '',
+      const data: ReturnData = await Request.xhr('flowReverScanNext', {
+        opInfoId: row.opInfoDTO.id || '',
+        opTaskId: row.opTaskDTO.id || '',
         hospitalCode: ret,
       });
       if (data.code === 200) {
@@ -485,18 +474,18 @@ export default defineComponent({
       }
     };
 
-    const thirdPartyConfirm = (taskView: TaskViewItem) => {
+    const thirdPartyConfirm = (taskView: TaskItem) => {
       Dialog.confirm({
         message: '请确定手术医生和麻醉医生已到现场',
         confirmButtonText: '确 定',
         cancelButtonText: '取 消'
       })
         .then(async () => {
-          const ret: ReturnData = await Request.xhr('tripartiteConfirmation', {
-            opInfoId: taskView.opInfo.id || '',
-            currentTaskId: taskView.opTask.id || '',
-            parentTaskId: taskView.opTask.parentTaskId || '',
-          });
+          const ret: ReturnData = await Request.xhr(
+            'flowReverNormalNext',
+            {
+              opTaskId: taskView.opTaskDTO.id || ''
+            });
           if (ret.code === 200) {
             getData();
           }
@@ -506,24 +495,33 @@ export default defineComponent({
         });
     };
 
-    const broadcast = (taskView:any):void => {
+    const broadcast = async (taskView: any): Promise<void> => {
+      const ret = await Request.xhr('broadcastData', {
+        deptId: taskView.opInfoDTO?.id,
+        opInfoId: taskView.opPatientDTO?.beforeDepartmentWardId,
+      });
+      broadcastOverLay.roomList = ret?.data?.goToPlaceDicList;
       broadcastOverLay.show = true;
       broadcastOverLay.row = taskView;
-    }
+    };
 
     const broadcastOverLayHandleOk = async (): Promise<void> => {
-      const ret: ReturnData = await Request.xhr('', {});
-      const { code } = ret;
-      if (code === 200) {
-        Toast('一统志患者家属');
+      const ret: ReturnData = await Request.xhr('broadcastMsg', {
+        deptId: (broadcastOverLay as any)?.row?.opInfoDTO?.id,
+        opInfoId: (broadcastOverLay as any)?.row.opInfoDTO?.id,
+        goToPlace: broadcastOverLay?.active
+      });
+      const { code, data } = ret;
+      if (code === 200 && data) {
+        Toast('已通知患者家属');
         broadcastOverLay.show = false;
         getData();
       } else {
-        Toast(ret.msg as string)
+        Toast(ret.msg as string);
       }
-    }
+    };
 
-    const operationBegan = (taskView: TaskViewItem) => {
+    const operationBegan = (taskView: TaskItem) => {
       console.log(taskView);
       Dialog.confirm({
         message: '请确定手术已开始准备切皮',
@@ -531,11 +529,10 @@ export default defineComponent({
         cancelButtonText: '取 消'
       })
         .then(async () => {
-          const ret: ReturnData = await Request.xhr('opStart', {
-            opInfoId: taskView.opInfo.id || '',
-            currentTaskId: taskView.opTask.id || '',
-            parentTaskId: taskView.opTask.parentTaskId || '',
-          });
+          const ret: ReturnData = await Request.xhr('flowReverNormalNext',
+            {
+              opTaskId: taskView.opTaskDTO.id || '',
+            });
           if (ret.code === 200) {
             getData();
           }
@@ -545,63 +542,64 @@ export default defineComponent({
         });
     };
 
-    const noticeNext = async (taskView: TaskViewItem) => {
+    const noticeNext = async (taskView: TaskItem) => {
       const ret: ReturnData = await Request.xhr(
-        'notifyNextOperation',
+        'nextOpInfo',
         {
-          opInfoId: taskView.opInfo.id,
-          currentTaskId: taskView.opTask.id || '',
-          parentTaskId: taskView.opTask.parentTaskId || '',
+          opInfoId: taskView.opInfoDTO.id,
         },
       );
-      if (ret.code === 200) {
+      if (ret.code === 200 && ret.data) {
         Toast('通知下一台成功');
         getData();
+      } else {
+        Toast(ret.msg as string);
       }
     };
 
-    const resuscitationHandle = async (taskView: TaskViewItem) => {
-      const ret: ReturnData = await Request.xhr('getWardList', {
-        opInfoWardId: taskView.opInfo.departmentWardId
-      }, `opInfoWardId=${taskView.opInfo.departmentWardId}`)
+    const resuscitationHandle = async (taskView: TaskItem) => {
+      const ret: ReturnData = await Request.xhr('getIcuWardList', {
+        opInfoWardId: taskView.opPatientDTO.beforeDepartmentWardId
+      }, `opInfoWardId=${taskView.opPatientDTO.beforeDepartmentWardId}`);
       const { data } = ret;
       resuscitationOverLay.roomList = data.map((d: { name: string, id: number }) => {
         return {
           label: d.name || '',
-          value: d.id || ''
-        }
+          value: d.id || '',
+          ...d
+        };
       });
       resuscitationOverLay.active = (resuscitationOverLay.roomList[0] as any).value;
+      resuscitationOverLay.room = resuscitationOverLay.roomList[0];
       resuscitationOverLay.show = true;
       resuscitationOverLay.row = taskView;
     };
     const roomSelect = (room: any) => {
       resuscitationOverLay.active = room.value;
+      resuscitationOverLay.room = room;
     };
 
     const resuscitationOverLayHandleOk = async () => {
       const params = {
-        opInfoId: (resuscitationOverLay.row as TaskViewItem).opInfo.id || '',
-        currentTaskId:
-          (resuscitationOverLay.row as TaskViewItem).opTask.id || '',
-        parentTaskId:
-          (resuscitationOverLay.row as TaskViewItem).opTask.parentTaskId || '',
-        resuscitationRoom: resuscitationOverLay.checked,
-        opEndWard: resuscitationOverLay.active,
+        opTaskId:
+          (resuscitationOverLay.row as TaskItem).opTaskDTO.id || '',
+        recoverFlag: resuscitationOverLay.checked,
+        afterDepartmentId: (resuscitationOverLay.room as any).departmentId,
+        afterDepartmentWardId: (resuscitationOverLay.room as any).id,
       };
-      const ret: ReturnData = await Request.xhr('opEnd', params);
+      const ret: ReturnData = await Request.xhr('flowReverNextRecover', params);
       if (ret.code === 200) {
         Toast('手术完成');
         resuscitationOverLay.show = false;
         getData();
       } else {
-        Toast(ret.msg as string)
+        Toast(ret.msg as string);
       }
     };
 
     const Events = {
 
-      disinfect: (task:any) => {
+      disinfect: (task: any) => {
         disinfectOverLay.show = true;
         disinfectOverLay.row = task;
       },
@@ -611,23 +609,36 @@ export default defineComponent({
         disinfectOverLay.show = false;
         getData();
       }
-    }
+    };
     const getData = () => {
-      // eslint-disable-next-line no-undef
-      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        if (r.code === 200) {
-          taskViewsList.value = r.data.map((d) => {
+      return Promise.all([
+        Request.xhr('queryCurrentOpTaskList'),
+        Request.xhr('queryCurrentOpCleanTask')
+      ]).then((r: Array<any>) => {
+        const [normalTask, cleanTask]: any[] = r;
+        if (normalTask.code === 200) {
+          taskViewsList.value = normalTask.data.map((d: any) => {
+            const { taskFlowPointDetailsDTOList }: any = d;
+            const point = findNode(taskFlowPointDetailsDTOList, (d: any) => {
+              return d.pointStatus === 1;
+            });
             return {
               ...d,
               isClean: false,
+              description: point.description,
               taskList: formatTask(d, taskList),
             };
           }) as any;
+          cleanTask.data.isClean = true;
+
+          if (cleanTask.data) {
+            taskViewsList.value.push(cleanTask.data as never);
+          }
         } else {
           taskViewsList.value = [];
         }
 
-        updateTitleCount(taskViewsList.value.length)
+        updateTitleCount(taskViewsList.value.length);
         updateCardCacheData(taskViewsList.value);
       });
     };

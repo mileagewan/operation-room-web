@@ -53,8 +53,7 @@ export default defineComponent({
     });
     const defaultRole = computed(() => {
       const userInfo = store.state.userInfo;
-      // return userInfo.role;
-      return 'TransferWork';
+      return userInfo.user?.positionDicItemCode;
     })
 
     const titleCount = computed(() => {

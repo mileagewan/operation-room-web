@@ -1,13 +1,13 @@
 <template>
   <div class="task-list-item">
     <div class="task-item">
-      <a :href="`#${task.patient.hospitalCode}`" :id="`_${task.patient.hospitalCode}`"></a>
+      <a :href="`#${task.opPatientDTO.hospitalCode}`" :id="`_${task.opPatientDTO.hospitalCode}`"></a>
       <div class="flex flex-between header">
         <div class="flex-main">
-          <span class="name">{{ task.patient.name }}</span>
+          <span class="name">{{ task.opPatientDTO.name }}</span>
           <span
-            >{{ task.patient.sex === 1 ? "男" : "女" }}
-            {{ task.patient.age }}岁</span
+            >{{ task.opPatientDTO.sex === 1 ? "男" : "女" }}
+            {{ task.opPatientDTO.age }}岁</span
           >
         </div>
         <span class="task">{{
@@ -15,20 +15,20 @@
         }}</span>
       </div>
       <div class="flex">
-        <div class="flex-main">{{ task.opDescName }}</div>
+        <div class="flex-main">{{ task.descName }}</div>
         <!-- TODO目的地 -->
         <span class="to-department">
-          {{ task.opEndWardName || "" }}
+          {{ task.opPatientDTO.afterDepartmentName || "" }}
         </span>
       </div>
       <div class="flex info">
         <div class="info-item">
           <label>住院号</label>
-          <span>{{ task.patient.hospitalCode }}</span>
+          <span>{{ task.opPatientDTO.hospitalCode }}</span>
         </div>
         <div class="info-item">
           <label>用时</label>
-          <span>{{ $filters.formatTime(task.taskTime) }}</span>
+          <span>{{ $filters.formatTime(task.exeTime) }}</span>
         </div>
         <div class="info-plantime">
           超时3分10秒
@@ -46,7 +46,7 @@ export default defineComponent({
     task: {
       type: Object,
       default: () => ({
-        patient: {},
+        opPatientDTO: {},
         opInfo: {},
       }),
     },

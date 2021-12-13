@@ -24,12 +24,12 @@ export default defineComponent({
     options: {
       type: Array,
       default() {
-        return []
+        return [];
       }
     }
   },
   setup() {
-    return {}
+    return {};
   }
 });
 </script>

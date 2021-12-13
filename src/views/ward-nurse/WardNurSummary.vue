@@ -9,15 +9,15 @@
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in taskList" :key="index">
-      <a href="" :id="`_${task.patient.hospitalCode}`"></a>
+      <a href="" :id="`_${task.opPatientDTO.hospitalCode}`"></a>
       <ExpandCard
         :option="{
-          status: task.opInfo.opSectionCode,
-          name: task.patient.name,
-          sex: task.patient.sex,
-          age: task.patient.age,
-          type: task.opInfo.type,
-          room: task.opInfo.opDescName,
+          status: task.opInfoDTO.opSectionCode,
+          name: task.opPatientDTO.name,
+          sex: task.opPatientDTO.sex,
+          age: task.opPatientDTO.age,
+          type: task.opInfoDTO.type,
+          room: task.opInfoDTO.descName,
         }"
       >
         <KeyValue
@@ -75,9 +75,8 @@ export default defineComponent({
     const taskList: any = ref([]);
     const getData = () => {
       loading.value = true;
-      return Request.xhr('querySummaryTaskList')
+      return Request.xhr('queryOpSummaryList')
         .then((r: CurrentTaskViews) => {
-          // console.log(r);
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
               return {
@@ -85,12 +84,11 @@ export default defineComponent({
                 infoItems: formatTask(d, infoItems),
               };
             });
-            // console.log(taskList);
           } else {
-            taskList.value = []
+            taskList.value = [];
           }
           updateTitleCount(taskList.value.length);
-          updateCardCacheData(taskList.value)
+          updateCardCacheData(taskList.value);
         })
         .finally(() => {
           loading.value = false;

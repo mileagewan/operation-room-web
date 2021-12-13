@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
-import Request from '@/service/request'
+import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ResuscitationNurDone',
@@ -26,17 +26,17 @@ export default defineComponent({
       }
     ]);
     const taskList: any = ref([]);
-    const loading = ref(false)
+    const loading = ref(false);
     const getData = () => {
       loading.value = true;
-      return Request.xhr('queryCompletedTaskList')
+      return Request.xhr('queryCompletedOpTask')
         .then((r: any) => {
           // console.log(r);
           if (r.code === 200) {
             const { data }: any = r;
             options[0].value = data.patientNum;
-            options[1].value = data.onTimeRate;
-            taskList.value = data.opTaskListingDTOList;
+            options[1].value = data.onTimeNum;
+            taskList.value = data.completedOpTaskDetailsDTOList;
           } else {
             options[0].value = 0;
             options[1].value = 0;

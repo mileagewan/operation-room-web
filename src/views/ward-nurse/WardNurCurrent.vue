@@ -145,7 +145,7 @@ export default defineComponent({
               const { taskFlowPointDetailsDTOList }: any = d;
               const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
                 return d.pointStatus === 1;
-              })
+              });
               return {
                 ...d,
                 description: point.description,
@@ -173,40 +173,27 @@ export default defineComponent({
       handleOverLay.show = true;
     };
     const manualOk = () => {
-      console.log(handleOverLay);
       handleOverLay.show = false;
-      // const data = {
-      //   opInfoId: currentTask.opTaskDTO.id,
-      //   currentTaskId: currentTask.opTaskDTO.id,
-      //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
-      //   userCode: handleOverLay.value,
-      // };
       const data = {
         opInfoId: currentTask.opTaskDTO.id,
         workId: handleOverLay.value,
         opTaskId: currentTask.opTaskDTO.id,
-      }
+      };
       next(data, 'flowReverInputNext');
     };
     const codeHandle = async (task: TaskItem, res:any) => {
       // Toast('呼叫护工成功');
       currentTask = task;
       if (!res) {
-        res = await JsToFlutter.startScanQRCode()
+        res = await JsToFlutter.startScanQRCode();
       }
       // TODO 调接口推进下一阶段
       if (res) {
-        // const data = {
-        //   opInfoId: currentTask.opTaskDTO.id,
-        //   currentTaskId: currentTask.opTaskDTO.id,
-        //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
-        //   hospitalCode: res,
-        // };
         const data = {
           opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
           opTaskId: currentTask.opTaskDTO.id,
-        }
+        };
         next(data, 'flowReverScanNext');
       }
     };
@@ -227,16 +214,10 @@ export default defineComponent({
 
     // 呼叫转运护工
     const callNurse = (task: TaskItem) => {
-      // const data = {
-      //   opInfoId: task.opTaskDTO.id,
-      //   currentTaskId: task.opTaskDTO.id,
-      //   parentTaskId: task.opTaskDTO.parentTaskId,
-      // };
       const data = {
         opTaskId: task.opTaskDTO.id
-      }
+      };
       Request.xhr('flowReverNormalNext', data).then((res: any) => {
-        // console.log(res);
         if (res.code === 200) {
           Toast('呼叫护工成功');
           getData();

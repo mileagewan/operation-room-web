@@ -11,6 +11,7 @@
 import { defineComponent, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
+import { CurrentComplete } from '@/types/CurrentTaskViews';
 export default defineComponent({
   name: 'OpratorTransferNurDone',
   setup() {
@@ -29,14 +30,13 @@ export default defineComponent({
     const loading = ref(false);
     const getData = () => {
       loading.value = true;
-      return Request.xhr('queryCompletedTaskList')
-        .then((r: any) => {
-          // console.log(r);
+      return Request.xhr('queryCompletedOpTask')
+        .then((r: CurrentComplete) => {
           if (r.code === 200) {
             const { data }: any = r;
-            options[0].value = data.sendPatient;
-            options[1].value = data.receivePatient;
-            taskList.value = data.opTaskListingDTOList;
+            options[0].value = data.sendPatientNum;
+            options[1].value = data.receivePatientNum;
+            taskList.value = data.completedOpTaskDetailsDTOList;
           } else {
             options[0].value = 0;
             options[1].value = 0;

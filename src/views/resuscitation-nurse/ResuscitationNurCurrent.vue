@@ -3,17 +3,17 @@
     class="itinerant-nur-current"
     v-for="(taskView, index) in taskViewsList"
     :key="index"
-    :id="taskView.patient.hospitalCode"
+    :id="taskView.opPatientDTO.hospitalCode"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: taskView.opInfo.opSectionCode,
-          name: taskView.patient.name,
-          sex: taskView.patient.sex,
-          age: taskView.patient.age,
-          type: taskView.opInfo.type,
-          room: taskView.opInfo.opDescName,
+          status: taskView.opInfoDTO.opSectionCode,
+          name: taskView.opPatientDTO.name,
+          sex: taskView.opPatientDTO.sex,
+          age: taskView.opPatientDTO.age,
+          type: taskView.opInfoDTO.type,
+          room: taskView.opInfoDTO.descName,
         }"
       />
     </template>
@@ -36,15 +36,15 @@
       </div>
       <KeyValueBlock>
         <template #value>
-          {{ taskView.opTask.taskTipContent || "无" }}
+          {{ taskView.description || "无" }}
         </template>
       </KeyValueBlock>
 
-      <template v-if="taskView.opInfo.opSectionCode === '11'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '11'">
         <KeyValueBlock
           clear
           label="发布人"
-          :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+          :value="`${taskView.opTaskDTO.publishUserName} ${taskView.opTaskDTO.publishUserPhone}`"
         />
         <div class="ihybrid-button-group">
           <van-button
@@ -67,11 +67,11 @@
         </div>
       </template>
 
-      <template v-if="taskView.opInfo.opSectionCode === '12'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '12'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+          :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
         />
         <div class="ihybrid-button-center">
           <van-button
@@ -86,11 +86,11 @@
         </div>
       </template>
 
-      <template v-if="taskView.opInfo.opSectionCode === '13'">
+      <template v-if="taskView.opInfoDTO.opSectionCode === '13'">
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${taskView.opTask.handoverUserName} ${taskView.opTask.handoverUserPhone}`"
+          :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
         />
       </template>
     </template>
@@ -124,6 +124,7 @@ import JsToFlutter from '@/utils/js-to-flutter';
 import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
 import ToastCountdown from '@/utils/toast-countdown';
 import useTitleCount from '@/utils/useTitleCount';
+import { findNode } from '@/utils/utils';
 export default defineComponent({
   name: 'ResuscitationNurCurrent',
   setup() {
@@ -155,12 +156,11 @@ export default defineComponent({
     };
     const manualOk = async () => {
       const ret: ReturnData = await Request.xhr(
-        'circuitNurseHandoverToRecovery',
+        'flowReverInputNext',
         {
-          userCode: handleOverLay.value,
-          opInfoId: (handleOverLay.row as any)?.opInfo?.id || '',
-          currentTaskId: (handleOverLay.row as any)?.opTask?.id || '',
-          parentTaskId: (handleOverLay.row as any)?.opTask?.parentTaskId || '',
+          opInfoId: (handleOverLay.row as any)?.opInfoDTO?.id || '',
+          workId: handleOverLay.value,
+          opTaskId: (handleOverLay.row as any)?.opTaskDTO?.id || '',
         }
       );
       if (ret.code === 200) {
@@ -174,15 +174,14 @@ export default defineComponent({
     };
     const codeHandle = async (row: any, ret:any) => {
       if (!ret) {
-        ret = await JsToFlutter.startScanQRCode()
+        ret = await JsToFlutter.startScanQRCode();
       }
       const data: ReturnData = await Request.xhr(
-        'circuitNurseHandoverToRecovery',
+        'flowReverScanNext',
         {
-          opInfoId: row.opInfo.id || '',
-          currentTaskId: row.opTask.id || '',
-          parentTaskId: row.opTask.parentTaskId || '',
-          hospitalCode: ret || '188752',
+          opInfoId: row.opTaskDTO.id,
+          hospitalCode: ret,
+          opTaskId: row.opTaskDTO.id,
         }
       );
       if (data.code === 200) {
@@ -208,11 +207,9 @@ export default defineComponent({
       }
     };
 
-    const callNurse = async (row: TaskViewItem) => {
-      const ret: ReturnData = await Request.xhr('recoveryRoomNurseCall', {
-        opInfoId: row.opInfo.id || '',
-        currentTaskId: row.opTask.id || '',
-        parentTaskId: row.opTask.parentTaskId || '',
+    const callNurse = async (row: any) => {
+      const ret: ReturnData = await Request.xhr('flowReverNormalNext', {
+        opTaskId: row.opTaskDTO.id || '',
       });
       if (ret.code === 200) {
         Toast('呼叫护工成功');
@@ -220,21 +217,26 @@ export default defineComponent({
       }
     };
     const getData = (): Promise<any> => {
-      // eslint-disable-next-line no-undef
-      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        if (r.code === 200) {
-          taskViewsList.value = r.data.map((d) => {
-            return {
-              ...d,
-              taskList: formatTask(d, taskList),
-            };
-          }) as any;
-        } else {
-          taskViewsList.value = []
-        }
-        updateTitleCount(taskViewsList.value.length);
-        updateCardCacheData(taskViewsList.value);
-      });
+      return Request.xhr('queryCurrentOpTaskList')
+        .then((r: CurrentTaskViews) => {
+          if (r.code === 200) {
+            taskViewsList.value = r.data.map((d) => {
+              const { taskFlowPointDetailsDTOList }: any = d;
+              const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
+                return d.pointStatus === 1;
+              });
+              return {
+                ...d,
+                description: point.description,
+                taskList: formatTask(d, taskList),
+              };
+            }) as any;
+          } else {
+            taskViewsList.value = [];
+          }
+          updateTitleCount(taskViewsList.value.length);
+          updateCardCacheData(taskViewsList.value);
+        });
     };
     onMounted(() => {
       getData();

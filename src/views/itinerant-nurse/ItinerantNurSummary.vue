@@ -7,15 +7,15 @@
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in list" :key="index">
-      <a href="" :id="`_${task.patient.hospitalCode}`"></a>
+      <a href="" :id="`_${task.opPatientDTO.hospitalCode}`"></a>
       <ExpandCard
         :option="{
-          status: task.opInfo.opSectionCode,
-          name: task.patient.name,
-          sex: task.patient.sex,
-          age: task.patient.age,
-          type: task.opInfo.type,
-          room: task.opInfo.opDescName,
+          status: task.opInfoDTO.opSectionCode,
+          name: task.opPatientDTO.name,
+          sex: task.opPatientDTO.sex,
+          age: task.opPatientDTO.age,
+          type: task.opInfoDTO.type,
+          room: task.opInfoDTO.opDescName,
         }"
       >
         <KeyValue
@@ -73,7 +73,7 @@ export default defineComponent({
     ];
     const list: any = ref([]);
     const getData = () => {
-      return Request.xhr('querySummaryTaskList').then((r: CurrentTaskViews) => {
+      return Request.xhr('queryOpSummaryList').then((r: CurrentTaskViews) => {
         if (r.data) {
           list.value = r.data.map((d: any) => {
             return {
@@ -82,9 +82,9 @@ export default defineComponent({
             };
           });
         } else {
-          list.value = []
+          list.value = [];
         }
-        updateTitleCount(list.value.length)
+        updateTitleCount(list.value.length);
         updateCardCacheData(list.value);
         // TODO 数据list赋值处理
       });

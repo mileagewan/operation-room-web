@@ -1,18 +1,20 @@
 <template>
   <div class="itinerant-nur-done">
-    <DoneSummary :options="pageData.options" v-if="pageData.completeList.length" />
-    <div class="done-list" v-if="pageData.completeList.length">
+    <DoneSummary :options="pageData.options"
+                 v-if="pageData?.completeList?.length" />
+    <div class="done-list"
+         v-if="pageData.completeList.length">
       <van-cell v-for="(list,index) in pageData.completeList"
                 :key="index"
-                :label="list.opInfo.opDescName"
+                :label="list?.opInfoDTO?.descName"
                 @click="next(list)"
                 is-link>
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title>
-          <a href="" :id="`_${list.patient.hospitalCode}`"></a>
-          <span class="custom-title">{{list.patient.name}}</span>
-          <span class="custom-sex">{{list.patient.sex === 1 ? '男' : '女'}}</span>
-          <span class="custom-age">{{list.patient.age}}岁</span>
+          <a href="" :id="`_${list.opPatientDTO.hospitalCode}`"></a>
+          <span class="custom-title">{{list.opPatientDTO.name}}</span>
+          <span class="custom-sex">{{list.opPatientDTO.sex === 1 ? '男' : '女'}}</span>
+          <span class="custom-age">{{list.opPatientDTO.age}}岁</span>
         </template>
         <template #value>
           <span class="info-plantime is-danger">
@@ -22,7 +24,8 @@
         </template>
       </van-cell>
     </div>
-    <EmptyPage message="当前暂无完成任务" v-if="!pageData.completeList.length" />
+    <EmptyPage message="当前暂无完成任务"
+               v-if="!pageData?.completeList?.length" />
   </div>
 
 </template>
@@ -37,21 +40,21 @@ import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {
-    const { updateTitleCount, updateCardCacheData } = useTitleCount()
+    const { updateTitleCount, updateCardCacheData } = useTitleCount();
     const router = useRouter();
     const store = useStore();
     const pageData:any = reactive({
       options: [],
       completeList: []
-    })
+    });
     const next = (row: any) => {
-      store.commit(SET_OP_TASK_DTO_MUTATION, row)
+      store.commit(SET_OP_TASK_DTO_MUTATION, row);
       router.push({
         path: '/surgical-detail'
-      })
-    }
+      });
+    };
     const getData = () => {
-      return Request.xhr('queryCompletedTaskList').then((r:any) => {
+      return Request.xhr('queryCompletedOpTask').then((r:any) => {
         const { code, data } = r;
         if (code === 200) {
           pageData.options = [
@@ -61,30 +64,30 @@ export default defineComponent({
             },
             {
               label: '准时率',
-              value: data.onTimeRate as any,
+              value: data.onTimeNum as any,
             }
           ];
-          pageData.completeList = data.opTaskListingDTOList as any
+          pageData.completeList = data.completedOpTaskDetailsDTOList as any;
         } else {
           pageData.options = [];
-          pageData.completeList = []
+          pageData.completeList = [];
         }
-        updateTitleCount(pageData.completeList.length)
+        updateTitleCount(pageData.completeList.length);
         updateCardCacheData(pageData.completeList);
-      })
-    }
+      });
+    };
 
     onMounted(() => {
-      getData()
-    })
+      getData();
+    });
     return {
       next,
       pageData,
       getData,
       onMounted
-    }
+    };
   }
-})
+});
 </script>
 
 <style scoped>

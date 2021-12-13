@@ -5,17 +5,17 @@
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
     :key="index"
-    :id="task.patient.hospitalCode"
+    :id="task.opPatientDTO.hospitalCode"
   >
     <template #header>
       <PatientDetail
         :option="{
-          status: task.opInfo.opSectionCode,
-          name: task.patient.name,
-          sex: task.patient.sex,
-          age: task.patient.age,
-          type: task.opInfo.type,
-          room: task.opInfo.opDescName,
+          status: task.opInfoDTO.opSectionCode,
+          name: task.opPatientDTO.name,
+          sex: task.opPatientDTO.sex,
+          age: task.opPatientDTO.age,
+          type: task.opInfoDTO.type,
+          room: task.opInfoDTO.descName,
         }"
       />
     </template>
@@ -36,15 +36,15 @@
       ></FlowChart>
       <!-- 任务描述 -->
       <KeyValueBlock>
-        <template #value> {{ task.opTask.taskTipContent || "无" }} </template>
+        <template #value> {{ task.description || "无" }} </template>
       </KeyValueBlock>
 
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTask.handoverUserName||''} ${task.opTask.handoverUserPhone||''}`"
+          :value="`${task.opTaskDTO.handUserName||''} ${task.opTaskDTO.handUserPhone||''}`"
         />
-      <template v-if="task.opInfo.opSectionCode === '5'">
+      <template v-if="task.opInfoDTO.opSectionCode === '5'">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -67,7 +67,7 @@
       </template>
 
       <!-- 从手术室接出 -->
-      <template v-if="isBack(task.opInfo.opSectionCode)">
+      <template v-if="isBack(task.opInfoDTO.opSectionCode)">
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { Toast } from 'vant';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
@@ -118,6 +118,7 @@ import useTaskMixins, {
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
 import useTitleCount from '@/utils/useTitleCount';
+import { findNode } from '@/utils/utils';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
@@ -134,24 +135,16 @@ export default defineComponent({
     };
     const manualOk = () => {
       handleOverLay.show = false;
-      handleOverLay.show = false;
-
       const data = {
-        opInfoId: currentTask.opInfo.id,
-        currentTaskId: currentTask.opTask.id,
-        parentTaskId: currentTask.opTask.parentTaskId,
-        userCode: handleOverLay.value,
-      };
-      next(data);
+        opInfoId: currentTask.opTaskDTO.id,
+        workId: handleOverLay.value,
+        opTaskId: currentTask.opTaskDTO.id,
+      }
+      next(data, 'flowReverInputNext');
     };
 
-    const next = (data: any) => {
-      const xhrType: string = isBack(currentTask.opInfo.opSectionCode)
-        ? 'circuitNurseHandoverToWard'
-        : 'transferWorkHandover';
-      console.log(xhrType);
-
-      Request.xhr(xhrType, data).then((res: any) => {
+    const next = (data: any, key = 'flowReverNormalNext') => {
+      Request.xhr(key, data).then((res: any) => {
         if (res.code === 200) {
           ToastCountdown({
             message: '患者匹配成功，交接完成',
@@ -171,12 +164,11 @@ export default defineComponent({
       if (res) {
         // TODO 调接口推进下一阶段
         const data = {
-          opInfoId: currentTask.opInfo.id,
-          currentTaskId: currentTask.opTask.id,
-          parentTaskId: currentTask.opTask.parentTaskId,
+          opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
-        };
-        next(data);
+          opTaskId: currentTask.opTaskDTO.id,
+        }
+        next(data, 'flowReverScanNext');
       }
     };
 
@@ -190,12 +182,16 @@ export default defineComponent({
       circulatingNurseName(),
     ];
     const getData = () => {
-      return Request.xhr('queryCurrentTaskList').then((r: CurrentTaskViews) => {
-        // console.log(r);
+      return Request.xhr('queryCurrentOpTaskList').then((r: CurrentTaskViews) => {
         if (r.data) {
           taskList.value = r.data.map((d: any) => {
+            const { taskFlowPointDetailsDTOList }: any = d;
+            const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
+              return d.pointStatus === 1;
+            })
             return {
               ...d,
+              description: point.description,
               infoItems: formatTask(d, infoItems),
             };
           });
@@ -213,18 +209,12 @@ export default defineComponent({
       return ['10', '13'].includes(statusCode);
     };
 
-    onMounted(() => {
-      // Request.xhr('getSso').then((r: ReturnData) => {
-      //   console.log(r);
-      // });
-    });
     return {
       taskList,
       handleOverLay,
       manualHandle,
       manualOk,
       codeHandle,
-      onMounted,
       getData,
       isBack,
     };

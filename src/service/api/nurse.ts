@@ -1,5 +1,7 @@
 import { ServiceItem } from '@/types/interface-model';
 
+const POST = 'post';
+
 const nurse: ServiceItem[] = [
   /* {
     path: '/itinerantnurse/getcurrenttask',
@@ -152,24 +154,70 @@ const nurse: ServiceItem[] = [
     method: 'post',
   }, */
 
+  // 查询当前 常规
   {
     path: '/opTask/queryCurrentOpTaskList',
     method: 'post',
     key: 'queryCurrentOpTaskList'
   },
 
+  // 查询当前 清洁任务
+  {
+    path: '/opTask/queryCurrentOpCleanTask',
+    method: POST,
+    key: 'queryCurrentOpCleanTask'
+  },
+
+  // 查询汇总
   {
     path: '/opInfo/queryOpSummaryList',
     method: 'post',
     key: 'queryOpSummaryList'
   },
 
+  // 已完成
+  {
+    path: '/opTask/queryCompletedOpTask',
+    method: 'post',
+    key: 'queryCompletedOpTask'
+  },
+
+  // 广播地址
+  {
+    path: '/pushMsg/opRoom/broadcast/data',
+    method: 'post',
+    key: 'broadcastData'
+  },
+
+  // todo广播
+  {
+    path: '/pushMsg/opRoom/broadcast',
+    method: 'post',
+    key: 'broadcastMsg',
+  },
+
+  // 复苏室地址
+  {
+    path: '/opInfo/getIcuWardList',
+    method: 'post',
+    key: 'getIcuWardList'
+  },
+
+  // todo 手术结束 -> 复苏室
+  {
+    path: '/flowRever/next/recover',
+    method: 'post',
+    key: 'flowReverNextRecover'
+  },
+
+  // 查询总协调
   {
     path: '/opTask/queryCurrentAbnormalOpTaskList',
     method: 'post',
     key: 'queryCurrentAbnormalOpTaskList'
   },
 
+  // todo 流程扭转
   {
     path: '/flowRever/normal/next',
     method: 'post',
@@ -185,5 +233,13 @@ const nurse: ServiceItem[] = [
     method: 'post',
     key: 'flowReverScanNext'
   },
+
+  // todo 通知下一台
+  {
+    path: '/flowRever/notify/nextOpInfo',
+    method: 'post',
+    key: 'nextOpInfo'
+  },
+
 ];
 export { nurse };

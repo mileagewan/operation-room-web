@@ -1,19 +1,19 @@
-import Axios, { AxiosRequestConfig, AxiosResponse, AxiosStatic } from 'axios'
-import { ListServiceMap, TargetServiceMap } from '@/service/cfg'
-import { RequestQuery, ServiceItem } from '@/types/interface-model'
-import { SsoLogin } from '@/service/sso-login'
-import qs from 'qs'
+import Axios, { AxiosRequestConfig, AxiosResponse, AxiosStatic } from 'axios';
+import { ListServiceMap, TargetServiceMap } from '@/service/cfg';
+import { RequestQuery, ServiceItem } from '@/types/interface-model';
+import { SsoLogin } from '@/service/sso-login';
+import qs from 'qs';
 import JsToFlutter from '@/utils/js-to-flutter';
 
 Axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-  const token: string | null = await JsToFlutter.getToken() as string
-  const configs = config
-  configs.headers = {}
-  configs.headers['Content-Type'] = 'application/json;charset=UTF-8'
-  configs.headers['Cache-Control'] = 'no-cache'
-  configs.headers.Pragma = 'no-cache'
-  configs.headers.token = token
-  configs.headers['X-Auth-Token'] = token
+  const token: string | null = await JsToFlutter.getToken() as string;
+  const configs = config;
+  configs.headers = {};
+  configs.headers['Content-Type'] = 'application/json;charset=UTF-8';
+  configs.headers['Cache-Control'] = 'no-cache';
+  configs.headers.Pragma = 'no-cache';
+  configs.headers.token = token;
+  configs.headers['X-Auth-Token'] = token;
   if (config.method === 'get') {
     configs.paramsSerializer = function (params: any) {
       return qs.stringify(params, { arrayFormat: 'repeat' });
@@ -88,6 +88,9 @@ class Request implements RequestQuery {
       default:
         queryParams.params = data;
         break;
+    }
+    if (Object.keys(data).length === 1 && !paramsQuery) {
+      paramsQuery = `${Object.keys(data)[0]}=${Object.values(data)[0]}`;
     }
     queryParams = Object.assign(
       {
@@ -190,13 +193,13 @@ class Request implements RequestQuery {
 
   static setToken(): void {
     this.axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-      const token: string | null = await JsToFlutter.getToken() as string
-      const configs = config
-      configs.headers = {}
-      configs.headers.token = token
-      configs.headers['X-Auth-Token'] = token
-      return configs
-    })
+      const token: string | null = await JsToFlutter.getToken() as string;
+      const configs = config;
+      configs.headers = {};
+      configs.headers.token = token;
+      configs.headers['X-Auth-Token'] = token;
+      return configs;
+    });
   }
 }
 

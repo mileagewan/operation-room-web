@@ -2,7 +2,7 @@ import { ServiceItem } from '@/types/interface-model';
 
 const home: ServiceItem[] = [
   {
-    path: '/nurseOperate/getMenuTree',
+    path: '/login/get',
     key: 'getMenuTree',
     method: 'post',
   },

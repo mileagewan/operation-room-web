@@ -98,7 +98,7 @@ export const RoleModuleInject: RoleModuleMap[] = [
       },
     ]
   }
-]
+];
 
 export const components = {
   // 病区护士
@@ -158,4 +158,4 @@ export const components = {
     /* webpackChunkName: "SurgicalSummary" */ '@/views/chief-coordination-nurse/SurgicalSummary.vue'
   )),
 
-}
+};

@@ -49,8 +49,8 @@
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTaskDTO.handoverUserName || ''} ${
-            task.opTaskDTO.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handUserName || ''} ${
+            task.opTaskDTO.handUserPhone || ''
           }`"
         />
         <div class="ihybrid-button-group">
@@ -79,8 +79,8 @@
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTaskDTO.handoverUserName || ''} ${
-            task.opTaskDTO.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handUserName || ''} ${
+            task.opTaskDTO.handUserPhone || ''
           }`"
         />
       </template>
@@ -89,8 +89,8 @@
         <KeyValueBlock
           clear
           label="交接人"
-          :value="`${task.opTaskDTO.handoverUserName || ''} ${
-            task.opTaskDTO.handoverUserPhone || ''
+          :value="`${task.opTaskDTO.handUserName || ''} ${
+            task.opTaskDTO.handUserPhone || ''
           }`"
         />
       </template>
@@ -119,6 +119,7 @@ import useTaskMixins, {
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
 import useTitleCount from '@/utils/useTitleCount';
+import { findNode } from '@/utils/utils';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
@@ -141,13 +142,12 @@ export default defineComponent({
             taskList.value = r.data.map((d: any) => {
               // 需要处理当前的节点
               const { taskFlowPointDetailsDTOList }: any = d;
-              const pointIndex = taskFlowPointDetailsDTOList.findIndex((t:any) => {
-                return t.pointStatus === 1;
-              });
-              const point = taskFlowPointDetailsDTOList[pointIndex];
+              const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
+                return d.pointStatus === 1;
+              })
               return {
                 ...d,
-                description: point.description,
+                description: point?.description,
                 infoItems: formatTask(d, infoItems),
               };
             });
@@ -175,18 +175,12 @@ export default defineComponent({
     };
     const manualOk = () => {
       handleOverLay.show = false;
-      // const data = {
-      //   opInfoId: currentTask.opPatientDTO.id,
-      //   currentTaskId: currentTask.opTaskDTO.id,
-      //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
-      //   userCode: handleOverLay.value,
-      // };
       const data = {
         opInfoId: currentTask.opTaskDTO.id,
         workId: handleOverLay.value,
         opTaskId: currentTask.opTaskDTO.id,
       }
-      next(data);
+      next(data, 'flowReverInputNext');
     };
 
     // 扫码交接
