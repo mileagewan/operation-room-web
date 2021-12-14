@@ -32,7 +32,7 @@ export default defineComponent({
       return Request.xhr('queryCompletedOpTask')
         .then((r: any) => {
           // console.log(r);
-          if (r.code === 200) {
+          if (r.code === 200 && r.data?.completedOpTaskDetailsDTOList) {
             const { data }: any = r;
             options[0].value = data.patientNum;
             options[1].value = data.onTimeNum;

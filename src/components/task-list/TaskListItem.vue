@@ -31,7 +31,7 @@
           <span>{{ $filters.formatTime(task.exeTime) }}</span>
         </div>
         <div class="info-plantime">
-          超时3分10秒
+          超时{{ $filters.formatTime(task.totalOverTime) }}
         </div>
       </div>
     </div>

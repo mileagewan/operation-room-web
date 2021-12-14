@@ -14,6 +14,7 @@
           age: taskView.opPatientDTO.age,
           type: taskView.opInfoDTO.type,
           room: taskView.opInfoDTO.descName,
+          planTime: taskView.overTime,
         }"
       />
     </template>
@@ -30,8 +31,8 @@
       </KeyValue>
       <div class="resuscitation-flow-chart">
         <FlowChart
-          :flow-data="taskView.operatingStatusList"
-          :current-code="taskView.currentOperatingStatus"
+          :flow-data="taskView.flowDatas"
+          :current-code="taskView.currentCode"
         />
       </div>
       <KeyValueBlock>
@@ -227,8 +228,18 @@ export default defineComponent({
               });
               return {
                 ...d,
+                overTime: point.overTime,
                 description: point.description,
                 taskList: formatTask(d, taskList),
+                flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                  return {
+                    ...p,
+                    title: p.pointName,
+                    icon: '',
+                    code: p.pointCode
+                  }
+                }),
+                currentCode: point.pointCode
               };
             }) as any;
           } else {

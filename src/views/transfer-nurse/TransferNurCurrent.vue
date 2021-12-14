@@ -15,6 +15,7 @@
           age: task.opPatientDTO.age,
           type: task.opInfoDTO.type,
           room: task.opInfoDTO.descName,
+          planTime: task.overTime,
         }"
       />
     </template>
@@ -35,8 +36,8 @@
         :value="task.opPatientDTO.afterDepartmentName"
       />
       <FlowChart
-        :flow-data="task.operatingStatusList"
-        :current-code="task.currentOperatingStatus"
+        :flow-data="task.flowDatas"
+        :current-code="task.currentCode"
       />
       <!-- 任务描述 -->
       <KeyValueBlock>
@@ -148,7 +149,17 @@ export default defineComponent({
               return {
                 ...d,
                 description: point?.description,
+                overTime: point.overTime,
                 infoItems: formatTask(d, infoItems),
+                flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                  return {
+                    ...p,
+                    title: p.pointName,
+                    icon: '',
+                    code: p.pointCode
+                  }
+                }),
+                currentCode: point.pointCode
               };
             });
           } else {
@@ -192,12 +203,6 @@ export default defineComponent({
       }
       if (res) {
         // TODO 调接口推进下一阶段
-        // const data = {
-        //   opInfoId: currentTask.opPatientDTO.id,
-        //   currentTaskId: currentTask.opTaskDTO.id,
-        //   parentTaskId: currentTask.opTaskDTO.parentTaskId,
-        //   hospitalCode: res,
-        // };
         const data = {
           opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,

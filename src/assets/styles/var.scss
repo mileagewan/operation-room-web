@@ -110,3 +110,8 @@ button {
   font-weight: var(--ihybrid--important-weight);
   font-size: var(--ihybrid--default-font-size);
 }
+.over-ellipsis {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}

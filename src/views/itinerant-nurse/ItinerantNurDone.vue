@@ -17,8 +17,8 @@
           <span class="custom-age">{{list.opPatientDTO.age}}岁</span>
         </template>
         <template #value>
-          <span class="info-plantime is-danger">
-            超时3分10秒
+          <span class="info-plantime is-danger over-ellipsis ">
+            超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
           <span>查看详情</span>
         </template>
@@ -89,7 +89,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<style scoped>
-
-</style>

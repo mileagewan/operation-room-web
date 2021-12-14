@@ -42,10 +42,18 @@
       }
       .van-cell__value {
         color: var(--ihybrid--default-label-color);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         span {
           font-size: var(--ihybrid--default-font-size);
           line-height: 1;
           margin-left: 12px;
+
+          &:last-child {
+            width: 96px;
+            flex: none;
+          }
         }
       }
     }

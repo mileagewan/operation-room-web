@@ -16,6 +16,7 @@
           age: task.opPatientDTO.age,
           type: task.opInfoDTO.type,
           room: task.opInfoDTO.descName,
+          planTime: task.overTime,
         }"
       />
     </template>
@@ -31,8 +32,8 @@
         </template>
       </KeyValue>
       <FlowChart
-        :flow-data="task.operatingStatusList"
-        :current-code="task.currentOperatingStatus"
+        :flow-data="task.flowDatas"
+        :current-code="task.currentCode"
       ></FlowChart>
       <!-- 任务描述 -->
       <KeyValueBlock>
@@ -99,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import { Toast } from 'vant';
 import Request from '@/service/request';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
@@ -193,6 +194,16 @@ export default defineComponent({
               ...d,
               description: point.description,
               infoItems: formatTask(d, infoItems),
+              overTime: point.overTime,
+              flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                return {
+                  ...p,
+                  title: p.pointName,
+                  icon: '',
+                  code: p.pointCode
+                }
+              }),
+              currentCode: point.pointCode
             };
           });
         } else {
@@ -202,12 +213,15 @@ export default defineComponent({
         updateCardCacheData(taskList.value);
       });
     };
-    getData();
 
     // 是否从手术室接回
     const isBack = (statusCode: string) => {
       return ['10', '13'].includes(statusCode);
-    };
+    }
+
+    onMounted(() => {
+      getData();
+    })
 
     return {
       taskList,
@@ -217,6 +231,7 @@ export default defineComponent({
       codeHandle,
       getData,
       isBack,
+      onMounted
     };
   },
 });

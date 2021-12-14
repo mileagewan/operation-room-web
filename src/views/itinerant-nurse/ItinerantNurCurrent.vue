@@ -15,7 +15,7 @@
           age: taskView.opPatientDTO.age,
           type: taskView.opInfoDTO.type,
           room: taskView.opInfoDTO.descName,
-          planTime: 1,
+          planTime: taskView.overTime,
         }"
       />
     </template>
@@ -32,8 +32,8 @@
       </KeyValue>
       <div class="itinerant-flow-chart">
         <FlowChart
-          :flow-data="taskView.operatingStatusList"
-          :current-code="taskView.currentOperatingStatus"
+          :flow-data="taskView.flowDatas"
+          :current-code="taskView.currentCode"
         />
       </div>
       <key-value-block>
@@ -627,6 +627,16 @@ export default defineComponent({
               isClean: false,
               description: point.description,
               taskList: formatTask(d, taskList),
+              overTime: point.overTime,
+              flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                return {
+                  ...p,
+                  title: p.pointName,
+                  icon: '',
+                  code: p.pointCode
+                }
+              }),
+              currentCode: point.pointCode
             };
           }) as any;
           cleanTask.data.isClean = true;

@@ -62,9 +62,10 @@ export default defineComponent({
       9: '麻醉',
       10: '患者苏醒',
     };
+    const icons: Map<string, string> = new Map<string, string>([
+      ['1', 'icon-kaishi']
+    ])
     let flowDatas = reactive([]);
-    // const flowDatas = reactive(flowData.length ? flowData : FlowData);
-    // console.log(flowData);
     flowDatas = flowData.map((item: any) => {
       if (isNumber(item)) {
         return {
@@ -72,12 +73,15 @@ export default defineComponent({
           title: flowMap[item],
           icon: iconMap[item],
         };
+      } else if (!(item?.icon)) {
+        return {
+          ...item,
+          icon: icons.get(item.code) || 'icon-kaishi'
+        }
       }
       return item;
     });
     const currentIndex = findIndex(flowDatas, { code: currentCode });
-    console.log(currentIndex);
-
     return {
       flowDatas,
       currentIndex,

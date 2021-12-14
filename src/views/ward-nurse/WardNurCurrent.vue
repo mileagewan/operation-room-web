@@ -15,7 +15,7 @@
           age: task.opPatientDTO.age,
           type: task.opInfoDTO.type,
           room: task.opInfoDTO.descName,
-          planTime: 1,
+          planTime: task.overTime,
         }"
       />
     </template>
@@ -149,6 +149,7 @@ export default defineComponent({
               return {
                 ...d,
                 description: point.description,
+                overTime: point.overTime,
                 infoItems: formatTask(d, infoItems),
               };
             });
