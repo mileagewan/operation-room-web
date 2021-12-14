@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define */
 <template>
   <div class="clear-task-card">
     <div class="card-title">
@@ -8,7 +10,10 @@
       <div class="item">
         <div class="title">手术名称</div>
         <div class="text">
-          <span>{{ getMonthDayWeek(info.publishTime) }}</span>
+          <span
+            >{{ getMonthDayWeek(info.publishTime) }}
+            {{ getOperatTime(info.startTime, info.endTime) }}</span
+          >
           <span>{{ info.opName }}</span>
         </div>
       </div>
@@ -22,7 +27,9 @@
       </div>
       <div class="item" v-if="tabsActive.active == 'UNDO'">
         <div class="title">状态</div>
-        <div class="text time-out">超时{{ info.overTime }}分钟</div>
+        <div class="text time-out">
+          超时{{ getMinuteCeil(info.overTime) }}分钟
+        </div>
       </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
@@ -33,8 +40,12 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, computed, inject } from "vue";
-import { getMonthDay } from "@/utils/date-formt";
-import dayjs from "dayjs";
+import {
+  getMonthDay,
+  getHourMinute,
+  getMonthDayWeek,
+  getOperatTime
+} from "@/utils/date-formt";
 
 export default defineComponent({
   name: "ClearTaskCard",
@@ -56,47 +67,17 @@ export default defineComponent({
       return _MonthDay + _week + " " + _startTime + "-" + _endTime;
     });
     const tabsActive: any = inject("tabsActive");
-    const getHourMinute = (date: string) => {
-      if (!date) return "";
-      const hour = dayjs(date).hour();
-      const minute = dayjs(date).minute();
-      return hour + ":" + minute;
-    };
-    const getMonthDayWeek = (date: string) => {
-      if (!date) return "";
-      const month = dayjs(date).month();
-      const day = dayjs(date).date();
-      const week = dayjs(date).day();
-      const weekZh = "(" + getWeekZh(week) + ")";
-      return month + "月" + day + "日" + weekZh;
-    };
-    const getWeekZh = (week: number) => {
-      let value = "";
-      if (week == null) return value;
-      switch (week) {
-        case 0:
-          value = "周天";
-          break;
-        case 1:
-          value = "周一";
-          break;
-        case 2:
-          value = "周二";
-          break;
-        case 3:
-          value = "周三";
-          break;
-        case 4:
-          value = "周四";
-          break;
-        case 5:
-          value = "周五";
-          break;
-        case 6:
-          value = "周六";
-          break;
-      }
-      return value;
+    // const getOperatTime = (startTime: string, endTime: string) => {
+    //   const _start = getHourMinute(startTime);
+    //   const _end = getHourMinute(endTime);
+    //   return _start + "-" + _end;
+    // };
+    const getMinuteCeil = (second: number): number => {
+      if (second == null) return 0;
+      const divisible: string = (second / 60).toString();
+      const _parseInt: number = parseInt(divisible);
+      const remainder: number = _parseInt % 60 >= 20 ? 1 : 0;
+      return _parseInt + remainder;
     };
     return {
       dateTime,
@@ -104,6 +85,8 @@ export default defineComponent({
       tabsActive,
       getHourMinute,
       getMonthDayWeek,
+      getOperatTime,
+      getMinuteCeil,
     };
   },
 });
@@ -119,7 +102,6 @@ export default defineComponent({
     span {
       height: 48px;
       font-size: 36px;
-      // font-family: PingFangSC, PingFangSC-Semibold;
       font-weight: 600;
       color: #000000;
       line-height: 48px;
@@ -132,10 +114,12 @@ export default defineComponent({
     .item {
       display: flex;
       padding: 12px 0;
+      &:not(:nth-child(1)) {
+        align-items: center;
+      }
       .title {
         width: 120px;
         font-size: 24px;
-        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #999999;
       }
@@ -144,7 +128,6 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         font-size: 24px;
-        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
         &.time-out {
@@ -152,7 +135,6 @@ export default defineComponent({
           font-size: 24px;
           font-weight: 600;
           color: #ff0000;
-          line-height: 24px;
         }
       }
     }

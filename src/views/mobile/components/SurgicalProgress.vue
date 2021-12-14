@@ -11,8 +11,8 @@
       </div>
       <div class="item">
         <div class="time-warp">
-          <span class="date">{{ getMonthDays(item.startDate) }}</span>
-          <span class="time">{{ getMinuteSeconds(item.startDate) }}</span>
+          <span class="date">{{ getMonthDay_(item.pointCompletedTime) }}</span>
+          <span class="time">{{ getHourMinute(item.pointCompletedTime) }}</span>
         </div>
         <div
           class="icon-warp"
@@ -48,6 +48,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, PropType } from "vue";
+import { getMonthDay_, getHourMinute } from "@/utils/date-formt";
 
 export default defineComponent({
   name: "SurgicalProgress",
@@ -61,16 +62,16 @@ export default defineComponent({
     const aa = "1";
     const itemList = ref([]);
     const currentSelect = ref(true);
-    const getMonthDays = (item: string) => {
-      if (!item) return "";
-      const _s = item.substring(5, 10);
-      return _s;
-    };
-    const getMinuteSeconds = (item: string) => {
-      if (!item) return "";
-      const _s = item.substring(11, 16);
-      return _s;
-    };
+    // const getMonthDays = (item: string) => {
+    //   if (!item) return "";
+    //   const _s = item.substring(5, 10);
+    //   return _s;
+    // };
+    // const getMinuteSeconds = (item: string) => {
+    //   if (!item) return "";
+    //   const _s = item.substring(11, 16);
+    //   return _s;
+    // };
     const getIconType = (type: string) => {
       let value = "";
       if (type == null) return value;
@@ -136,8 +137,8 @@ export default defineComponent({
       aa,
       itemList,
       currentSelect,
-      getMonthDays,
-      getMinuteSeconds,
+      getMonthDay_,
+      getHourMinute,
       getIconType,
     };
   },

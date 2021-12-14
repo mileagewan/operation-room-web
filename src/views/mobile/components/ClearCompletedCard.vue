@@ -29,7 +29,7 @@ export default defineComponent({
   setup(props, ctx) {
     const clearTaskCardData = ref<any>(props.data)
     const btnClick = () => {
-      ctx.emit('btnclick', clearTaskCardData.value.id)
+      ctx.emit('btnclick', clearTaskCardData.value.taskId)
     }
     return {
       btnClick,

@@ -236,7 +236,7 @@ export default defineComponent({
 }
 :deep(.van-list) {
   padding: 0 24px;
-  margin-top: 24px;
+  // margin-top: 24px;
   .clear-completed-card {
     margin-bottom: 24px;
   }

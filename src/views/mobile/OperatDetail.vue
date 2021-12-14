@@ -8,7 +8,14 @@
         <TaskView>
           <template #header>
             <div class="date-title">
-              <div>{{ "dateTime" }}</div>
+              <div>
+                {{
+                  `${getMonthDayWeek(opInfoDTO.startTime)} ${getOperatTime(
+                    opInfoDTO.startTime,
+                    opInfoDTO.endTime
+                  )}`
+                }}
+              </div>
               <div>{{ opInfoDTO.name }}</div>
             </div>
             <oprat-info>
@@ -17,7 +24,7 @@
                   <span class="title">手术室</span>
                   <span class="text">
                     <!-- {{ opInfoDTO.departmentWardName }} - {{ opInfoDTO.oproomSubName }} -->
-                    {{opInfoDTO.descName}}
+                    {{ opInfoDTO.descName }}
                   </span>
                 </div>
               </div>
@@ -88,9 +95,14 @@ import {
   computed,
   onMounted,
 } from "vue";
+
 import Request from "@/service/request";
 import { ReturnData } from "@/types/interface-model";
-import { getMonthDay } from "@/utils/date-formt";
+import {
+  getMonthDay,
+  getMonthDayWeek,
+  getOperatTime,
+} from "@/utils/date-formt";
 import JsToFlutter from "@/utils/js-to-flutter";
 
 export default defineComponent({
@@ -173,6 +185,8 @@ export default defineComponent({
       // dateTime,
       opFlowPointDetailsDTOList,
       opInfoExtDTO,
+      getMonthDayWeek,
+      getOperatTime,
     };
   },
 });
