@@ -109,6 +109,7 @@ export default defineComponent({
       isTabClick?: boolean
     ) => {
       try {
+        listData.value = []
         const params = {};
         let xhrName = "";
         if (type === "UNDO") {

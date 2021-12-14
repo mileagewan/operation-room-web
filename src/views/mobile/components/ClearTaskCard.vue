@@ -36,7 +36,7 @@
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
         <div class="text complete-time-warp">
-          <span class="completeTime">{{ info.completeTime }}</span>
+          <span class="completeTime">{{ getHourMinute(info.completeTime) }}</span>
           <span class="overTime">{{
             info.overTime > 0 ? `${getMinute(info.overTime)}` : ""
           }}</span>
