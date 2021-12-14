@@ -28,12 +28,19 @@
       <div class="item" v-if="tabsActive.active == 'UNDO'">
         <div class="title">状态</div>
         <div class="text time-out">
-          超时{{ getMinuteCeil(info.overTime) }}分钟
+          {{
+            info.overTime > 0 ? `超时${getMinuteCeil(info.overTime)}分钟` : ""
+          }}
         </div>
       </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
-        <div class="text">{{ info.taskEndTime }}</div>
+        <div class="text complete-time-warp">
+          <span class="completeTime">{{ info.completeTime }}</span>
+          <span class="overTime">{{
+            info.overTime > 0 ? `${getMinute(info.overTime)}` : ""
+          }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -44,7 +51,7 @@ import {
   getMonthDay,
   getHourMinute,
   getMonthDayWeek,
-  getOperatTime
+  getOperatTime,
 } from "@/utils/date-formt";
 
 export default defineComponent({
@@ -79,6 +86,13 @@ export default defineComponent({
       const remainder: number = _parseInt % 60 >= 20 ? 1 : 0;
       return _parseInt + remainder;
     };
+    const getMinute = (second: number): string => {
+      if (second == null) return '';
+      const divisible: string = (second / 60).toString();
+      const minute: number = parseInt(divisible);
+      const seconds: number = second % 60;
+      return "超时" + minute + "分" + seconds + "秒";
+    };
     return {
       dateTime,
       info,
@@ -87,6 +101,7 @@ export default defineComponent({
       getMonthDayWeek,
       getOperatTime,
       getMinuteCeil,
+      getMinute,
     };
   },
 });
@@ -130,11 +145,20 @@ export default defineComponent({
         font-size: 24px;
         font-weight: 400;
         color: #333333;
-        &.time-out {
+        &.complete-time-warp{
+          flex-direction: row;
+          align-items: center;
+        }
+        .completeTime{
+          min-width: 64px;
+          margin-right: 12px;
+        }
+        &.time-out,.overTime {
           height: 24px;
           font-size: 24px;
           font-weight: 600;
           color: #ff0000;
+          line-height: 1;
         }
       }
     }

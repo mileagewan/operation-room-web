@@ -9,7 +9,6 @@
     </div>
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-        <!-- v-if="listData.length > 0" -->
         <DoneSummary
           class="done-summary-m"
           :options="options"
@@ -99,10 +98,8 @@ export default defineComponent({
     };
     onBeforeMount(() => {
       // 获取当前任务数量
-      // loadData('UNDO', 1, 100, true)
-      // 获取今日数量
       queryCleanTaskList(true, "UNDO");
-      // 获取已完成数量
+      // 获取已完成任务数量
       queryCleanTaskList(true, "DONE");
       onRefresh();
     });
@@ -201,7 +198,6 @@ export default defineComponent({
     return {
       onClickTab,
       listData,
-      // onLoad,
       onRefresh,
       goBack,
       ...toRefs(state),
@@ -236,9 +232,11 @@ export default defineComponent({
 }
 :deep(.van-list) {
   padding: 0 24px;
-  // margin-top: 24px;
   .clear-completed-card {
     margin-bottom: 24px;
+    &:nth-child(1){
+      margin-top: 24px;
+    }
   }
   .clear-task-cards {
     margin-bottom: 24px;

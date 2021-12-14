@@ -12,7 +12,7 @@ const mobile: ServiceItem[] = [
     method: 'post',
   },
   {
-    path: '/todayOp/oproom/list', // 手术间
+    path: '/opInfo/queryOpRoomOpArrangeList', // 手术间
     key: 'getOperatingRoom',
     method: 'post',
   },

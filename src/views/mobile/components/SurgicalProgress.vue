@@ -5,7 +5,7 @@
         <div class="bar">
           <IconFont
             icon="icon-jindujiantou"
-            :class="[item.status == 2 ? 'icons-current-select-green' : '']"
+            :class="[item.pointStatus == 1 ? 'icons-current-select-green' : '']"
           />
         </div>
       </div>
@@ -16,7 +16,9 @@
         </div>
         <div
           class="icon-warp"
-          :class="[item.status == 2 ? 'icons-current-select-green-bg' : '']"
+          :class="[
+            item.pointStatus == 1 ? 'icons-current-select-green-bg' : '',
+          ]"
         >
           <!-- <IconFont
             v-if="item.status == 3"
@@ -34,12 +36,18 @@
             :class="[item.doing ? 'icons-not-start' : '']"
           /> -->
           <IconFont
-            :icon="`${getIconType(item.pointName)} icons-default-color `"
-            :class="[item.doing ? 'icons-end' : '']"
+            :icon="`${getIconType(item.pointName)} `"
+            :class="[getIconColorStyle(item.pointStatus)]"
           />
         </div>
         <div class="text-warp">
-          <span class="title">{{ item.pointName }}</span>
+          <span
+            class="title"
+            :class="[
+              item.pointStatus == 1 ? 'icons-current-select-green' : '',
+            ]"
+            >{{ item.pointName }}</span
+          >
           <span class="name">{{ item.pointExeUserName }}</span>
         </div>
       </div>
@@ -62,16 +70,6 @@ export default defineComponent({
     const aa = "1";
     const itemList = ref([]);
     const currentSelect = ref(true);
-    // const getMonthDays = (item: string) => {
-    //   if (!item) return "";
-    //   const _s = item.substring(5, 10);
-    //   return _s;
-    // };
-    // const getMinuteSeconds = (item: string) => {
-    //   if (!item) return "";
-    //   const _s = item.substring(11, 16);
-    //   return _s;
-    // };
     const getIconType = (type: string) => {
       let value = "";
       if (type == null) return value;
@@ -131,7 +129,24 @@ export default defineComponent({
           value = "";
           break;
       }
-      return value
+      return value;
+    };
+    const getIconColorStyle = (pointStatus: number): string => {
+      let value = "icons-not-start";
+      if (pointStatus == null) return value;
+      switch (pointStatus) {
+        // 节点状态 0未开始 1进行中 2已完成 3已取消
+        case 0:
+          value = "icons-not-start";
+          break;
+        case 1:
+          value = "icons-doing";
+          break;
+        case 2:
+          value = "icons-end";
+          break;
+      }
+      return value;
     };
     return {
       aa,
@@ -140,6 +155,7 @@ export default defineComponent({
       getMonthDay_,
       getHourMinute,
       getIconType,
+      getIconColorStyle,
     };
   },
 });
@@ -180,13 +196,11 @@ export default defineComponent({
         align-items: center;
         .date {
           font-size: 24px;
-          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #333333;
         }
         .time {
           font-size: 20px;
-          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #333333;
         }
@@ -213,7 +227,6 @@ export default defineComponent({
           display: inline-block;
           min-width: 120px;
           font-size: 24px;
-          // font-family: PingFangSC, PingFangSC-Semibold;
           font-weight: 600;
           color: #999999;
           padding: 0;
@@ -221,7 +234,6 @@ export default defineComponent({
         .name {
           margin-left: 24px;
           font-size: 24px;
-          // font-family: PingFangSC, PingFangSC-Regular;
           font-weight: 400;
           color: #999999;
           max-width: 300px;
@@ -241,10 +253,13 @@ export default defineComponent({
     color: rgba(59, 220, 55, 1) !important;
   }
   .icons-not-start {
-    color: rgba(91, 199, 249);
+    color: rgba(91, 199, 249, 1);
   }
   .icons-end {
     color: rgba(182, 221, 255, 1);
+  }
+  .icons-doing {
+    color: #fff !important;
   }
   .icons-default-color {
     color: rgba(182, 221, 255, 1);

@@ -13,50 +13,57 @@
           <oprat-room-card
             v-for="(item, index) in listData"
             :key="index"
-            :dateTime="`${item.startDate ? getMonthDay(item.startDate) : ''}
-            ${item.week ? '(' + item.week + ')' : ''} ${
-              item.startTime + '-' + item.endTime
-            }`"
-            :name="item.name"
-            :tagCode="item.opSectioode"
+            :dateTime="`${getMonthDayWeek(
+              item.opInfoDTO.startTime
+            )} ${getOperatTime(
+              item.opInfoDTO.startTime,
+              item.opInfoDTO.endTime
+            )}`"
+            :name="item?.opInfoDTO?.name"
+            :tagCode="item?.opInfoDTO?.opSectionCode"
           >
             <template #content>
               <div class="row">
                 <div class="item">
                   <span class="title">手术室</span>
-                  <span class="text"
-                    >{{ item.departmentWardName }} -
-                    {{ item.oproomSubName }}</span
-                  >
+                  <span class="text">{{ item?.opInfoDTO?.descName }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">主刀医生</span>
-                  <span class="text">{{ item.surgeonName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.surgeonName
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">巡回护士</span>
-                  <span class="text">{{ item.circulatingNurseName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.circulatingNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">麻醉医生</span>
-                  <span class="text">{{ item.anesthetistName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.anesthetistName
+                  }}</span>
                 </div>
                 <div class="item">
                   <span class="title">器械护士</span>
-                  <span class="text">{{ item.instrumentNurseName }}</span>
+                  <span class="text">{{
+                    item?.opInfoExtDTO?.instrumentNurseName
+                  }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="item">
                   <span class="title">患者性别</span>
                   <span class="text">{{
-                    item.patientSex == 1
+                    item?.opPatientDTO?.sex == 1
                       ? "男"
-                      : item.patientSex == 2
+                      : item?.opPatientDTO?.sex == 2
                       ? "女"
                       : ""
                   }}</span>
@@ -64,7 +71,9 @@
                 <div class="item">
                   <span class="title">患者年龄</span>
                   <span class="text">{{
-                    item.patientAge ? item.patientAge + "岁" : ""
+                    item?.opPatientDTO?.age
+                      ? item?.opPatientDTO?.age + "岁"
+                      : ""
                   }}</span>
                 </div>
               </div>
@@ -80,8 +89,13 @@ import { defineComponent, reactive, toRefs, ref, onBeforeMount } from "vue";
 import OpratRoomCard from "./components/OpratRoomCard.vue";
 import Request from "@/service/request";
 import { ReturnData } from "@/types/interface-model";
-import { getMonthDay } from "@/utils/date-formt";
+import {
+  getMonthDay,
+  getMonthDayWeek,
+  getOperatTime,
+} from "@/utils/date-formt";
 import { useRoute, useRouter } from "vue-router";
+import { Toast } from "vant";
 
 export default defineComponent({
   name: "OperatingRoom",
@@ -106,6 +120,7 @@ export default defineComponent({
       if (route.query?.id) {
         state.subRoomId = route.query.id as any;
       }
+      queryData();
     });
     // 加载更多
     // const onLoad = async () => {
@@ -121,27 +136,36 @@ export default defineComponent({
     //   console.log("加载更12多");
     //   loadData();
     // };
-    const queryData = async () => {
+    const queryData = async (refreshing = true) => {
       try {
-        const params = {
-          subRoomId: state.subRoomId,
-          pageNo: state.pageNo,
-          pageSize: state.pageSize,
-        };
-        await Request.xhr("getOperatingRoom", params).then((r: ReturnData) => {
-          if (r.code === 200) {
-            const data = r.data;
-            listData.value = [1, 2, 3, 4];
-            // if (listData?.value[0]) {
-            //   state.title = listData?.value[0]?.oproomSubName ?? "手术间1";
-            // }
-            // state.totalPage = Math.ceil(data.total / state.pageSize);
-            state.loadingList = false;
-            state.refreshing = false
-            // if (state.pageNo >= state.totalPage) state.finishedList = true;
-            console.log(r, data);
-          }
-        });
+        if (refreshing) {
+          Toast.loading({
+            duration: 0,
+            message: "加载中...",
+            forbidClick: true,
+          });
+        }
+        const params = `opRoomId=${state.subRoomId}`;
+        await Request.xhr("getOperatingRoom", {}, params)
+          .then((r: ReturnData) => {
+            if (r.code === 200) {
+              const data = r.data;
+              listData.value = data;
+              // if (listData?.value[0]) {
+              //   state.title = listData?.value[0]?.oproomSubName ?? "手术间1";
+              // }
+              // state.totalPage = Math.ceil(data.total / state.pageSize);
+              state.loadingList = false;
+              state.refreshing = false;
+              // if (state.pageNo >= state.totalPage) state.finishedList = true;
+              console.log(r, data);
+            }
+          })
+          .finally(() => {
+            if (refreshing) {
+              Toast.clear();
+            }
+          });
       } catch (e) {}
     };
     // 接口请求
@@ -183,7 +207,7 @@ export default defineComponent({
       // state.finishedList = false;
       state.loadingList = true;
       state.pageNo = 1;
-      queryData();
+      queryData(false);
       // onLoad();
     };
     return {
@@ -193,6 +217,8 @@ export default defineComponent({
       ...toRefs(state),
       listData,
       getMonthDay,
+      getMonthDayWeek,
+      getOperatTime,
     };
   },
 });

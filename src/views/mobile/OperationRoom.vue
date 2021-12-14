@@ -8,12 +8,9 @@
       </van-tabs>
     </div>
     <div class="content">
-      <van-pull-refresh
-        v-model="refreshing"
-        @refresh="onRefresh"
-        v-if="listData.length > 0"
-      >
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list
+          v-if="listData.length > 0"
           v-model:loading="loadingList"
           :finished="finishedList"
           finished-text="没有更多了"
@@ -88,8 +85,8 @@
             </template>
           </oprat-room-card>
         </van-list>
+        <EmptyPage v-else-if="!loadingList && listData.length == 0" />
       </van-pull-refresh>
-      <EmptyPage v-else-if="!loadingList && listData.length == 0" />
     </div>
   </div>
 </template>
@@ -122,7 +119,7 @@ export default defineComponent({
       tomorrowNum: 0,
       refreshing: false,
       loadingList: false,
-      finishedList: false,
+      finishedList: true,
       totalPage: 0,
       pageNo: 1,
       pageSize: 5,
@@ -141,7 +138,7 @@ export default defineComponent({
       queryOpList(true, "TODAY");
       // 获取明日数量
       queryOpList(true, "TOMORROW");
-      onRefresh();
+      onRefresh(true);
     });
     // tab切换
     const onClickTab = ({ name }: any) => {
@@ -181,8 +178,9 @@ export default defineComponent({
                 }
               } else if (!getNum) {
                 listData.value = data;
-                state.finishedList = true;
+                // state.finishedList = true;
                 state.refreshing = false;
+                state.loadingList = false;
               }
             }
           })
@@ -198,7 +196,7 @@ export default defineComponent({
     // 下拉刷新
     const onRefresh = async (isTabClick?: boolean) => {
       state.refreshing = true;
-      state.finishedList = false;
+      // state.finishedList = false;
       state.loadingList = true;
       state.pageNo = 1;
       // onLoad(isTabClick);
@@ -208,11 +206,11 @@ export default defineComponent({
     // 点击跳转
     const cardTitleClick = (item: any) => {
       let path = "/operatDetail";
-      let id = item?.code ?? "";
-      const _opSectionCode: number = item?.opSectionCode;
-      if (_opSectionCode < 3) {
+      let id = item?.opInfoDTO?.id ?? "";
+      const _opSectionCode: any = item?.opInfoDTO?.opSectionCode;
+      if (_opSectionCode === "2" || _opSectionCode === "3") {
         path = "/operatingRoom";
-        id = item.oproomSubId;
+        id = item?.opInfoDTO?.opRoomId;
       }
       router.push({
         path: path,
@@ -257,6 +255,7 @@ export default defineComponent({
     }
     .van-pull-refresh {
       overflow: visible;
+      height:calc(100% - 24px);
     }
   }
   :deep(.operat-room-card) {
@@ -269,8 +268,8 @@ export default defineComponent({
       }
     }
   }
-  :deep(.empty-page) {
-    transform: translateY(-168px);
-  }
+  // :deep(.empty-page) {
+  //   transform: translateY(-168px);
+  // }
 }
 </style>
