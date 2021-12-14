@@ -2,17 +2,17 @@
   <TaskView class="chiefnur-current"
             v-for="(taskView, index) in taskViewsList"
             :key="index"
-            :id="taskView.patient.hospitalCode"
+            :id="taskView.opPatientDTO.hospitalCode"
   >
     <template #header>
       <PatientDetail :option="{
-        status: taskView.opInfo.opSectionCode,
-        name: taskView.patient.name,
-        sex: taskView.patient.sex,
-        age: taskView.age,
-        type: taskView.opInfo.type,
-        room: `${taskView.opInfo.departmentName||''}-${taskView.opInfo.oproomName||''}-${taskView.opInfo.seq||''}`,
-        planTime: '2'
+        status: taskView.opInfoDTO.opSectionCode,
+        name: taskView.opPatientDTO.name,
+        sex: taskView.opPatientDTO.sex,
+        age: taskView.opPatientDTO.age,
+        type: taskView.opInfoDTO.type,
+        room: taskView.opInfoDTO.descName,
+        planTime: taskView.overTime
       }"/>
     </template>
     <template #content>
@@ -26,7 +26,7 @@
           {{ item.label }}
         </template>
       </KeyValue>
-      <KeyValue label="状态节点" v-if="['6','7','8','9','10'].includes(taskView.opInfo.opSectionCode)">
+      <KeyValue label="状态节点" v-if="['6','7','8','9','10'].includes(taskView.opInfoDTO.opSectionCode)">
         <template #value>
           <FlowChart :flow-data="taskView.flowData"
                      :current-code="taskView.currentCode" />
@@ -44,7 +44,6 @@
 </template>
 
 <script lang="ts">
-import { FlowData2 } from '@/utils/mock-test-data'
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import useTaskMixins, {
   anesthesiaDicCode,
@@ -52,12 +51,13 @@ import useTaskMixins, {
   beforeDiseaseName,
   circulatingNurseName,
   departmentName,
-  hospitalCode, infectType,
-  opInfoCode, opInfoName,
+  hospitalCode,
+  infectType,
+  opInfoCode,
+  opInfoName,
   surgeonName
 } from '../../utils/task-mixins';
 import { Task } from '@/types/interface-model';
-import { CurrentTaskViews, } from '@/types/CurrentTaskViews';
 import Request from '../../service/request';
 import useTitleCount from '@/utils/useTitleCount';
 export default defineComponent({
@@ -96,21 +96,21 @@ export default defineComponent({
       surgeonName(),
       circulatingNurseName(),
       anesthetistName(),
-      anesthesiaDicCode('anesthesiaName'),
+      anesthesiaDicCode(),
       infectType(),
       opInfoName(),
       beforeDiseaseName()
     ];
-    const flowData = reactive(FlowData2);
+    const flowData = reactive([]);
     const taskViewsList = ref([])
 
     const getData = () => {
-      return Request.xhr('queryCurrentOpTaskList', {})
-        .then((r: CurrentTaskViews) => {
+      return Request.xhr('queryCurrentAbnormalOpTaskList', {})
+        .then((r: any) => {
           const { code, data } = r;
           if (code === 200) {
-            taskViewsList.value = data.map((d) => {
-              const currentCode = Number(d.opInfo.opSectionCode);
+            taskViewsList.value = data.map((d:any) => {
+              const currentCode = Number(d.opInfoDTO.opSectionCode);
               let flowData: any[] = []
               d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
               d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }

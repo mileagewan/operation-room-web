@@ -44,7 +44,7 @@ export default defineComponent({
         },
         false
       );
-      if (process.env.NODE_ENV !== 'development') {
+      if (process.env.NODE_ENV !== 'development' || window.window.flutter_inappwebview) {
         window.addEventListener('flutterInAppWebViewPlatformReady',
           async () => {
             beforeEach();

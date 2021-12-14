@@ -217,6 +217,27 @@ const nurse: ServiceItem[] = [
     key: 'queryCurrentAbnormalOpTaskList'
   },
 
+  // 总协调术间列表
+  {
+    path: '/opInfo/queryOpDepartmentSituation',
+    method: 'post',
+    key: 'queryOpDepartmentSituation'
+  },
+
+  // 总协调 -> 单个手术间
+  {
+    path: '/opInfo/queryOpRoomOpDetailsList',
+    method: POST,
+    key: 'queryOpRoomOpDetailsList'
+  },
+
+  // 总协调 -> 复苏室
+  {
+    path: '/opInfo/queryRecoveryRoomOpDetailsList',
+    method: POST,
+    key: 'queryRecoveryRoomOpDetailsList'
+  },
+
   // todo 流程扭转
   {
     path: '/flowRever/normal/next',
@@ -241,5 +262,10 @@ const nurse: ServiceItem[] = [
     key: 'nextOpInfo'
   },
 
+  {
+    path: '/appMsg/update/read',
+    method: POST,
+    key: 'updateRead'
+  }
 ];
 export { nurse };

@@ -1,19 +1,20 @@
 <template>
   <div class="room-detail">
     <nav-bar :title="row.title" @goBack="goBack" />
-    <div class="room-detail-content" v-if="isReady">
+    <div class="room-detail-content">
       <van-pull-refresh v-model="loading"
-                        v-if="roomList.dtoList.length"
+                        v-if="roomList.length"
                         @refresh="onRefresh">
-        <ExpandCard v-for="(list,index) in roomList.dtoList"
+        <ExpandCard v-for="(list,index) in roomList"
                     :key="index"
                     :option="{
-                      status: list.opInfo.opSectionCode,
-                      name: list.patient.name,
-                      sex: list.patient.sex,
-                      age: list.age,
-                      type: list.opInfo.type,
-                      room: `${list.opInfo.departmentName||''}-${list.opInfo.oproomName||''}-${list.opInfo.seq||''}`,
+                      status: list.opInfoDTO.opSectionCode,
+                      name: list.opPatientDTO.name,
+                      sex: list.opPatientDTO.sex,
+                      age: list.opPatientDTO.age,
+                      type: list.opInfoDTO.type,
+                      room: list.opInfoDTO.descName,
+                      planTime: list.overTime
                     }"
         >
           <KeyValue
@@ -26,7 +27,7 @@
               {{ item.label }}
             </template>
           </KeyValue>
-          <template v-if="isOnOperation.indexOf(list.opInfo.opSectionCode) > -1">
+          <template v-if="isOnOperation.indexOf(list.opInfoDTO.opSectionCode) > -1">
             <KeyValue label="状态节点">
               <template #value>
                 <FlowChart :flow-data="list.flowData"
@@ -35,23 +36,24 @@
             </KeyValue>
             <KeyValue label="手术室接送护士"
                       important
-                      :value="`${list.handoverPerson.name} ${list.handoverPerson.phone}`" />
+                      :value="`${list.handoverPerson?.name} ${list.handoverPerson?.phone}`" />
             <KeyValue label="巡回护士电话"
                       important
-                      :value="`${list.responsiblePerson.name} ${list.responsiblePerson.phone}`" />
+                      :value="`${list.responsiblePerson?.name} ${list.responsiblePerson?.phone}`" />
           </template>
-          <template v-if="list.opInfo.opSectionCode === '16'">
-            <KeyValue label="患者返回" :value="list.opInfo.departmentName"></KeyValue>
+          <template v-if="list.opInfoDTO.opSectionCode === '16'">
+            <KeyValue label="患者返回"
+                      :value="list.opPatientDTO.beforeDepartmentWardName" />
           </template>
         </ExpandCard>
       </van-pull-refresh>
-      <EmptyPage v-if="!roomList.dtoList.length"></EmptyPage>
+      <EmptyPage v-if="!roomList.length"></EmptyPage>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import useTaskMixins, {
@@ -66,6 +68,24 @@ import useTaskMixins, {
   opInfoName,
   surgeonName
 } from '../../utils/task-mixins';
+import RetData from '@/types/RetData';
+import OpInfoDTO from '@/types/OpInfoDTO';
+import OpInfoExtDTO from '@/types/OpInfoExtDTO';
+import OpPatientDTO from '@/types/OpPatientDTO';
+import OpTaskDTO from '@/types/OpTaskDTO';
+import Request from '@/service/request';
+
+interface ListItem {
+  opSectionNames: any[];
+  opInfoDTO: OpInfoDTO;
+  opInfoExtDTO: OpInfoExtDTO;
+  opPatientDTO: OpPatientDTO;
+  overTime: number;
+  opTaskDTO: OpTaskDTO;
+  lastOpTaskDTO: OpTaskDTO;
+  nextOpTaskDTO: OpTaskDTO;
+}
+
 export default defineComponent({
   name: 'RoomDetail',
   setup() {
@@ -102,112 +122,129 @@ export default defineComponent({
       surgeonName(),
       circulatingNurseName(),
       anesthetistName(),
-      anesthesiaDicCode('anesthesiaName'),
+      anesthesiaDicCode(),
       infectType(),
       opInfoName(),
       beforeDiseaseName(),
-    ]
+    ];
     const isOnOperation = ref<string[]>([
       '6',
       '7',
       '8',
       '9',
       '10',
-    ])
+    ]);
     const row = ref({
       title: ''
-    })
-    const loading = ref<boolean>(false)
-    const roomList = computed(() => {
-      const room = store.state.chiefNur.room
-      const formatDtoList = room.dtoList.map((d:any) => {
-        const currentCode = Number(d.opInfo.opSectionCode);
-        d.handoverPerson = d.handoverPerson || { name: '-', phone: '-' }
-        d.responsiblePerson = d.responsiblePerson || { name: '-', phone: '-' }
-        let flowData: any[] = []
-        if (currentCode > 6 && currentCode < 10) {
-          flowData = [
-            {
-              ...map.get(currentCode - 1) as any,
-              code: currentCode - 1,
-            },
-            {
-              ...map.get(currentCode),
-              code: currentCode
-            },
-            {
-              ...map.get(currentCode + 1),
-              code: currentCode + 1
-            }
-          ]
-        } else if (currentCode === 6) {
-          flowData = [
-            {
-              ...map.get(currentCode),
-              code: currentCode
-            },
-            {
-              ...map.get(currentCode + 1),
-              code: currentCode + 1
-            },
-            {
-              ...map.get(currentCode + 2),
-              code: currentCode + 2
-            }
-          ]
-        } else if (currentCode === 10) {
-          flowData = [
-            {
-              ...map.get((currentCode - 2)),
-              code: currentCode - 2
-            },
-            {
-              ...map.get(currentCode - 1),
-              code: currentCode - 1
-            },
-            {
-              ...map.get(currentCode),
-              code: (currentCode)
-            }
-          ]
-        }
+    });
+    const loading = ref<boolean>(false);
+    const room = computed(() => {
+      const room: any = store.state.chiefNur.room;
+      return room;
+    });
 
-        return {
-          ...d,
-          taskList: formatTask(d, list),
-          currentCode,
-          flowData: flowData
+    const roomList = ref([]);
+
+    const Events = {
+      async onRefresh() {
+        await Events.getData();
+        loading.value = false;
+      },
+
+      goBack: () => {
+        router.back();
+      },
+
+      setTitle: () => {
+        row.value.title = String(room.value.name);
+      },
+
+      getData: async () => {
+        const key = room.value.type ? 'queryRecoveryRoomOpDetailsList' : 'queryOpRoomOpDetailsList';
+        const ret: RetData<ListItem[]> = await Request.xhr(key, {
+          id: room.value.id
+        });
+        const { code, data } = ret;
+        if (code === 200 && data) {
+          roomList.value = data.map(d => {
+            const currentCode = Number(d.opInfoDTO.opSectionCode);
+            let flowData: any[] = [];
+            if (currentCode > 6 && currentCode < 10) {
+              flowData = [
+                {
+                  ...map.get(currentCode - 1) as any,
+                  code: currentCode - 1,
+                },
+                {
+                  ...map.get(currentCode),
+                  code: currentCode
+                },
+                {
+                  ...map.get(currentCode + 1),
+                  code: currentCode + 1
+                }
+              ];
+            } else if (currentCode === 6) {
+              flowData = [
+                {
+                  ...map.get(currentCode),
+                  code: currentCode
+                },
+                {
+                  ...map.get(currentCode + 1),
+                  code: currentCode + 1
+                },
+                {
+                  ...map.get(currentCode + 2),
+                  code: currentCode + 2
+                }
+              ];
+            } else if (currentCode === 10) {
+              flowData = [
+                {
+                  ...map.get((currentCode - 2)),
+                  code: currentCode - 2
+                },
+                {
+                  ...map.get(currentCode - 1),
+                  code: currentCode - 1
+                },
+                {
+                  ...map.get(currentCode),
+                  code: (currentCode)
+                }
+              ];
+            }
+
+            return {
+              ...d,
+              taskList: formatTask(d, list),
+              currentCode,
+              flowData: flowData
+            };
+          }) as any;
+        } else {
+          roomList.value = [];
         }
+      }
+    };
+
+    Events.setTitle();
+    Events.getData();
+
+    if (!Object.keys(room.value).length) {
+      router.push({
+        path: '/pda-views'
       });
-      return reactive({
-        ...room,
-        dtoList: formatDtoList
-      })
-    })
+    }
 
-    const onRefresh = () => {
-      loading.value = false
-    }
-    const goBack = () => {
-      router.back()
-    }
-    const isReady = ref(true)
-    const setTitle = () => {
-      row.value.title = String(roomList.value.name)
-    }
-    onMounted(() => {
-      setTitle()
-    })
     return {
-      isReady,
       row,
       isOnOperation,
       loading,
       roomList,
-      onRefresh,
-      goBack,
-      onMounted
-    }
+      ...Events,
+    };
   }
-})
+});
 </script>

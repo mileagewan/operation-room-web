@@ -38,7 +38,6 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import Request from '@/service/request';
-import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   anesthesiaDicCode,
   anesthetistName,
@@ -76,7 +75,7 @@ export default defineComponent({
     const getData = () => {
       loading.value = true;
       return Request.xhr('queryOpSummaryList')
-        .then((r: CurrentTaskViews) => {
+        .then((r: any) => {
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
               return {

@@ -24,6 +24,8 @@ import JsToFlutter from '@/utils/js-to-flutter';
 import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
 import { Toast } from 'vant';
 import { useRoute } from 'vue-router';
+import RetData from '@/types/RetData';
+import Request from '@/service/request';
 
 export default defineComponent({
   name: 'PdaViews',
@@ -133,10 +135,16 @@ export default defineComponent({
         }
       },
 
-      notifyFlutterRead() {
+      async notifyFlutterRead() {
         const { query } = route;
-        if (query.id) {
-          JsToFlutter.notifyFlutterRead(query.id as string);
+        if (query.msgid) {
+          const ret: RetData<any> = await Request.xhr('updateRead', {
+            id: query.msgid
+          })
+          const { code } = ret;
+          if (code === 200) {
+            JsToFlutter.notifyFlutterRead(query.msgid as string);
+          }
         }
       }
     }
