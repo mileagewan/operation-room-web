@@ -89,9 +89,9 @@ class Request implements RequestQuery {
         queryParams.params = data;
         break;
     }
-    if (Object.keys(data).length === 1 && !paramsQuery) {
-      paramsQuery = `${Object.keys(data)[0]}=${Object.values(data)[0]}`;
-    }
+    // if (Object.keys(data).length === 1 && !paramsQuery) {
+    //   paramsQuery = `${Object.keys(data)[0]}=${Object.values(data)[0]}`;
+    // }
     queryParams = Object.assign(
       {
         url: `${this.BASE_URL}${cfgService.path}${path || ''

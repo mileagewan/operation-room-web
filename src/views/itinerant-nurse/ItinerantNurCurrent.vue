@@ -264,13 +264,13 @@
       <div class="room-select">
         <div
           v-for="room in broadcastOverLay.roomList"
-          :key="room.itemCode"
+          :key="room.goToPlaceCode"
           :class="{
-            'is-active': room.itemCode === broadcastOverLay.active,
+            'is-active': room.goToPlaceCode === broadcastOverLay.active,
           }"
-          @click="broadcastOverLay.active = room.itemCode"
+          @click="broadcastOverLay.active = room.goToPlaceCode"
         >
-          {{ room.itemName }}
+          {{ room.goToPlaceName }}
           <img src="/img/select-2.png" alt="">
         </div>
       </div>
@@ -500,16 +500,20 @@ export default defineComponent({
         deptId: taskView.opInfoDTO?.id,
         opInfoId: taskView.opPatientDTO?.beforeDepartmentWardId,
       });
-      broadcastOverLay.roomList = ret?.data?.goToPlaceDicList;
+      broadcastOverLay.roomList = ret?.data;
       broadcastOverLay.show = true;
       broadcastOverLay.row = taskView;
     };
 
     const broadcastOverLayHandleOk = async (): Promise<void> => {
+      const room = findNode(broadcastOverLay.roomList, (b:any) => {
+        return b.goToPlaceCode === broadcastOverLay.active;
+      });
       const ret: ReturnData = await Request.xhr('broadcastMsg', {
         deptId: (broadcastOverLay as any)?.row?.opInfoDTO?.id,
         opInfoId: (broadcastOverLay as any)?.row.opInfoDTO?.id,
-        goToPlace: broadcastOverLay?.active
+        goToPlace: room?.goToPlaceName,
+        patientName: (broadcastOverLay as any)?.row?.opPatientDTO?.name
       });
       const { code, data } = ret;
       if (code === 200 && data) {
