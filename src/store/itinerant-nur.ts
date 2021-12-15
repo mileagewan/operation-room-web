@@ -8,15 +8,15 @@ export const itinerantNur = {
   },
   mutations: {
     [SET_OP_TASK_DTO_MUTATION](state:any, value:any) {
-      state.opTaskDTO = value
+      state.opTaskDTO = value;
     }
   },
   actions: {
     [SET_OP_TASK_DTO_ACTION]({ commit } : any, value:any) {
-      commit('SET_OP_TASK_DTO_MUTATION', value)
+      commit('SET_OP_TASK_DTO_MUTATION', value);
     }
   },
   getters: {
 
   }
-}
+};

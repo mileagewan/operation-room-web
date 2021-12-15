@@ -85,13 +85,17 @@
       }
 
       .surgical-summary-item_msg {
-        @extend .surgical-summary-item_label;
+        float: left;
+        line-height: var(--ihybrid--default-font-size);
+        font-size: var(--ihybrid--default-font-size);
         color: var(--ihybrid--default-color);
+        width: calc(100% - 60px);
       }
 
       .surgical-summary-item_msg_danger {
-        @extend .surgical-summary-item_label;
+        @extend .surgical-summary-item_msg;
         color: var(--ihybrid--danger-color)!important;
+        font-weight: var(--ihybrid--important-weight);
       }
 
     }

@@ -15,7 +15,7 @@
           sex: task.opPatientDTO.sex,
           age: task.opPatientDTO.age,
           type: task.opInfoDTO.type,
-          room: task.opInfoDTO.opDescName,
+          room: task.opInfoDTO.descName,
         }"
       >
         <KeyValue

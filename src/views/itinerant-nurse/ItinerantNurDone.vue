@@ -56,7 +56,7 @@ export default defineComponent({
     const getData = () => {
       return Request.xhr('queryCompletedOpTask').then((r:any) => {
         const { code, data } = r;
-        if (code === 200) {
+        if (code === 200 && data?.completedOpTaskDetailsDTOList) {
           pageData.options = [
             {
               label: '手术病人',
@@ -67,8 +67,12 @@ export default defineComponent({
               value: data.onTimeNum as any,
             }
           ];
-          pageData.completeList = data.completedOpTaskDetailsDTOList as any;
-        } else {
+          pageData.completeList = [...data.completedOpTaskDetailsDTOList as any];
+        }
+        if (data?.completedOpCleanTaskDetailsDTOList) {
+          pageData.completeList = [...pageData.completeList];
+        }
+        if (code !== 200 || !data) {
           pageData.options = [];
           pageData.completeList = [];
         }

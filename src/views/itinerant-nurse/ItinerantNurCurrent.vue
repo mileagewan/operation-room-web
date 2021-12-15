@@ -327,7 +327,7 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { Dialog, Toast } from 'vant';
-import { CurrentTaskViews, TaskItem } from '@/types/CurrentTaskViews';
+import { TaskItem } from '@/types/CurrentTaskViews';
 import useTaskMixins, {
   opInfoCode,
   hospitalCode,
@@ -634,14 +634,14 @@ export default defineComponent({
                   title: p.pointName,
                   icon: '',
                   code: p.pointCode
-                }
+                };
               }),
               currentCode: point.pointCode
             };
           }) as any;
-          cleanTask.data.isClean = true;
 
           if (cleanTask.data) {
+            cleanTask.data.isClean = true;
             taskViewsList.value.push(cleanTask.data as never);
           }
         } else {

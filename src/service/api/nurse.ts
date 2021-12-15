@@ -262,6 +262,7 @@ const nurse: ServiceItem[] = [
     key: 'nextOpInfo'
   },
 
+  // 更新已读的红点
   {
     path: '/appMsg/update/read',
     method: POST,

@@ -29,13 +29,14 @@
 
         <div class="surgical-summary-item_bottom">
           <div class="surgical-summary-item_label">进度</div>
-          <div class="surgical-summary-item_msg">
+          <div :class="{
+            'surgical-summary-item_msg': true,
+            'surgical-summary-item_msg_danger': !!room.overTime,
+          }">
             {{room.currentOpSectionName || '正常'}}
+            {{room.overTime ? '超时' +  $filters.formatTime(room.overTime) : ''}}
           </div>
-          <div class="surgical-summary-item_msg_danger is-danger"
-               v-if="room.overTime">
-            超时{{ $filters.formatTime(room.overTime) }}
-          </div>
+
         </div>
 
       </template>
@@ -92,7 +93,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useStore();
-    const doList = ref([])
+    const doList = ref([]);
 
     const refresh = (e: MouseEvent) => {
       e.stopPropagation();
@@ -104,11 +105,11 @@ export default defineComponent({
           const ret: ReturnData = await Request.xhr('syncOpDatas');
           if (ret.code === 200) {
             getData();
-            Toast('更新成功')
+            Toast('更新成功');
           }
         })
         .catch(() => {
-          console.log('Cancel')
+          console.log('Cancel');
         });
     };
     const getData = async () => {
@@ -124,7 +125,7 @@ export default defineComponent({
             type: 0,
             id: o.opRoomId,
             ...o
-          }
+          };
         }),
         ...recoveryRoomSituationDTOList.map(r => {
           return {
@@ -132,17 +133,17 @@ export default defineComponent({
             type: 1,
             id: r.recoveryRoomId,
             ...r
-          }
+          };
         })
       ] as any;
-      console.log(doList.value)
-    }
+      console.log(doList.value);
+    };
     const next = (room: any) => {
-      store.dispatch(SET_ROOM_ACTION, room)
+      store.dispatch(SET_ROOM_ACTION, room);
       router.push(({
         path: '/room-detail',
-      }))
-    }
+      }));
+    };
 
     const Events = {
       next,
@@ -159,11 +160,11 @@ export default defineComponent({
             return '手术中';
         }
       }
-    }
+    };
 
     onMounted(() => {
-      getData()
-    })
+      getData();
+    });
     return {
       doList,
       ...Events,

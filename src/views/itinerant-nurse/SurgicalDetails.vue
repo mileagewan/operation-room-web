@@ -1,22 +1,24 @@
 <template>
   <div class="surgical-detail" v-if="isReady">
     <nav-bar :title="title" @goBack="goBack"/>
-    <TaskView :show-header="false">
+    <TaskView :show-header="true">
       <template #header>
         <PatientDetail :option="{
-          status: opTaskDTO.opInfo.opSectionCode,
-          name: opTaskDTO.patient.name,
-          sex: opTaskDTO.patient.sex,
-          age: opTaskDTO.patient.age,
-          type: opTaskDTO.opInfo.type,
-          room: opTaskDTO.opInfo.opDescName,
+          status: opTaskDTO.opInfoDTO.opSectionCode,
+          name: opTaskDTO.opPatientDTO.name,
+          sex: opTaskDTO.opPatientDTO.sex,
+          age: opTaskDTO.opPatientDTO.age,
+          type: opTaskDTO.opInfoDTO.type,
+          room: opTaskDTO.opInfoDTO.descName,
         }" :show-right="false">
           <template #title-right>
-            <span class="is-danger" >超时3min</span>
+            <span class="is-danger" >
+              超时{{$filters.formatTime(opTaskDTO.totalOverTime)}}
+            </span>
           </template>
         </PatientDetail>
       </template>
-      <template #content v-if="false">
+      <template #content v-if="true">
         <KeyValue
           v-for="(item, i) in opTaskDTO.taskList"
           :value="item.value"
@@ -28,7 +30,7 @@
           </template>
         </KeyValue>
       </template>
-      <template #content v-else-if="true">
+      <template #content v-else-if="false">
        <div class="clean-task-title">
          手术-01间-01台
        </div>
@@ -65,7 +67,7 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
 
-    const title = ref<string>('手术详情')
+    const title = ref<string>('手术详情');
     const isReady = ref<boolean>(false);
 
     const list = [
@@ -79,32 +81,32 @@ export default defineComponent({
       infectType(),
       opInfoName(),
       beforeDiseaseName(),
-    ]
+    ];
     const { formatTask } = useTaskMixins();
     const opTaskDTO = computed(() => {
-      const opTaskDTO = store.state.itinerantNur.opTaskDTO
+      const opTaskDTO = store.state.itinerantNur.opTaskDTO;
       return reactive({
         ...opTaskDTO,
         taskList: formatTask(opTaskDTO, list)
-      })
-    })
+      });
+    });
     const goBack = () => {
-      router.back()
-    }
+      router.back();
+    };
 
-    if (!opTaskDTO?.value?.patient?.name) {
-      router.back()
+    if (!opTaskDTO?.value?.opPatientDTO?.name) {
+      router.back();
     } else {
-      isReady.value = true
+      isReady.value = true;
     }
     return {
       title,
       isReady,
       opTaskDTO,
       goBack
-    }
+    };
   }
-})
+});
 </script>
 
 <style scoped>

@@ -9,15 +9,15 @@ export const chiefNur = {
   },
   mutations: {
     [SET_ROOM_MUTATION](state:any, value:any) {
-      state.room = value
+      state.room = value;
     }
   },
   actions: {
     [SET_ROOM_ACTION]({ commit } : any, value:any) {
-      commit('SET_ROOM_MUTATION', value)
+      commit('SET_ROOM_MUTATION', value);
     }
   },
   getters: {
 
   }
-}
+};

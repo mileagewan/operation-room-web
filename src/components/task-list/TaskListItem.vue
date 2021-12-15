@@ -15,10 +15,10 @@
         }}</span>
       </div>
       <div class="flex">
-        <div class="flex-main">{{ task.descName }}</div>
+        <div class="flex-main">{{ task.opInfoDTO?.descName }}</div>
         <!-- TODO目的地 -->
         <span class="to-department">
-          {{ task.opPatientDTO.afterDepartmentName || "" }}
+          {{ task.opPatientDTO?.afterDepartmentName || "" }}
         </span>
       </div>
       <div class="flex info">

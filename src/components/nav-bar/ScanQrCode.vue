@@ -13,12 +13,9 @@ export default defineComponent({
     const { appContext }: any = getCurrentInstance();
     const emitter: any = appContext.config.globalProperties.emitter;
     const openScanQRCode = () => {
-      emitter.emit('scan-code-success', '188758');
-      // JsToFlutter.startScanQRCode().then((res) => {
-      //   // console.log(res);
-      //   // 扫码成功，emit事件
-      //   emitter.emit('scan-code-success', res);
-      // });
+      JsToFlutter.startScanQRCode().then((res) => {
+        emitter.emit('scan-code-success', res);
+      });
     };
 
     return {

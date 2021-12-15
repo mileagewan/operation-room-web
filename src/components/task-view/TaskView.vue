@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="src/assets/styles/component/task-view.scss">
 <template>
   <div class="task-view">
-    <a :href="`#${String(id)}`" :id="`_${id}`"></a>
     <div class="task-view-header" v-if="showHeader">
       <slot name="header"></slot>
     </div>
@@ -10,6 +9,7 @@
     }">
       <slot name="content"></slot>
     </div>
+    <a :href="`#${String(id)}`" :id="`_${id}`"></a>
   </div>
 </template>
 

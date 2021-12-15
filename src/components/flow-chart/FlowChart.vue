@@ -32,7 +32,7 @@ export default defineComponent({
       },
     },
     currentCode: {
-      type: Number,
+      type: [Number, String],
       default: null,
     },
   },
@@ -64,7 +64,7 @@ export default defineComponent({
     };
     const icons: Map<string, string> = new Map<string, string>([
       ['1', 'icon-kaishi']
-    ])
+    ]);
     let flowDatas = reactive([]);
     flowDatas = flowData.map((item: any) => {
       if (isNumber(item)) {
@@ -77,7 +77,7 @@ export default defineComponent({
         return {
           ...item,
           icon: icons.get(item.code) || 'icon-kaishi'
-        }
+        };
       }
       return item;
     });

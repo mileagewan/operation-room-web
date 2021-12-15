@@ -26,6 +26,7 @@ import { Toast } from 'vant';
 import { useRoute } from 'vue-router';
 import RetData from '@/types/RetData';
 import Request from '@/service/request';
+import { findNode } from '@/utils/utils';
 
 export default defineComponent({
   name: 'PdaViews',
@@ -41,7 +42,7 @@ export default defineComponent({
 
     const active = computed({
       get() {
-        const value = store.state.active
+        const value = store.state.active;
         try {
           itemRefs.length && itemRefs[value].getData();
         } catch (e) {
@@ -56,15 +57,15 @@ export default defineComponent({
     const defaultRole = computed(() => {
       const userInfo = store.state.userInfo;
       return userInfo.user?.positionDicItemCode;
-    })
+    });
 
     const titleCount = computed(() => {
       return store.state.titleCount;
-    })
+    });
 
     const cardCacheData = computed(() => {
-      return store.state.cardCacheData
-    })
+      return store.state.cardCacheData;
+    });
 
     const getComponentsList = (defaultRole: string) => {
       const map = new Map<string, RoleModuleItem[]>();
@@ -95,43 +96,50 @@ export default defineComponent({
       });
     };
 
+    /**
+     * 通过公共扫码来获取当前数据和索引
+     * @param id
+     */
     const findSanCodeDataIndex = (id: string): any => {
       let active;
       let data;
       const dataArray = componentsList.map((component: any) => {
         const key = component.component;
         return cardCacheData.value[key];
-      })
+      });
       for (let i = 0; i < dataArray.length; i++) {
         const datas = dataArray[i];
         if (!datas) {
           continue;
         }
-        if (datas.some((d: any) => String(d.patient.hospitalCode) === String(id))) {
+        if (datas.some((d: any) => String(d.opPatientDTO.hospitalCode) === String(id))) {
           active = i;
-          data = datas.filter((d: any) => {
-            return d.patient.hospitalCode === String(id)
-          })[0];
+          data = findNode(datas, (d: any) => {
+            return d.opPatientDTO.hospitalCode === String(id);
+          });
         }
 
         if (active !== undefined) {
-          break
+          break;
         }
       }
       return {
         index: active,
         data
       };
-    }
+    };
 
     const Events = {
       goBack,
       onRefresh,
       setItemRef,
 
+      /**
+       * 总协调护士不需要公共扫码功能
+       */
       setScanQrCode() {
         if (defaultRole.value === 'CoordinateNurse') {
-          ScanQrCode.value = ''
+          ScanQrCode.value = '';
         }
       },
 
@@ -140,43 +148,52 @@ export default defineComponent({
         if (query.msgid) {
           const ret: RetData<any> = await Request.xhr('updateRead', {
             id: query.msgid
-          })
+          });
           const { code } = ret;
           if (code === 200) {
             JsToFlutter.notifyFlutterRead(query.msgid as string);
           }
         }
       }
-    }
+    };
 
     onMounted(() => {
-      emitter.on('scan-code-success', (id: string) => {
+      emitter.on('scan-code-success', async (id: string) => {
+        const ret: RetData<any> = await Request.xhr(
+          'flowReverScanNext'
+        );
+        if (ret.code !== 200) {
+          Toast(ret.msg);
+          return;
+        }
         const { data, index } = findSanCodeDataIndex(id);
         if (index === undefined) {
-          Toast('未查询到该患者的今日手术信息')
-          return
+          Toast('未查询到该患者的今日手术信息');
+          return;
         }
-        active.value = index
+        active.value = index;
         const returnEle: any = document.querySelector('#_' + id);
         if (returnEle) {
-          if (returnEle.parentElement.querySelector('.van-icon-scan')) {
-            const refComponent: any = itemRefs[index];
-            refComponent.codeHandle(data, id)
-          } else {
-            setTimeout(() => {
-              returnEle.scrollIntoView({
-                behavior: 'smooth',
-                block: 'end',
-                inline: 'nearest'
-              });
-              itemRefs.map((component: any) => component.$forceUpdate());
-            }, 500)
-          }
+          // if (returnEle.parentElement.querySelector('.van-icon-scan')) {
+          // // 自动交接
+          // const refComponent: any = itemRefs[index];
+          // refComponent.codeHandle(data, id);
+          // } else {
+          setTimeout(() => {
+            console.log(data);
+            returnEle.scrollIntoView({
+              behavior: 'smooth',
+              block: 'end',
+              inline: 'nearest'
+            });
+            itemRefs.map((component: any) => component.$forceUpdate());
+          }, 500);
+          // }
         }
       });
       Events.notifyFlutterRead();
       Events.setScanQrCode();
-    })
+    });
 
     return {
       loading,
