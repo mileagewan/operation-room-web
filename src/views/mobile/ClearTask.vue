@@ -139,7 +139,7 @@ export default defineComponent({
                   listData.value = data;
                 } else if (type === "DONE") {
                   state.options[0].value = data?.cleanNum ?? 0;
-                  state.options[1].value = data?.onTimeNum ?? 0;
+                  state.options[1].value = `${data?.onTimeNum}/${data?.cleanTaskDTOList.length}` ?? 0;
                   listData.value = data?.cleanTaskDTOList ?? [];
                 }
                 state.refreshing = false;
@@ -187,6 +187,7 @@ export default defineComponent({
             if (r.code === 200) {
               Toast.clear();
               onRefresh();
+              queryCleanTaskList(true, "DONE");
             }
           })
           .finally(() => {
