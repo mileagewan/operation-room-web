@@ -497,7 +497,6 @@ export default defineComponent({
 
     const broadcast = async (taskView: any): Promise<void> => {
       const ret = await Request.xhr('broadcastData', {
-        deptId: taskView.opInfoDTO?.id,
         opInfoId: taskView.opPatientDTO?.beforeDepartmentWardId,
       });
       broadcastOverLay.roomList = ret?.data;
@@ -510,7 +509,7 @@ export default defineComponent({
         return b.goToPlaceCode === broadcastOverLay.active;
       });
       const ret: ReturnData = await Request.xhr('broadcastMsg', {
-        deptId: (broadcastOverLay as any)?.row?.opInfoDTO?.id,
+        deptId: (broadcastOverLay as any)?.row?.opInfoDTO?.opDepartmentId,
         opInfoId: (broadcastOverLay as any)?.row.opInfoDTO?.id,
         goToPlace: room?.goToPlaceName,
         patientName: (broadcastOverLay as any)?.row?.opPatientDTO?.name
