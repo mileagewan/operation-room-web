@@ -6,18 +6,22 @@
          v-if="pageData.completeList.length">
       <van-cell v-for="(list,index) in pageData.completeList"
                 :key="index"
-                :label="list?.opInfoDTO?.descName"
+                :label="list?.opInfoDTO?.descName || list.descName"
                 @click="next(list)"
                 is-link>
         <!-- 使用 title 插槽来自定义标题 -->
-        <template #title>
+        <template #title v-if="!list.isClean">
           <a href="" :id="`_${list.opPatientDTO.hospitalCode}`"></a>
           <span class="custom-title">{{list.opPatientDTO.name}}</span>
           <span class="custom-sex">{{list.opPatientDTO.sex === 1 ? '男' : '女'}}</span>
           <span class="custom-age">{{list.opPatientDTO.age}}岁</span>
         </template>
+        <template #title v-else>
+          <a href="" :id="`_${list.taskId}`"></a>
+          <span class="custom-title">清洁消毒</span>
+        </template>
         <template #value>
-          <span class="info-plantime is-danger over-ellipsis ">
+          <span class="info-plantime is-danger over-ellipsis " v-if="!list.isClean">
             超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
           <span>查看详情</span>
@@ -67,10 +71,20 @@ export default defineComponent({
               value: data.onTimeNum as any,
             }
           ];
-          pageData.completeList = [...data.completedOpTaskDetailsDTOList as any];
+          pageData.completeList = [...data.completedOpTaskDetailsDTOList.map((d:any) => {
+            return {
+              isClean: false,
+              ...d
+            };
+          }) as any];
         }
         if (data?.completedOpCleanTaskDetailsDTOList) {
-          pageData.completeList = [...pageData.completeList];
+          pageData.completeList = [...pageData.completeList, ...data.completedOpCleanTaskDetailsDTOList.map((d:any) => {
+            return {
+              isClean: true,
+              ...d
+            };
+          })];
         }
         if (code !== 200 || !data) {
           pageData.options = [];

@@ -1,7 +1,7 @@
 <template>
   <div class="surgical-detail" v-if="isReady">
     <nav-bar :title="title" @goBack="goBack"/>
-    <TaskView :show-header="true">
+    <TaskView :show-header="!opTaskDTO.isClean">
       <template #header>
         <PatientDetail :option="{
           status: opTaskDTO.opInfoDTO.opSectionCode,
@@ -18,7 +18,7 @@
           </template>
         </PatientDetail>
       </template>
-      <template #content v-if="true">
+      <template #content v-if="!opTaskDTO.isClean">
         <KeyValue
           v-for="(item, i) in opTaskDTO.taskList"
           :value="item.value"
@@ -30,15 +30,15 @@
           </template>
         </KeyValue>
       </template>
-      <template #content v-else-if="false">
+      <template #content v-else>
        <div class="clean-task-title">
          手术-01间-01台
        </div>
-       <KeyValue label="清洁人员" value="江杨子正" />
-       <KeyValue label="清洁开始时间" value="16：15" />
-       <KeyValue label="清洁开始时间" value="16：15" />
-       <KeyValue label="清洁开始时间" value="16：15" />
-       <KeyValue label="清洁开始时间" value="16：15" />
+       <KeyValue label="清洁人员" :value="opTaskDTO.cleanExeUserName" />
+       <KeyValue label="清洁开始时间" :value="opTaskDTO.cleanStartTime" />
+       <KeyValue label="清洁结束时间" :value="opTaskDTO.cleanEndTime" />
+       <KeyValue label="消毒开始时间" :value="opTaskDTO.disinfectStartTime" />
+       <KeyValue label="消毒结束时间" :value="opTaskDTO.disinfectEndTime" />
       </template>
     </TaskView>
   </div>
@@ -94,7 +94,7 @@ export default defineComponent({
       router.back();
     };
 
-    if (!opTaskDTO?.value?.opPatientDTO?.name) {
+    if (Reflect.getOwnPropertyDescriptor(opTaskDTO.value, 'isClean') === undefined) {
       router.back();
     } else {
       isReady.value = true;

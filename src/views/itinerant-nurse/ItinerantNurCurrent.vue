@@ -141,35 +141,17 @@
     </template>
     <template #content v-else-if="taskView.isClean">
       <div class="clean-task-title">
-        手术-01间-01台
+        {{taskView.descName}}
       </div>
-      <KeyValue label="清洁开始时间" value="16：30"/>
+      <KeyValue label="清洁开始时间"
+                v-if="taskView.cleanStartTime"
+                :value="taskView.cleanStartTime"/>
+      <KeyValue label="清洁结束时间"
+                v-if="taskView.cleanEndTime"
+                :value="taskView.cleanEndTime"/>
       <div class="itinerant-flow-chart">
-        <FlowChart
-          :flow-data="[
-            {
-              title: '开始',
-              icon: 'icon-kaishi',
-              code: 1
-            },
-            {
-              title: '清洁工清洁',
-              icon: 'icon-shoushuzhong',
-              code: 2
-            },
-            {
-              title: '消毒',
-              icon: 'icon-shoushuzhong',
-              code: 3
-            },
-            {
-              title: '消毒结束',
-              icon: 'icon-jieshu',
-              code: 4
-            },
-          ]"
-          :current-code="1"
-        />
+        <FlowChart :flow-data="taskView.flowDatas"
+                   :current-code="taskView.currentCode" />
       </div>
       <key-value-block>
         <template #value>
@@ -181,10 +163,10 @@
         clear
         :value="`${taskView.cleanExeUserName} ${taskView.cleanExeUserPhone}`"
       ></key-value-block>
-      <template v-if="true">
+      <template v-if="taskView.cleanDisinfectStatus === 2">
         <div class="ihybrid-button-center">
           <van-button
-            @click="disinfect(task)"
+            @click="disinfect(taskView)"
             round
             class="btn-operation"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
@@ -345,6 +327,7 @@ import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
+import RetData from '@/types/RetData';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
@@ -385,27 +368,27 @@ export default defineComponent({
       roomList: [
         {
           label: '15分钟',
-          value: 1,
+          value: 15,
         },
         {
           label: '25分钟',
-          value: 2,
+          value: 25,
         },
         {
           label: '30分钟',
-          value: 3,
+          value: 30,
         },
         {
           label: '40分钟',
-          value: 4,
+          value: 40,
         },
         {
           label: '60分钟',
-          value: 5,
+          value: 60,
         },
 
       ],
-      active: 1,
+      active: 15,
       row: {},
     });
     const taskList: Task[] = [
@@ -607,12 +590,21 @@ export default defineComponent({
         disinfectOverLay.row = task;
       },
 
-      disinfectOverLayHandleOk() {
-        alert('开始消毒');
-        disinfectOverLay.show = false;
+      async disinfectOverLayHandleOk() {
+        const ret: RetData<any> = await Request.xhr('flowReverNextDisinfect', {
+          opTaskId: (disinfectOverLay.row as any).taskId,
+          minute: disinfectOverLay.active
+        });
+        const { code, msg } = ret;
+        if (code === 200) {
+          disinfectOverLay.show = false;
+        } else {
+          Toast(msg);
+        }
         getData();
       }
     };
+
     const getData = () => {
       return Promise.all([
         Request.xhr('queryCurrentOpTaskList'),
@@ -644,13 +636,34 @@ export default defineComponent({
           }) as any;
 
           if (cleanTask.data) {
-            cleanTask.data.isClean = true;
-            taskViewsList.value.push(cleanTask.data as never);
+            cleanTask.data = cleanTask.data.map((d:any) => {
+              const { taskFlowPointDetailsDTOList }: any = d;
+              const point = findNode(taskFlowPointDetailsDTOList, (d: any) => {
+                return d.pointStatus === 1;
+              });
+              return {
+                ...d,
+                isClean: true,
+                description: point.description,
+                flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                  return {
+                    ...p,
+                    title: p.pointName,
+                    icon: '',
+                    code: p.pointCode
+                  };
+                }),
+                currentCode: point.pointCode
+              };
+            }) as string[];
+
+            (taskViewsList as any).value.push(...cleanTask.data);
           }
         } else {
           taskViewsList.value = [];
         }
 
+        console.log(taskViewsList.value);
         updateTitleCount(taskViewsList.value.length);
         updateCardCacheData(taskViewsList.value);
       });

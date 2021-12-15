@@ -163,7 +163,7 @@ const nurse: ServiceItem[] = [
 
   // 查询当前 清洁任务
   {
-    path: '/opTask/queryCurrentOpCleanTask',
+    path: '/opTask/queryCurrentOpCleanTaskList',
     method: POST,
     key: 'queryCurrentOpCleanTask'
   },
@@ -260,6 +260,13 @@ const nurse: ServiceItem[] = [
     path: '/flowRever/notify/nextOpInfo',
     method: 'post',
     key: 'nextOpInfo'
+  },
+
+  // todo 开始消毒
+  {
+    path: '/flowRever/next/disinfect',
+    method: 'post',
+    key: 'flowReverNextDisinfect'
   },
 
   // 更新已读的红点
