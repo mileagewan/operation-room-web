@@ -75,19 +75,19 @@ export default defineComponent({
       if (type == null) return value;
       switch (type) {
         case "手术排台":
-          value = "";
+          value = "icon-shoushupaitai";
           break;
         case "未开始手术":
-          value = "";
+          value = "icon-weikaishishoushu";
           break;
         case "术前准备":
-          value = "";
+          value = "icon-hedui";
           break;
         case "送手术":
-          value = "";
+          value = "icon-shoushujieshu";
           break;
         case "转送中":
-          value = "";
+          value = "icon-zhuansongzhong";
           break;
         case "到手术室":
           value = "icon-shoushushi1";
@@ -105,22 +105,22 @@ export default defineComponent({
           value = "icon-suxing";
           break;
         case "进复苏室":
-          value = "icon-rufusushi";
+          value = "icon-jinfusushi";
           break;
         case "复苏室苏醒":
-          value = "";
+          value = "icon-suxing";
           break;
         case "出复苏室":
-          value = "";
+          value = "icon-chufusushi";
           break;
         case "出手术室":
-          value = "";
+          value = "icon-zhuanchuhedui";
           break;
         case "回病房":
-          value = "";
+          value = "icon-huibingfang";
           break;
         case "手术结束":
-          value = "icon-shoushujieshu";
+          value = "icon-jieshu";
           break;
         case "手术取消":
           value = "";
@@ -180,8 +180,12 @@ export default defineComponent({
       }
       .icon-jindujiantou {
         display: inline-block;
-        transform: rotate(90deg) scale(0.4);
+        // transform: rotate(90deg) scale(0.4);
+        transform: rotate(90deg);
         color: #b6ddff;
+        position: absolute;
+        bottom: -2px;
+        left: -28px;
       }
     }
     .item {

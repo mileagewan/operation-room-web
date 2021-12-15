@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-use-before-define */
 <template>
@@ -28,17 +29,20 @@
       <div class="item" v-if="tabsActive.active == 'UNDO'">
         <div class="title">状态</div>
         <div class="text time-out">
-          {{
-            info.overTime > 0 ? `超时${getMinuteCeil(info.overTime)}分钟` : ""
-          }}
+          {{ info.overTime > 0 ? `超时${getMinuteCeil(info.overTime)}` : "" }}
         </div>
       </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
         <div class="title">完成时间</div>
         <div class="text complete-time-warp">
-          <span class="completeTime">{{ getHourMinute(info.completeTime) }}</span>
-          <span class="overTime">{{
+          <span class="completeTime">{{
+            getHourMinute(info.completeTime)
+          }}</span>
+          <!-- <span class="overTime">{{
             info.overTime > 0 ? `${getMinute(info.overTime)}` : ""
+          }}</span> -->
+          <span class="overTime">{{
+            info.overTime > 0 ? `超时${$filters.formatTime(info.overTime)}` : ""
           }}</span>
         </div>
       </div>
@@ -74,23 +78,28 @@ export default defineComponent({
       return _MonthDay + _week + " " + _startTime + "-" + _endTime;
     });
     const tabsActive: any = inject("tabsActive");
-    // const getOperatTime = (startTime: string, endTime: string) => {
-    //   const _start = getHourMinute(startTime);
-    //   const _end = getHourMinute(endTime);
-    //   return _start + "-" + _end;
-    // };
-    const getMinuteCeil = (second: number): number => {
+    const getMinuteCeil = (second: number): number | string => {
       if (second == null) return 0;
+
       const divisible: string = (second / 60).toString();
       const _parseInt: number = parseInt(divisible);
       const remainder: number = _parseInt % 60 >= 20 ? 1 : 0;
-      return _parseInt + remainder;
+      const minutes = _parseInt + remainder;
+      console.log("---minutes---", minutes);
+      let time = minutes + "";
+      if (minutes > 60) {
+        const min = minutes % 60;
+        const hour = parseInt((minutes / 60).toString())
+        time = hour + "小时" + min + "分";
+      }
+      return time;
     };
     const getMinute = (second: number): string => {
-      if (second == null) return '';
+      if (second == null) return "";
       const divisible: string = (second / 60).toString();
       const minute: number = parseInt(divisible);
       const seconds: number = second % 60;
+      
       return "超时" + minute + "分" + seconds + "秒";
     };
     return {
@@ -145,15 +154,16 @@ export default defineComponent({
         font-size: 24px;
         font-weight: 400;
         color: #333333;
-        &.complete-time-warp{
+        &.complete-time-warp {
           flex-direction: row;
           align-items: center;
         }
-        .completeTime{
+        .completeTime {
           min-width: 64px;
           margin-right: 12px;
         }
-        &.time-out,.overTime {
+        &.time-out,
+        .overTime {
           height: 24px;
           font-size: 24px;
           font-weight: 600;

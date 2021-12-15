@@ -109,7 +109,7 @@ export default defineComponent({
       isTabClick?: boolean
     ) => {
       try {
-        listData.value = []
+        listData.value = [];
         const params = {};
         let xhrName = "";
         if (type === "UNDO") {
@@ -177,10 +177,10 @@ export default defineComponent({
     // 按钮触发接口
     const updateData = async (id: number) => {
       try {
-        // const params = `id=${id}`;
         const params = {
           opTaskId: id,
         };
+
         Toast.loading({ message: "加载中...", forbidClick: true });
         await Request.xhr("getClearTaskUpdate", params)
           .then((r: ReturnData) => {
@@ -227,7 +227,7 @@ export default defineComponent({
     }
     .van-pull-refresh {
       overflow: visible;
-      height:calc(100% - 24px);
+      height: calc(100% - 24px);
     }
   }
 }
@@ -235,7 +235,7 @@ export default defineComponent({
   padding: 0 24px;
   .clear-completed-card {
     margin-bottom: 24px;
-    &:nth-child(1){
+    &:nth-child(1) {
       margin-top: 24px;
     }
   }
