@@ -170,13 +170,12 @@ export default defineComponent({
           .then((r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;
-              if (getNum) {
-                if (type === "TODAY") {
-                  state.todayNum = data.length;
-                } else if (type === "TOMORROW") {
-                  state.tomorrowNum = data.length;
-                }
-              } else if (!getNum) {
+              if (type === "TODAY") {
+                state.todayNum = data.length;
+              } else if (type === "TOMORROW") {
+                state.tomorrowNum = data.length;
+              }
+              if (!getNum) {
                 listData.value = data;
                 // state.finishedList = true;
                 state.refreshing = false;
@@ -202,6 +201,11 @@ export default defineComponent({
       // onLoad(isTabClick);
       queryOpList(false, state.active, isTabClick);
       console.log(state.active);
+      if (state.active === "TODAY") {
+        queryOpList(true, "TOMORROW");
+      } else if (state.active === "TOMORROW") {
+        queryOpList(true, "TODAY");
+      }
     };
     // 点击跳转
     const cardTitleClick = (item: any) => {
@@ -255,7 +259,7 @@ export default defineComponent({
     }
     .van-pull-refresh {
       overflow: visible;
-      height:calc(100% - 24px);
+      height: calc(100% - 24px);
     }
   }
   :deep(.operat-room-card) {

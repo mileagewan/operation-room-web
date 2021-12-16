@@ -85,7 +85,7 @@ export default defineComponent({
       const _parseInt: number = parseInt(divisible);
       const remainder: number = _parseInt % 60 >= 20 ? 1 : 0;
       const minutes = _parseInt + remainder;
-      console.log("---minutes---", minutes);
+      // console.log("---minutes---", minutes);
       let time = minutes + "";
       if (minutes > 60) {
         const min = minutes % 60;

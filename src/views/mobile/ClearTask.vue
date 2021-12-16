@@ -77,9 +77,6 @@ export default defineComponent({
       refreshing: false,
       loadingList: false,
       finishedList: true,
-      totalPage: 0,
-      pageNo: 1,
-      pageSize: 5,
       options: [
         {
           label: "清洁数量",
@@ -128,18 +125,18 @@ export default defineComponent({
           .then((r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;
-              if (getNum) {
-                if (type === "UNDO") {
-                  state.todayNum = data?.length ?? 0;
-                } else if (type === "DONE") {
-                  state.tomorrowNum = data?.cleanTaskDTOList.length ?? 0;
-                }
-              } else if (!getNum) {
+              if (type === "UNDO") {
+                state.todayNum = data?.length ?? 0;
+              } else if (type === "DONE") {
+                state.tomorrowNum = data?.cleanTaskDTOList.length ?? 0;
+              }
+              if (!getNum) {
                 if (type === "UNDO") {
                   listData.value = data;
                 } else if (type === "DONE") {
                   state.options[0].value = data?.cleanNum ?? 0;
-                  state.options[1].value = `${data?.onTimeNum}/${data?.cleanTaskDTOList.length}` ?? 0;
+                  state.options[1].value =
+                    `${data?.onTimeNum}/${data?.cleanTaskDTOList.length}` ?? 0;
                   listData.value = data?.cleanTaskDTOList ?? [];
                 }
                 state.refreshing = false;
@@ -166,8 +163,12 @@ export default defineComponent({
         state.refreshing = true;
       }
       state.loadingList = true;
-      state.pageNo = 1;
       queryCleanTaskList(false, state.active, isTabClick);
+      if (state.active === "UNDO") {
+        queryCleanTaskList(true, "DONE");
+      } else if (state.active === "DONE") {
+        queryCleanTaskList(true, "UNDO");
+      }
     };
     // 触发完成btn
     const doneBtn = (id: any) => {
