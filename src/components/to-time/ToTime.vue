@@ -47,7 +47,7 @@ export default defineComponent({
 
     let timer: number;
     const toTime = ref('');
-    const formatToTimeInterval = (): string => {
+    const formatToTimeInterval = (): void => {
       let s = props.time;
       if (props.time) {
         clearInterval(timer);
