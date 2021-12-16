@@ -69,6 +69,7 @@ export default defineComponent({
             {
               label: '准时率',
               value: data.onTimeNum as any,
+              total: data.patientNum as any,
             }
           ];
           pageData.completeList = [...data.completedOpTaskDetailsDTOList.map((d:any) => {

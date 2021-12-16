@@ -23,6 +23,7 @@ export default defineComponent({
       {
         label: '准时率',
         value: 0,
+        total: 0,
       }
     ]);
     const taskList: any = ref([]);
@@ -36,10 +37,12 @@ export default defineComponent({
             const { data }: any = r;
             options[0].value = data.patientNum;
             options[1].value = data.onTimeNum;
+            options[1].total = data.patientNum;
             taskList.value = data.completedOpTaskDetailsDTOList;
           } else {
             options[0].value = 0;
             options[1].value = 0;
+            options[1].total = 0;
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length);

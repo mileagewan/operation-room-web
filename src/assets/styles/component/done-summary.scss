@@ -31,13 +31,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      ._value {
+      ._total {
         height: 36px;
         font-size: 48px;
         font-weight: 600;
         text-align: left;
         color: #333333;
         line-height: 36px;
+      }
+      ._value {
+        @extend ._total;
+        color: #3bdc37;
       }
 
       ._label {

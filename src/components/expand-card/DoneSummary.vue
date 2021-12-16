@@ -5,7 +5,13 @@
     </div>
     <div class="done-summary-list">
       <div v-for="(option, i) in options" :key="i">
-        <span class="_value">{{option.value}}</span>
+        <span>
+          <span class="_value" :style="{
+            color: !Reflect.has(option,'total') ? '#333': '#3bdc37'
+          }">{{option.value}}</span>
+          <span class="_total"
+                v-if="Reflect.has(option,'total')">/{{option.total || 0}}</span>
+        </span>
         <span class="_label">{{option.label}}</span>
       </div>
     </div>
@@ -29,7 +35,10 @@ export default defineComponent({
     }
   },
   setup() {
-    return {};
+    const Reflect = window.Reflect;
+    return {
+      Reflect
+    };
   }
 });
 </script>
