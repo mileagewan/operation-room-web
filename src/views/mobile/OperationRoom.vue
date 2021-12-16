@@ -20,7 +20,7 @@
             :key="index"
             :dateTime="`${getMonthDayWeek(
               item.opInfoDTO.startTime
-            )} ${getOperatTime(
+            )}${getOperatTime(
               item.opInfoDTO.startTime,
               item.opInfoDTO.endTime
             )}`"
