@@ -160,7 +160,10 @@ export default defineComponent({
     onMounted(() => {
       emitter.on('scan-code-success', async (id: string) => {
         const ret: RetData<any> = await Request.xhr(
-          'flowReverScanNext'
+          'flowReverScanNext',
+          {
+            hospitalCode: id
+          }
         );
         if (ret.code !== 200) {
           Toast(ret.msg);

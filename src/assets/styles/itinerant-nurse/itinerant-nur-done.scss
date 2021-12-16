@@ -49,10 +49,10 @@
           font-size: var(--ihybrid--default-font-size);
           line-height: 1;
           margin-left: 12px;
-
+          text-align: left;
           &:last-child {
             width: 96px;
-            flex: none;
+            //flex: none;
           }
         }
       }

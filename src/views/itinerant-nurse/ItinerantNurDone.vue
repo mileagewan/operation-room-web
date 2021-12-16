@@ -21,7 +21,7 @@
           <span class="custom-title">清洁消毒</span>
         </template>
         <template #value>
-          <span class="info-plantime is-danger over-ellipsis " v-if="!list.isClean">
+          <span class="info-plantime is-danger " v-if="!list.isClean">
             超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
           <span>查看详情</span>
