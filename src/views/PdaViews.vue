@@ -162,7 +162,8 @@ export default defineComponent({
         const ret: RetData<any> = await Request.xhr(
           'flowReverScanNext',
           {
-            hospitalCode: id
+            hospitalCode: id,
+            opTaskId: 0
           }
         );
         if (ret.code !== 200) {
