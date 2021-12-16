@@ -13,9 +13,9 @@
         <div class="surgical-summary-item_middle">
           <div class="surgical-summary-item_number">
             <span class="surgical-summary-item_number_status">
-              {{!room.currentOpSeq ? 0 : room.currentOpSeq}}
+              {{room.currentOpSeq || 0}}
             </span>
-            <span class="surgical-summary-item_number_count">/{{room.totalOpSeq}}</span>
+            <span class="surgical-summary-item_number_count">/{{room.totalOpSeq || 0}}</span>
           </div>
           <div class="surgical-summary-item_status">
             <van-tag
