@@ -79,14 +79,18 @@
       </template>
       <template v-else-if="taskView.opInfoDTO.opSectionCode === '8'">
         <div class="ihybrid-button-group">
-          <van-button
-            round
-            class="default-button"
-            color="rgba(0,172,242,0.05)"
-            @click="broadcast(taskView)"
-          >
+<!--          <van-button-->
+<!--            round-->
+<!--            class="default-button"-->
+<!--            color="rgba(0,172,242,0.05)"-->
+<!--            @click="broadcast(taskView)"-->
+<!--          >-->
+<!--            广播家属-->
+<!--          </van-button>-->
+          <ToTime :time="taskView.clickCountdownTime"
+                  @click="broadcast(taskView)">
             广播家属
-          </van-button>
+          </ToTime>
           <van-button
             class="btn-operation"
             @click="operationBegan(taskView)"
@@ -102,19 +106,19 @@
         <div class="ihybrid-button-group">
           <van-button
             round
-            :disabled="taskView.notifyNextOperation === 2"
-            v-if="taskView.notifyNextOperation !== 3"
+            :disabled="taskView.nextOpStatus === 1"
+            v-if="taskView.nextOpStatus !== 2"
             @click="noticeNext(taskView)"
             class="default-button"
             color="#f0fafe"
           >
-            {{ taskView.notifyNextOperation === 2 ? '已通知下一台手术' : '通知下一台术前准备' }}
+            {{ taskView.nextOpStatus === 1 ? '已通知下一台手术' : '通知下一台术前准备' }}
           </van-button>
           <van-button
             class="btn-operation"
             @click="resuscitationHandle(taskView)"
             round
-            :disabled="taskView.notifyNextOperation === 1 "
+            :disabled="taskView.nextOpStatus === 0 "
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
             <IconFont icon="icon-shoushuwancheng"/>
@@ -141,7 +145,7 @@
     </template>
     <template #content v-else-if="taskView.isClean">
       <div class="clean-task-title">
-        {{taskView.descName}}
+        {{ taskView.descName }}
       </div>
       <KeyValue label="清洁开始时间"
                 v-if="taskView.cleanStartTime"
@@ -151,7 +155,7 @@
                 :value="taskView.cleanEndTime"/>
       <div class="itinerant-flow-chart">
         <FlowChart :flow-data="taskView.flowDatas"
-                   :current-code="taskView.currentCode" />
+                   :current-code="taskView.currentCode"/>
       </div>
       <key-value-block>
         <template #value>
@@ -293,7 +297,8 @@
       <div class="ihybrid-button-group">
         <van-button round class="cancel-btn"
                     color="#FAFAFA"
-                    @click="disinfectOverLay.show = false"> 取 消</van-button>
+                    @click="disinfectOverLay.show = false"> 取 消
+        </van-button>
         <van-button
           round
           class="btn-operation"
@@ -490,7 +495,7 @@ export default defineComponent({
     };
 
     const broadcastOverLayHandleOk = async (): Promise<void> => {
-      const room = findNode(broadcastOverLay.roomList, (b:any) => {
+      const room = findNode(broadcastOverLay.roomList, (b: any) => {
         return b.goToPlaceCode === broadcastOverLay.active;
       });
       const ret: ReturnData = await Request.xhr('broadcastMsg', {
@@ -607,13 +612,46 @@ export default defineComponent({
       }
     };
 
+    const queryOpRoomNextOpDetailsList = (opInfoIds:any): Promise<any> => {
+      return Request.xhr('queryOpRoomNextOpDetailsList', {
+        opInfoIds,
+      });
+    };
+
+    const queryNotifyFamilyDetailsList = (opInfoIds:any): Promise<any> => {
+      return Request.xhr('queryNotifyFamilyDetailsList', {
+        opInfoIds,
+      });
+    };
+
     const getData = () => {
       return Promise.all([
         Request.xhr('queryCurrentOpTaskList'),
         Request.xhr('queryCurrentOpCleanTask')
-      ]).then((r: Array<any>) => {
+      ]).then(async (r: Array<any>) => {
         const [normalTask, cleanTask]: any[] = r;
         if (normalTask.code === 200) {
+          const opInfoIds: number[] = normalTask.data?.map((d: any) => {
+            return d.opInfoDTO.id;
+          }) || [];
+          const [retNext, retFamily] = await Promise.all([
+            queryOpRoomNextOpDetailsList(opInfoIds),
+            queryNotifyFamilyDetailsList(opInfoIds),
+          ]);
+          // 获取当前通知的队列， 大于5，可以点击
+          normalTask.data.forEach((d:any) => {
+            const retFamilyNoity = findNode(retFamily.data, (ds: any) => {
+              return ds.opInfoId === d.opInfoDTO?.id;
+            });
+            d.clickCountdownTime = retFamilyNoity?.clickCountdownTime || 0;
+            d.currentMsgListQueueNum = retFamilyNoity?.currentMsgListQueueNum;
+
+            const nextOpInfoDetail = findNode(retNext.data || [], (n:any) => {
+              return n.lastOpInfoId === d.opInfoDTO?.id;
+            }) || {};
+            d.nextOpStatus = nextOpInfoDetail.nextOpStatus || 2;
+          });
+
           taskViewsList.value = normalTask.data.map((d: any) => {
             const { taskFlowPointDetailsDTOList }: any = d;
             const point = findNode(taskFlowPointDetailsDTOList, (d: any) => {
@@ -625,7 +663,7 @@ export default defineComponent({
               description: point.description,
               taskList: formatTask(d, taskList),
               overTime: point.overTime,
-              flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+              flowDatas: taskFlowPointDetailsDTOList.map((p: any) => {
                 return {
                   ...p,
                   title: p.pointName,
@@ -638,7 +676,7 @@ export default defineComponent({
           }) as any;
 
           if (cleanTask.data) {
-            cleanTask.data = cleanTask.data.map((d:any) => {
+            cleanTask.data = cleanTask.data.map((d: any) => {
               const { taskFlowPointDetailsDTOList }: any = d;
               const point = findNode(taskFlowPointDetailsDTOList, (d: any) => {
                 return d.pointStatus === 1;
@@ -647,7 +685,7 @@ export default defineComponent({
                 ...d,
                 isClean: true,
                 description: point.description,
-                flowDatas: taskFlowPointDetailsDTOList.map((p:any) => {
+                flowDatas: taskFlowPointDetailsDTOList.map((p: any) => {
                   return {
                     ...p,
                     title: p.pointName,

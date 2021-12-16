@@ -122,7 +122,7 @@ import useTaskMixins, {
   beforeDiseaseName,
 } from '@/utils/task-mixins';
 import JsToFlutter from '@/utils/js-to-flutter';
-import { CurrentTaskViews, TaskViewItem } from '@/types/CurrentTaskViews';
+import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import ToastCountdown from '@/utils/toast-countdown';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
@@ -180,7 +180,7 @@ export default defineComponent({
       const data: ReturnData = await Request.xhr(
         'flowReverScanNext',
         {
-          opInfoId: row.opTaskDTO.id,
+          opInfoId: row.opInfoDTO.id,
           hospitalCode: ret,
           opTaskId: row.opTaskDTO.id,
         }

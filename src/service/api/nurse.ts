@@ -274,6 +274,20 @@ const nurse: ServiceItem[] = [
     path: '/appMsg/update/read',
     method: POST,
     key: 'updateRead'
+  },
+
+  // 查询下一台手术列表
+  {
+    path: '/opTask/queryOpRoomNextOpDetailsList',
+    method: POST,
+    key: 'queryOpRoomNextOpDetailsList'
+  },
+
+  // 查询家属
+  {
+    path: '/opTask/queryNotifyFamilyDetailsList',
+    method: POST,
+    key: 'queryNotifyFamilyDetailsList'
   }
 ];
 export { nurse };
