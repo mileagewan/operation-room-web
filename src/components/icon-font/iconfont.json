@@ -6,6 +6,13 @@
   "description": "项目icon",
   "glyphs": [
     {
+      "icon_id": "26512258",
+      "name": "取消手术",
+      "font_class": "quxiaoshoushu",
+      "unicode": "e67f",
+      "unicode_decimal": 59007
+    },
+    {
       "icon_id": "26496054",
       "name": "出复苏室",
       "font_class": "chufusushi",

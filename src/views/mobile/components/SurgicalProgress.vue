@@ -123,7 +123,7 @@ export default defineComponent({
           value = "icon-jieshu";
           break;
         case "手术取消":
-          value = "";
+          value = "icon-quxiaoshoushu";
           break;
         default:
           value = "";
