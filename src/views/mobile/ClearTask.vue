@@ -144,8 +144,8 @@ export default defineComponent({
                   listData.value = data;
                 } else if (type === "DONE") {
                   state.options[0].value = data?.cleanNum ?? 0;
-                  state.options[1].value =
-                    `${data?.onTimeNum}/${data?.cleanTaskDTOList.length}` ?? 0;
+                  state.options[1].value = data?.onTimeNum ?? 0;
+                  state.options[1].total = data?.cleanTaskDTOList.length ?? 0;
                   listData.value = data?.cleanTaskDTOList ?? [];
                 }
               }
