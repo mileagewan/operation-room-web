@@ -276,6 +276,12 @@ const nurse: ServiceItem[] = [
     key: 'updateRead'
   },
 
+  {
+    path: '/opInfo/data/sync',
+    method: POST,
+    key: 'dataSync'
+  },
+
   // 查询下一台手术列表
   {
     path: '/opTask/queryOpRoomNextOpDetailsList',

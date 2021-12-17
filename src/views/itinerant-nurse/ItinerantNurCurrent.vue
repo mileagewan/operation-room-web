@@ -542,7 +542,7 @@ export default defineComponent({
           opInfoId: taskView.opInfoDTO.id,
         },
       );
-      if (ret.code === 200 && ret.data) {
+      if (ret.code === 200) {
         Toast('通知下一台成功');
         getData();
       } else {

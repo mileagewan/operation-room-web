@@ -102,7 +102,7 @@ export default defineComponent({
         message: '取消手术或增加急诊手术时，需要点击"手术更新"',
       })
         .then(async () => {
-          const ret: ReturnData = await Request.xhr('syncOpDatas');
+          const ret: ReturnData = await Request.xhr('dataSync');
           if (ret.code === 200) {
             getData();
             Toast('更新成功');
