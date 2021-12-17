@@ -36,5 +36,10 @@ const mobile: ServiceItem[] = [
     key: 'queryCompletedCleanTask',
     method: 'post',
   },
+  {
+    path: '/appMsg/update/read', // 更新数据(已读)
+    key: 'appMsgRead',
+    method: 'post',
+  },
 ];
 export { mobile };

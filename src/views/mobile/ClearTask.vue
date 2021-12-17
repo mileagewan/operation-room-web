@@ -61,6 +61,7 @@ import Request from "@/service/request";
 import { ReturnData } from "@/types/interface-model";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
+import useMessageRead from "@/views/mobile/hooks/useMessageRead"
 
 export default defineComponent({
   name: "ClearTask",
@@ -69,6 +70,7 @@ export default defineComponent({
     ClearCompletedCard,
   },
   setup() {
+    useMessageRead()
     const state = reactive({
       title: "手术室",
       active: "UNDO",

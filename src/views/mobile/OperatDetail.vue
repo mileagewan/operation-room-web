@@ -104,6 +104,7 @@ import {
   getOperatTime,
 } from "@/utils/date-formt";
 import JsToFlutter from "@/utils/js-to-flutter";
+import useMessageRead from "@/views/mobile/hooks/useMessageRead"
 
 export default defineComponent({
   name: "OperatDetail",
@@ -112,6 +113,7 @@ export default defineComponent({
     OpratInfo,
   },
   setup() {
+    useMessageRead()
     const router = useRouter();
     const route = useRoute();
     const state = reactive({

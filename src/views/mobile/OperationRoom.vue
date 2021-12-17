@@ -103,6 +103,7 @@ import {
 import { useRouter, useRoute } from "vue-router";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
+import useMessageRead from "@/views/mobile/hooks/useMessageRead"
 
 export default defineComponent({
   name: "OperationRoom",
@@ -110,6 +111,7 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
+    useMessageRead()
     const router = useRouter();
     const route = useRoute();
     const state = reactive({

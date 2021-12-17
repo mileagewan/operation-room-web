@@ -169,7 +169,7 @@ export default defineComponent({
       height: 48px;
       position: relative;
       .bar {
-        position: absolute;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
