@@ -348,11 +348,11 @@ export default defineComponent({
     });
     const resuscitationOverLay = reactive({
       show: false,
-      checked: 2,
+      checked: 0,
       checkedList: [
         {
           label: '否',
-          value: 2
+          value: 0
         },
         {
           label: '是',
