@@ -8,8 +8,8 @@ function useMessageRead(): string {
     msgReadApi()
   })
   const msgReadApi = async () => {
-    if (route.query?.id && route.query?.type === "app") {
-      const params = `id=${route.query?.id}`
+    if (route.query?.msgId && route.query?.type === "app") {
+      const params = `id=${route.query?.msgId}`
       await Request.xhr('appMsgRead', {}, params).then((r: ReturnData) => {
         if (r.code === 200) {
           console.log('消息已读')

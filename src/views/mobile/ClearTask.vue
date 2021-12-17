@@ -62,6 +62,7 @@ import { ReturnData } from "@/types/interface-model";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
 import useMessageRead from "@/views/mobile/hooks/useMessageRead"
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "ClearTask",
@@ -71,6 +72,7 @@ export default defineComponent({
   },
   setup() {
     useMessageRead()
+    const route = useRoute();
     const state = reactive({
       title: "手术室",
       active: "UNDO",
@@ -97,6 +99,10 @@ export default defineComponent({
       JsToFlutter.goback();
     };
     onBeforeMount(() => {
+      if (route.query?.cleanType) {
+        const _cleanType: any = route.query.cleanType;
+        state.active = _cleanType;
+      }
       // 获取当前任务数量
       queryCleanTaskList(true, "UNDO");
       // 获取已完成任务数量

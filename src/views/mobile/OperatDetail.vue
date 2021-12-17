@@ -125,8 +125,8 @@ export default defineComponent({
     const opFlowPointDetailsDTOList = ref<any[]>([]); // 手术流程节点详情列表
     const opInfoExtDTO = ref<any>({}); // 手术扩展信息
     onMounted(() => {
-      if (route.query?.id) {
-        loadData(route.query.id);
+      if (route.query?.opInfoId) {
+        loadData(route.query.opInfoId);
       }
     });
     // 接口请求
