@@ -37,7 +37,7 @@ export default defineComponent({
             const { data }: any = r;
             options[0].value = data.sendPatientNum;
             options[1].value = data.receivePatientNum;
-            taskList.value = data.completedOpTaskDetailsDTOList;
+            taskList.value = data.completedOpTaskDetailsDTOList || [];
           } else {
             options[0].value = 0;
             options[1].value = 0;
