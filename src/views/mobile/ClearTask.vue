@@ -61,7 +61,7 @@ import Request from "@/service/request";
 import { ReturnData } from "@/types/interface-model";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
-import useMessageRead from "@/views/mobile/hooks/useMessageRead"
+import useMessageRead from "@/views/mobile/hooks/useMessageRead";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
@@ -71,7 +71,7 @@ export default defineComponent({
     ClearCompletedCard,
   },
   setup() {
-    useMessageRead()
+    useMessageRead();
     const route = useRoute();
     const state = reactive({
       title: "手术室",
@@ -89,7 +89,7 @@ export default defineComponent({
         {
           label: "准时率",
           value: "0",
-          total: "0"
+          total: "0",
         },
       ],
     });
@@ -148,9 +148,9 @@ export default defineComponent({
                     `${data?.onTimeNum}/${data?.cleanTaskDTOList.length}` ?? 0;
                   listData.value = data?.cleanTaskDTOList ?? [];
                 }
-                state.refreshing = false;
-                state.loadingList = false;
               }
+              state.refreshing = false;
+              state.loadingList = false;
             }
           })
           .finally(() => {
@@ -263,12 +263,12 @@ export default defineComponent({
 :deep(.empty-page-h) {
   height: calc(100% - 250px);
 }
-:deep(.done-summary-list){
-  div:nth-child(2){
-    ._value{
+:deep(.done-summary-list) {
+  div:nth-child(2) {
+    ._value {
       color: #333 !important;
     }
-    ._total{
+    ._total {
       color: #999999 !important;
     }
   }

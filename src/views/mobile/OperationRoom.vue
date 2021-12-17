@@ -103,7 +103,7 @@ import {
 import { useRouter, useRoute } from "vue-router";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
-import useMessageRead from "@/views/mobile/hooks/useMessageRead"
+import useMessageRead from "@/views/mobile/hooks/useMessageRead";
 
 export default defineComponent({
   name: "OperationRoom",
@@ -111,7 +111,7 @@ export default defineComponent({
     OpratRoomCard,
   },
   setup() {
-    useMessageRead()
+    useMessageRead();
     const router = useRouter();
     const route = useRoute();
     const state = reactive({
@@ -180,9 +180,9 @@ export default defineComponent({
               if (!getNum) {
                 listData.value = data;
                 // state.finishedList = true;
-                state.refreshing = false;
-                state.loadingList = false;
               }
+              state.refreshing = false;
+              state.loadingList = false;
             }
           })
           .finally(() => {
