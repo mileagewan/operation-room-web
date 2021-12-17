@@ -117,8 +117,8 @@ export default defineComponent({
     });
     const listData = ref<any[]>([]);
     onBeforeMount(() => {
-      if (route.query?.id) {
-        state.subRoomId = route.query.id as any;
+      if (route.query?.opInfoId) {
+        state.subRoomId = route.query.opInfoId as any;
       }
       queryData();
     });

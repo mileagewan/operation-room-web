@@ -169,7 +169,7 @@ export default defineComponent({
       height: 48px;
       position: relative;
       .bar {
-        position: relative;
+        position: absolute;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -180,12 +180,11 @@ export default defineComponent({
       }
       .icon-jindujiantou {
         display: inline-block;
-        // transform: rotate(90deg) scale(0.4);
-        transform: rotate(90deg);
+        transform: rotate(90deg) scale(0.4);
         color: #b6ddff;
-        position: absolute;
-        bottom: -2px;
-        left: -28px;
+        // position: absolute;
+        // bottom: -2px;
+        // left: -28px;
       }
     }
     .item {

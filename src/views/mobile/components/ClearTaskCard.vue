@@ -1,6 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-use-before-define */
 <template>
   <div class="clear-task-card">
     <div class="card-title">

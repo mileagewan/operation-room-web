@@ -221,7 +221,7 @@ export default defineComponent({
       router.push({
         path: path,
         query: {
-          id: id,
+          opInfoId: id,
           dateType: state.active ? state.active : "",
         },
       });

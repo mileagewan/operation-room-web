@@ -31,10 +31,9 @@ export default defineComponent({
       padding: 12px 0;
       .title {
         display: inline-block;
-        width: 96px;
+        width: (96+2)px;
         height: 24px;
         font-size: 24px;
-        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #999999;
         line-height: 24px;
@@ -43,7 +42,6 @@ export default defineComponent({
       .text {
         height: 24px;
         font-size: 24px;
-        // font-family: PingFangSC, PingFangSC-Regular;
         font-weight: 400;
         color: #333333;
         line-height: 24px;
