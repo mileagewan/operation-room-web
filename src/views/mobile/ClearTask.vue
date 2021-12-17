@@ -84,7 +84,8 @@ export default defineComponent({
         },
         {
           label: "准时率",
-          value: "4/7",
+          value: "0",
+          total: "0"
         },
       ],
     });
@@ -253,5 +254,15 @@ export default defineComponent({
 }
 :deep(.empty-page-h) {
   height: calc(100% - 250px);
+}
+:deep(.done-summary-list){
+  div:nth-child(2){
+    ._value{
+      color: #333 !important;
+    }
+    ._total{
+      color: #999999 !important;
+    }
+  }
 }
 </style>
