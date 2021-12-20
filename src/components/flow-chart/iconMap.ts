@@ -11,7 +11,7 @@ export const iconMap: Map<string, string> = new Map<string, string>([
   ['10', 'icon-jiaojiequeren'],
   ['11', 'icon-xunhuihushiqueren'],
   ['12', 'icon-zhuanyunhugongqueren'],
-  ['13', ''],
+  ['13', 'icon-suxing'],
   ['14', ''],
   ['15', 'icon-qingjie'],
   ['16', 'icon-xiaodu'],
