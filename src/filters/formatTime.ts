@@ -19,3 +19,7 @@ export default function formatTime(seconds: number): string {
 
   // const hours = seconds / 3600;
 }
+
+export const formatTimeMin = (seconds:number): string => {
+  return Math.ceil(seconds / 60) + '分';
+}

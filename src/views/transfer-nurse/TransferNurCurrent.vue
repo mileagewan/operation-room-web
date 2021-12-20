@@ -45,15 +45,16 @@
           {{ task.description || "无" }}
         </template>
       </KeyValueBlock>
-      <!--  交接操作 -->
-      <template v-if="checkEditable(task)">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTaskDTO.handUserName || ''} ${
+      <KeyValueBlock
+        clear
+        label="交接人"
+        :value="`${task.opTaskDTO.handUserName || ''} ${
             task.opTaskDTO.handUserPhone || ''
           }`"
-        />
+      />
+      <!--  交接操作 -->
+      <template v-if="checkEditable(task)">
+
         <div class="ihybrid-button-group">
           <van-button
             round
@@ -231,9 +232,7 @@ export default defineComponent({
     };
 
     const checkEditable = (task: any) => {
-      return (
-        task.opInfoDTO.opSectionCode === '4' || task.opInfoDTO.opSectionCode === '14'
-      );
+      return ['4', '14'].includes(task.opInfoDTO.opSectionCode);
     };
     return {
       loading,

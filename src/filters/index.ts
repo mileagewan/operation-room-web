@@ -1,6 +1,7 @@
 import status from './status'
-import formatTime from './formatTime'
+import formatTime, { formatTimeMin } from './formatTime'
 export default {
   status,
-  formatTime
+  formatTime,
+  formatTimeMin
 }

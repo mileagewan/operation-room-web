@@ -15,7 +15,7 @@
           type="primary"
           v-if="option.planTime"
         >
-          超时{{ $filters.formatTime(option.planTime) }}
+          超时{{ $filters.formatTimeMin(option.planTime) }}
         </van-tag>
         <TagStatus :code="option.status" />
       </div>
