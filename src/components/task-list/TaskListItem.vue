@@ -10,7 +10,8 @@
             {{ task.opPatientDTO.age }}岁</span
           >
         </div>
-        <span class="task">{{
+<!--        复苏室不需要添加接送-->
+        <span class="task" v-if="user.positionDicItemCode !== 'RecoveryRoomNurse' ">{{
           task.receiveFlag === 1 ? "接病人" : "送病人"
         }}</span>
       </div>
@@ -39,7 +40,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
+import { useStore } from "vuex";
 export default defineComponent({
   name: 'TaskListItem',
   props: {
@@ -51,6 +53,15 @@ export default defineComponent({
       }),
     },
   },
+  setup() {
+    const store = useStore();
+    const user = computed(() => {
+      return store.state.userInfo.user;
+    })
+    return {
+      user
+    }
+  }
 });
 </script>
 

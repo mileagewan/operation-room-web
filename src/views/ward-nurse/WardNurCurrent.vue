@@ -49,18 +49,20 @@
           </van-button>
         </div>
       </template>
-      <template
-        v-if="
-          task.opTaskDTO.opSectionCode === '4' ||
-          task.opTaskDTO.opSectionCode === '15'
-        "
-      >
+      <template v-if="task.opTaskDTO.opSectionCode === '4'">
         <KeyValueBlock
           clear
           label="交接人"
           :value="`${task.opTaskDTO.handUserName || ''} ${
             task.opTaskDTO.handUserPhone || ''
           }`"
+        />
+      </template>
+      <template v-if="task.opTaskDTO.opSectionCode === '15'">
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opPatientDTO.afterDepartmentWardName || ''} ${task.opPatientDTO.afterDepartmentWardTel || ''}`"
         />
       </template>
       <template v-if="task.opTaskDTO.opSectionCode === '15'">
