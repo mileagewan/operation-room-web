@@ -11,7 +11,7 @@
           >
         </div>
         <span class="task">{{
-          task.listingType === 1 ? "送病人" : "接病人"
+          task.receiveFlag === 1 ? "接病人" : "送病人"
         }}</span>
       </div>
       <div class="flex">
