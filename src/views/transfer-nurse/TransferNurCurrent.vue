@@ -31,9 +31,9 @@
         </template>
       </KeyValue>
       <KeyValue
-        v-if="task.opPatientDTO.opSectionCode === '15'"
+        v-if="task.opInfoDTO.opSectionCode === '15'"
         label="目的地"
-        :value="task.opPatientDTO.afterDepartmentName"
+        :value="task.opPatientDTO.beforeDepartmentWardName"
       />
       <FlowChart
         :flow-data="task.flowDatas"
