@@ -650,7 +650,7 @@ export default defineComponent({
             const nextOpInfoDetail = findNode(retNext.data || [], (n:any) => {
               return n.lastOpInfoId === d.opInfoDTO?.id;
             }) || {};
-            d.nextOpStatus = nextOpInfoDetail.nextOpStatus || 2;
+            d.nextOpStatus = nextOpInfoDetail.nextOpStatus;
           });
 
           taskViewsList.value = normalTask.data.map((d: any) => {
