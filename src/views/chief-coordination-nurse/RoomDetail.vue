@@ -74,6 +74,7 @@ import OpInfoExtDTO from '@/types/OpInfoExtDTO';
 import OpPatientDTO from '@/types/OpPatientDTO';
 import OpTaskDTO from '@/types/OpTaskDTO';
 import Request from '@/service/request';
+import { iconMaps } from "@/views/chief-coordination-nurse/iconMaps";
 
 interface ListItem {
   opSectionNames: any[];
@@ -89,29 +90,6 @@ interface ListItem {
 export default defineComponent({
   name: 'RoomDetail',
   setup() {
-    const map = new Map<number, any>([
-      [6, {
-        title: '到手术室',
-        icon: 'icon-shoushushi1'
-      }],
-      [7, {
-        title: '到手术间',
-        icon: 'icon-shoushujian'
-      }],
-      [8, {
-        title: '麻醉',
-        icon: 'icon-mazui'
-      }],
-      [9, {
-        title: '手术中',
-        icon: 'icon-shoushuzhong'
-      }],
-      [10, {
-        title: '苏醒',
-        icon: 'icon-suxing'
-      }]
-    ]);
-
     const router = useRouter();
     const store = useStore();
     const { formatTask } = useTaskMixins();
@@ -166,55 +144,19 @@ export default defineComponent({
         });
         const { code, data } = ret;
         if (code === 200 && data) {
-          roomList.value = data.map(d => {
+          roomList.value = data.map((d:any) => {
             const currentCode = Number(d.opInfoDTO.opSectionCode);
-            let flowData: any[] = [];
-            if (currentCode > 6 && currentCode < 10) {
-              flowData = [
-                {
-                  ...map.get(currentCode - 1) as any,
-                  code: currentCode - 1,
-                },
-                {
-                  ...map.get(currentCode),
-                  code: currentCode
-                },
-                {
-                  ...map.get(currentCode + 1),
-                  code: currentCode + 1
-                }
-              ];
-            } else if (currentCode === 6) {
-              flowData = [
-                {
-                  ...map.get(currentCode),
-                  code: currentCode
-                },
-                {
-                  ...map.get(currentCode + 1),
-                  code: currentCode + 1
-                },
-                {
-                  ...map.get(currentCode + 2),
-                  code: currentCode + 2
-                }
-              ];
-            } else if (currentCode === 10) {
-              flowData = [
-                {
-                  ...map.get((currentCode - 2)),
-                  code: currentCode - 2
-                },
-                {
-                  ...map.get(currentCode - 1),
-                  code: currentCode - 1
-                },
-                {
-                  ...map.get(currentCode),
-                  code: (currentCode)
-                }
-              ];
-            }
+            const flowData: Array<{
+              title: string;
+              code:string;
+              icon: any;
+            }> = (d.adjacentOpSectionDetailsDTOList || []).map((ad:any) => {
+              return {
+                title: ad.opSectionName,
+                code: ad.opSectionCode,
+                icon: iconMaps.get(ad.opSectionCode) || 'icon-weikaishishoushu'
+              }
+            })
 
             return {
               ...d,

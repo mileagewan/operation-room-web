@@ -6,6 +6,20 @@
   "description": "项目icon",
   "glyphs": [
     {
+      "icon_id": "26568256",
+      "name": "消毒",
+      "font_class": "xiaodu",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "26568257",
+      "name": "清洁",
+      "font_class": "qingjie",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
       "icon_id": "26512258",
       "name": "取消手术",
       "font_class": "quxiaoshoushu",

@@ -175,8 +175,8 @@
             class="btn-operation"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
-            <IconFont icon="icon-jierenwu"/>
-            <span>开始消毒</span>
+            <IconFont icon="icon-xiaodu"/>
+            <span> 开始消毒</span>
           </van-button>
         </div>
       </template>
@@ -490,6 +490,7 @@ export default defineComponent({
         opInfoId: taskView.opPatientDTO?.beforeDepartmentWardId,
       });
       broadcastOverLay.roomList = ret?.data;
+      broadcastOverLay.active = (broadcastOverLay as any).roomList[0]?.goToPlaceCode;
       broadcastOverLay.show = true;
       broadcastOverLay.row = taskView;
     };

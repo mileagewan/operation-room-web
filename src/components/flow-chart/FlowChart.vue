@@ -23,6 +23,8 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { findIndex, isNumber } from 'lodash';
+import { iconMap as ICON_MAPS } from "@/components/flow-chart/iconMap";
+
 export default defineComponent({
   name: 'FlowChart',
   props: {
@@ -62,9 +64,7 @@ export default defineComponent({
       9: '麻醉',
       10: '患者苏醒',
     };
-    const icons: Map<string, string> = new Map<string, string>([
-      ['1', 'icon-kaishi']
-    ]);
+
     let flowDatas = reactive([]);
     flowDatas = flowData.map((item: any) => {
       if (isNumber(item)) {
@@ -76,7 +76,7 @@ export default defineComponent({
       } else if (!(item?.icon)) {
         return {
           ...item,
-          icon: icons.get(item.code) || 'icon-kaishi'
+          icon: ICON_MAPS.get(item.code.trim()) || 'icon-kaishi'
         };
       }
       return item;
