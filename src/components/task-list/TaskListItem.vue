@@ -30,7 +30,7 @@
           <label>用时</label>
           <span>{{ $filters.formatTime(task.exeTime) }}</span>
         </div>
-        <div class="info-plantime">
+        <div class="info-plantime" v-if="task.totalOverTime">
           超时{{ $filters.formatTime(task.totalOverTime) }}
         </div>
       </div>
