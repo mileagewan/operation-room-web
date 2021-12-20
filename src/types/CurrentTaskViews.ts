@@ -111,6 +111,7 @@ export interface TaskItem {
   opInfoExtDTO?: any;
   opPatientDTO?: any;
   flowPointMap?: any;
+  nextOpInfoId?: any;
 }
 
 export interface CompleteOpTask {

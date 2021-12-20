@@ -540,7 +540,7 @@ export default defineComponent({
       const ret: ReturnData = await Request.xhr(
         'nextOpInfo',
         {
-          opInfoId: taskView.opInfoDTO.id,
+          opInfoId: taskView.nextOpInfoId,
         },
       );
       if (ret.code === 200) {
@@ -651,6 +651,7 @@ export default defineComponent({
               return n.lastOpInfoId === d.opInfoDTO?.id;
             }) || {};
             d.nextOpStatus = nextOpInfoDetail.nextOpStatus;
+            d.nextOpInfoId = nextOpInfoDetail.opInfoId;
           });
 
           taskViewsList.value = normalTask.data.map((d: any) => {
