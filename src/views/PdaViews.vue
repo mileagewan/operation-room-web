@@ -23,17 +23,17 @@ import { RoleModuleItem } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
 import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
 import { Toast } from 'vant';
-import { useRoute } from 'vue-router';
 import RetData from '@/types/RetData';
 import Request from '@/service/request';
 import { findNode } from '@/utils/utils';
+import useNotifyFlutter from '@/mixins/useNotifyFlutter';
 
 export default defineComponent({
   name: 'PdaViews',
   components,
   setup() {
     const store = useStore();
-    const route = useRoute();
+    const { notifyFlutterRead } = useNotifyFlutter();
     const loading = ref<boolean>(false);
     const { appContext, }: any = getCurrentInstance();
     const emitter: any = appContext.config.globalProperties.emitter;
@@ -143,22 +143,18 @@ export default defineComponent({
         }
       },
 
+      /**
+       * 通知flutter端进行红点更新
+       */
       async notifyFlutterRead() {
-        const { query } = route;
-        if (query.msgid) {
-          const ret: RetData<any> = await Request.xhr('updateRead', {
-            id: query.msgid
-          });
-          const { code } = ret;
-          if (code === 200) {
-            JsToFlutter.notifyFlutterRead(query.msgid as string);
-          }
-        }
-      }
-    };
+        notifyFlutterRead()
+      },
 
-    onMounted(() => {
-      emitter.on('scan-code-success', async (id: string) => {
+      /**
+       * 跳转到指定卡片
+       * @param id 住院号
+       */
+      async jumpTargetCard(id:string) {
         const ret: RetData<any> = await Request.xhr(
           'flowReverScanNext',
           {
@@ -194,9 +190,42 @@ export default defineComponent({
           }, 500);
           // }
         }
-      });
+      },
+
+      /**
+       * 外层工作台扫码进行交接
+       */
+      async scanByOut() {
+        console.log(componentsList)
+        const ret: string = await JsToFlutter.getPatientIdByWorkspace();
+        if (!ret) {
+          return;
+        }
+        // 总协调隔一段时间直接更新
+        if (defaultRole.value === 'CoordinateNurse') {
+          setTimeout(() => {
+            Events.jumpTargetCard(ret);
+          }, 500);
+        } else {
+          // 遍历数据，当数据都有时候直接更新
+          const timer = setInterval(() => {
+            const isReady = componentsList.every(c => {
+              return !!cardCacheData.value[c.component];
+            })
+            if (isReady) {
+              clearInterval(timer);
+              Events.jumpTargetCard(ret);
+            }
+          }, 100);
+        }
+      }
+    };
+
+    onMounted(() => {
+      emitter.on('scan-code-success', Events.jumpTargetCard);
       Events.notifyFlutterRead();
       Events.setScanQrCode();
+      Events.scanByOut();
     });
 
     return {
