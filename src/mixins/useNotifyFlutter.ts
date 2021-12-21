@@ -3,10 +3,14 @@ import Request from '@/service/request';
 import JsToFlutter from '@/utils/js-to-flutter';
 import { useRoute } from 'vue-router';
 
-export default function useNotifyFlutter () {
+interface Events{
+  notifyFlutterRead: () =>void
+}
+
+export default function useNotifyFlutter ():Events {
   const route = useRoute();
 
-  const Events = {
+  const events:Events = {
     /**
      * 通知flutter端进行红点更新
      */
@@ -24,5 +28,7 @@ export default function useNotifyFlutter () {
     },
   }
 
-  return Events;
+  return {
+    ...events
+  };
 }

@@ -34,8 +34,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const { notifyFlutterRead } = useNotifyFlutter();
+    const { appContext, ctx }: any = getCurrentInstance();
     const loading = ref<boolean>(false);
-    const { appContext, }: any = getCurrentInstance();
     const emitter: any = appContext.config.globalProperties.emitter;
 
     const ScanQrCode = ref<string>('ScanQrCode');
@@ -214,7 +214,9 @@ export default defineComponent({
             })
             if (isReady) {
               clearInterval(timer);
-              Events.jumpTargetCard(ret);
+              ctx.$nextTick(() => {
+                Events.jumpTargetCard(ret);
+              })
             }
           }, 100);
         }
