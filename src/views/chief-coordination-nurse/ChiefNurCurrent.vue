@@ -62,6 +62,7 @@ import { Task } from '@/types/interface-model';
 import Request from '../../service/request';
 import useTitleCount from '@/utils/useTitleCount';
 import { iconMaps } from "@/views/chief-coordination-nurse/iconMaps";
+import { findNode } from "@/utils/utils";
 
 export default defineComponent({
   name: 'ChiefNurCurrent',
@@ -90,7 +91,10 @@ export default defineComponent({
           const { code, data } = r;
           if (code === 200) {
             taskViewsList.value = data.map((d:any) => {
-              const currentCode = Number(d.opInfoDTO.opSectionCode);
+              const { adjacentOpSectionDetailsDTOList }: any = d;
+              const point = findNode(adjacentOpSectionDetailsDTOList, (d: any) => {
+                return d.currentOpSection === 1;
+              });
               const flowData: Array<{
                 title: string;
                 code:string;
@@ -106,7 +110,7 @@ export default defineComponent({
               return {
                 ...d,
                 taskList: formatTask(d, taskList),
-                currentCode,
+                currentCode: point?.opSectionCode,
                 flowData: flowData
               };
             }) as any
