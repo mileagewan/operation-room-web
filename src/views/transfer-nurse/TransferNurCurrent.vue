@@ -45,13 +45,23 @@
           {{ task.description || "无" }}
         </template>
       </KeyValueBlock>
-      <KeyValueBlock
-        clear
-        label="交接人"
-        :value="`${task.opTaskDTO.handUserName || ''} ${
+      <template v-if="task.opTaskDTO.opSectionCode === '15'">
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opPatientDTO.afterDepartmentWardName || ''} ${task.opPatientDTO.afterDepartmentWardTel || ''}`"
+        />
+      </template>
+      <template v-else>
+        <KeyValueBlock
+          clear
+          label="交接人"
+          :value="`${task.opTaskDTO.handUserName || ''} ${
             task.opTaskDTO.handUserPhone || ''
           }`"
-      />
+        />
+      </template>
+
       <!--  交接操作 -->
       <template v-if="checkEditable(task)">
 
