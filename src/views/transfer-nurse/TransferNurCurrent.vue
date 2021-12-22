@@ -85,27 +85,6 @@
           </van-button>
         </div>
       </template>
-
-      <!-- 转送中 -->
-      <template v-if="task.opInfoDTO.opSectionCode === '5'">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTaskDTO.handUserName || ''} ${
-            task.opTaskDTO.handUserPhone || ''
-          }`"
-        />
-      </template>
-      <!-- 10:手术后直接出来，15：手术后复苏出来 -->
-      <template v-if="task.opInfoDTO.opSectionCode === '10'||task.opInfoDTO.opSectionCode === '15'">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${task.opTaskDTO.handUserName || ''} ${
-            task.opTaskDTO.handUserPhone || ''
-          }`"
-        />
-      </template>
     </template>
   </TaskView>
 
