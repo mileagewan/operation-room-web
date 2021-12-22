@@ -27,20 +27,18 @@
               {{ item.label }}
             </template>
           </KeyValue>
-          <template v-if="isOnOperation.indexOf(list.opInfoDTO.opSectionCode) > -1">
-            <KeyValue label="状态节点">
-              <template #value>
-                <FlowChart :flow-data="list.flowData"
-                           :current-code="list.currentCode" />
-              </template>
-            </KeyValue>
-            <KeyValue label="手术室接送护士"
-                      important
-                      :value="`${list.handoverPerson?.name} ${list.handoverPerson?.phone}`" />
-            <KeyValue label="巡回护士电话"
-                      important
-                      :value="`${list.responsiblePerson?.name} ${list.responsiblePerson?.phone}`" />
-          </template>
+          <KeyValue label="状态节点">
+            <template #value>
+              <FlowChart :flow-data="list.flowData"
+                         :current-code="list.currentCode" />
+            </template>
+          </KeyValue>
+          <KeyValue label="手术室接送护士"
+                    important
+                    :value="`${list.handoverPerson?.name || '-'} ${list.handoverPerson?.phone  || '-' }`" />
+          <KeyValue label="巡回护士电话"
+                    important
+                    :value="`${list.responsiblePerson?.name  || '-' } ${list.responsiblePerson?.phone  || '-' }`" />
           <template v-if="list.opInfoDTO.opSectionCode === '16'">
             <KeyValue label="患者返回"
                       :value="list.opPatientDTO.beforeDepartmentWardName" />
@@ -76,6 +74,7 @@ import OpTaskDTO from '@/types/OpTaskDTO';
 import Request from '@/service/request';
 import { iconMaps } from '@/views/chief-coordination-nurse/iconMaps';
 import useTimeInterval from '@/mixins/useTimeInterval';
+import { findNode } from '@/utils/utils';
 
 interface ListItem {
   opSectionNames: any[];
@@ -109,13 +108,6 @@ export default defineComponent({
       opInfoName(),
       beforeDiseaseName(),
     ];
-    const isOnOperation = ref<string[]>([
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-    ]);
     const row = ref({
       title: ''
     });
@@ -143,13 +135,17 @@ export default defineComponent({
 
       getData: async () => {
         const key = room.value.type ? 'queryRecoveryRoomOpDetailsList' : 'queryOpRoomOpDetailsList';
+        const paramsKey = room.value.type ? 'recoveryRoomId' : 'opRoomId';
         const ret: RetData<ListItem[]> = await Request.xhr(key, {
-          id: room.value.id
+          [paramsKey]: room.value.id
         });
         const { code, data } = ret;
         if (code === 200 && data) {
           roomList.value = data.map((d:any) => {
-            const currentCode = Number(d.opInfoDTO.opSectionCode);
+            const { adjacentOpSectionDetailsDTOList }: any = d;
+            const point = findNode(adjacentOpSectionDetailsDTOList || [], (d: any) => {
+              return d.currentOpSection === 1;
+            });
             const flowData: Array<{
               title: string;
               code:string;
@@ -165,7 +161,7 @@ export default defineComponent({
             return {
               ...d,
               taskList: formatTask(d, list),
-              currentCode,
+              currentCode: point?.opSectionCode,
               flowData: flowData
             };
           }) as any;
@@ -190,7 +186,6 @@ export default defineComponent({
 
     return {
       row,
-      isOnOperation,
       loading,
       roomList,
       ...Events,
