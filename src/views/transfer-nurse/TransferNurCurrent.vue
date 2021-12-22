@@ -198,7 +198,7 @@ export default defineComponent({
     const manualOk = () => {
       handleOverLay.show = false;
       const data = {
-        opInfoId: currentTask.opTaskDTO.id,
+        opInfoId: currentTask.opInfoDTO.id,
         workId: handleOverLay.value,
         opTaskId: currentTask.opTaskDTO.id,
       }
@@ -215,7 +215,7 @@ export default defineComponent({
       if (res) {
         // TODO 调接口推进下一阶段
         const data = {
-          opInfoId: currentTask.opTaskDTO.id,
+          opInfoId: currentTask.opInfoDTO.id,
           hospitalCode: res,
           opTaskId: currentTask.opTaskDTO.id,
         }
