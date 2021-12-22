@@ -16,7 +16,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { computed, defineComponent, getCurrentInstance, nextTick, onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
@@ -34,7 +34,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const { notifyFlutterRead } = useNotifyFlutter();
-    const { appContext, ctx }: any = getCurrentInstance();
+    const { appContext }: any = getCurrentInstance();
     const loading = ref<boolean>(false);
     const emitter: any = appContext.config.globalProperties.emitter;
 
@@ -214,7 +214,7 @@ export default defineComponent({
             })
             if (isReady) {
               clearInterval(timer);
-              ctx.$nextTick(() => {
+              nextTick(() => {
                 Events.jumpTargetCard(ret);
               })
             }
