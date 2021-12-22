@@ -6,13 +6,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'ResuscitationNurDone',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
+    const { interval } = useTimeInterval();
 
     // TODO 页面请求数据，并封装好DoneSummary所需要的options数据
     const options = reactive([
@@ -53,11 +55,17 @@ export default defineComponent({
         });
     };
     getData();
+
+    onMounted(() => {
+      interval(getData);
+    });
+
     return {
       loading,
       options,
       taskList,
-      getData
+      getData,
+      onMounted,
     };
   },
 });

@@ -110,20 +110,18 @@ import useTaskMixins, {
   hospitalCode,
   infectType,
   opInfoCode,
-  anesthesiaDicCode,
-  anesthetistName,
-  beforeDiseaseName,
-  opInfoName,
-  surgeonName,
 } from '../../utils/task-mixins';
 import JsToFlutter from '@/utils/js-to-flutter';
 import ToastCountdown from '@/utils/toast-countdown';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'OpratorTransferNurCurrent',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
+    const { interval } = useTimeInterval();
+
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -221,6 +219,7 @@ export default defineComponent({
 
     onMounted(() => {
       getData();
+      interval(getData);
     })
 
     return {

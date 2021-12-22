@@ -41,10 +41,13 @@ import { useStore } from 'vuex';
 import { SET_OP_TASK_DTO_MUTATION } from '@/store/mutation-types';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
+    const { interval } = useTimeInterval();
+
     const router = useRouter();
     const store = useStore();
     const pageData:any = reactive({
@@ -98,6 +101,7 @@ export default defineComponent({
 
     onMounted(() => {
       getData();
+      interval(getData);
     });
     return {
       next,

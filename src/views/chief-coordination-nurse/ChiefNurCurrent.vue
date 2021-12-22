@@ -61,13 +61,15 @@ import useTaskMixins, {
 import { Task } from '@/types/interface-model';
 import Request from '../../service/request';
 import useTitleCount from '@/utils/useTitleCount';
-import { iconMaps } from "@/views/chief-coordination-nurse/iconMaps";
-import { findNode } from "@/utils/utils";
+import { iconMaps } from '@/views/chief-coordination-nurse/iconMaps';
+import { findNode } from '@/utils/utils';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 export default defineComponent({
   name: 'ChiefNurCurrent',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
+    const { interval } = useTimeInterval();
 
     const { formatTask } = useTaskMixins()
     const taskList:Task[] = [
@@ -122,7 +124,8 @@ export default defineComponent({
         })
     }
     onMounted(() => {
-      getData()
+      getData();
+      interval(getData);
     })
     return {
       flowData,

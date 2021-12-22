@@ -335,12 +335,15 @@ import JsToFlutter from '@/utils/js-to-flutter';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
 import RetData from '@/types/RetData';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
+    const { interval } = useTimeInterval();
+
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -712,6 +715,7 @@ export default defineComponent({
     };
     onMounted(() => {
       getData();
+      interval(getData);
     });
     return {
       handleOverLay,

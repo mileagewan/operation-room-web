@@ -8,14 +8,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
 import { CurrentComplete } from '@/types/CurrentTaskViews';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'OpratorTransferNurDone',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
+    const { interval } = useTimeInterval();
+
     const options = reactive([
       {
         label: '送病人',
@@ -50,11 +53,17 @@ export default defineComponent({
         });
     };
     getData();
+
+    onMounted(() => {
+      interval(getData);
+    });
+
     return {
       loading,
       options,
       getData,
       taskList,
+      onMounted
     };
   },
 });

@@ -87,7 +87,7 @@
       </template>
 
       <!-- 转送中 -->
-      <template v-if="task.opPatientDTO.opSectionCode === '5'">
+      <template v-if="task.opInfoDTO.opSectionCode === '5'">
         <KeyValueBlock
           clear
           label="交接人"
@@ -97,7 +97,7 @@
         />
       </template>
       <!-- 10:手术后直接出来，15：手术后复苏出来 -->
-      <template v-if="task.opPatientDTO.opSectionCode === '10'||task.opPatientDTO.opSectionCode === '15'">
+      <template v-if="task.opInfoDTO.opSectionCode === '10'||task.opInfoDTO.opSectionCode === '15'">
         <KeyValueBlock
           clear
           label="交接人"
@@ -132,10 +132,13 @@ import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
+    const { interval } = useTimeInterval();
+
     const loading = ref(false);
     const taskList: any = ref([]);
     const { formatTask } = useTaskMixins();
@@ -244,6 +247,10 @@ export default defineComponent({
     const checkEditable = (task: any) => {
       return ['4', '14'].includes(task.opInfoDTO.opSectionCode);
     };
+
+    onMounted(() => {
+      interval(getData);
+    })
     return {
       loading,
       taskList,

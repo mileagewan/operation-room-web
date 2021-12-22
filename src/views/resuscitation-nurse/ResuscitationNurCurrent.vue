@@ -126,11 +126,13 @@ import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import ToastCountdown from '@/utils/toast-countdown';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
+import useTimeInterval from '@/mixins/useTimeInterval';
 export default defineComponent({
   name: 'ResuscitationNurCurrent',
   setup() {
     const { formatTask } = useTaskMixins();
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
+    const { interval } = useTimeInterval();
 
     const handleOverLay = reactive({
       show: false,
@@ -251,6 +253,7 @@ export default defineComponent({
     };
     onMounted(() => {
       getData();
+      interval(getData);
     });
     return {
       handleOverLay,

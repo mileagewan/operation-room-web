@@ -15,7 +15,7 @@
           age: task.opPatientDTO.age,
           type: task.opInfoDTO.type,
           room: task.opInfoDTO.descName,
-          planTime: task.overTime,
+          planTime: task.overTime
         }"
       />
     </template>
@@ -33,7 +33,7 @@
       <!-- 任务描述 -->
       <KeyValueBlock>
         <template #value>
-          {{ task.description || "无" }}
+          {{ task.description || '无' }}
         </template>
       </KeyValueBlock>
       <template v-if="task.opTaskDTO.opSectionCode === '3'">
@@ -49,7 +49,7 @@
           </van-button>
         </div>
       </template>
-      <template v-if="['4','5'].includes(task.opTaskDTO.opSectionCode)">
+      <template v-if="['4', '5'].includes(task.opTaskDTO.opSectionCode)">
         <KeyValueBlock
           clear
           label="交接人"
@@ -106,19 +106,22 @@ import useTaskMixins, {
   infectType,
   opInfoCode,
   opInfoName,
-  surgeonName,
+  surgeonName
 } from '../../utils/task-mixins';
 import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 export default defineComponent({
   name: 'WardNurCurrent',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
+    const { formatTask } = useTaskMixins();
+    const { interval } = useTimeInterval();
+
     const taskList: any = ref([]);
     const loading = ref(false);
 
-    const { formatTask } = useTaskMixins();
     const infoItems = [
       opInfoCode(),
       hospitalCode(),
@@ -129,7 +132,7 @@ export default defineComponent({
       anesthesiaDicCode(),
       infectType(),
       opInfoName(),
-      beforeDiseaseName(),
+      beforeDiseaseName()
     ];
     const getData = () => {
       loading.value = true;
@@ -138,14 +141,14 @@ export default defineComponent({
           if (r.data) {
             taskList.value = r.data.map((d: any) => {
               const { taskFlowPointDetailsDTOList }: any = d;
-              const point = findNode(taskFlowPointDetailsDTOList, (d:any) => {
+              const point = findNode(taskFlowPointDetailsDTOList, (d: any) => {
                 return d.pointStatus === 1;
               });
               return {
                 ...d,
                 description: point.description,
                 overTime: point.overTime,
-                infoItems: formatTask(d, infoItems),
+                infoItems: formatTask(d, infoItems)
               };
             });
           } else {
@@ -162,7 +165,7 @@ export default defineComponent({
     let currentTask: any = reactive({});
     const handleOverLay = reactive({
       show: false,
-      value: '',
+      value: ''
     });
     const manualHandle = (task: TaskItem) => {
       currentTask = task;
@@ -173,12 +176,11 @@ export default defineComponent({
       const data = {
         opInfoId: currentTask.opTaskDTO.id,
         workId: handleOverLay.value,
-        opTaskId: currentTask.opTaskDTO.id,
+        opTaskId: currentTask.opTaskDTO.id
       };
       next(data, 'flowReverInputNext');
     };
-    const codeHandle = async (task: TaskItem, res:any) => {
-      // Toast('呼叫护工成功');
+    const codeHandle = async (task: TaskItem, res: any) => {
       currentTask = task;
       if (!res) {
         res = await JsToFlutter.startScanQRCode();
@@ -188,7 +190,7 @@ export default defineComponent({
         const data = {
           opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
-          opTaskId: currentTask.opTaskDTO.id,
+          opTaskId: currentTask.opTaskDTO.id
         };
         next(data, 'flowReverScanNext');
       }
@@ -200,7 +202,7 @@ export default defineComponent({
           getData();
           ToastCountdown({
             message: '患者匹配成功，交接完成',
-            seconds: 3,
+            seconds: 3
           });
         } else {
           Toast(res.msg);
@@ -222,6 +224,11 @@ export default defineComponent({
     };
 
     getData();
+
+    onMounted(() => {
+      interval(getData);
+    });
+
     return {
       loading,
       getData,
@@ -231,9 +238,9 @@ export default defineComponent({
       manualOk,
       codeHandle,
       callNurse,
-      onMounted,
+      onMounted
     };
-  },
+  }
 });
 </script>
 

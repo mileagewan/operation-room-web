@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import useTaskMixins, {
@@ -74,7 +74,8 @@ import OpInfoExtDTO from '@/types/OpInfoExtDTO';
 import OpPatientDTO from '@/types/OpPatientDTO';
 import OpTaskDTO from '@/types/OpTaskDTO';
 import Request from '@/service/request';
-import { iconMaps } from "@/views/chief-coordination-nurse/iconMaps";
+import { iconMaps } from '@/views/chief-coordination-nurse/iconMaps';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 interface ListItem {
   opSectionNames: any[];
@@ -90,9 +91,12 @@ interface ListItem {
 export default defineComponent({
   name: 'RoomDetail',
   setup() {
+    const { formatTask } = useTaskMixins();
+    const { interval } = useTimeInterval();
+
     const router = useRouter();
     const store = useStore();
-    const { formatTask } = useTaskMixins();
+
     const list = [
       opInfoCode(),
       hospitalCode(),
@@ -180,12 +184,17 @@ export default defineComponent({
       });
     }
 
+    onMounted(() => {
+      interval(Events.getData);
+    })
+
     return {
       row,
       isOnOperation,
       loading,
       roomList,
       ...Events,
+      onMounted
     };
   }
 });

@@ -8,15 +8,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import { CurrentComplete } from '@/types/CurrentTaskViews';
 import Request from '@/service/request';
 import useTitleCount from '@/utils/useTitleCount';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 export default defineComponent({
   name: 'WardNurDone',
   setup() {
     const { updateTitleCount, updateCardCacheData } = useTitleCount() as any;
+    const { interval } = useTimeInterval();
+
     const options: any[] = reactive([
       {
         label: '送病人',
@@ -51,11 +54,16 @@ export default defineComponent({
         });
     };
     getData();
+
+    onMounted(() => {
+      interval(getData);
+    })
     return {
       loading,
       options,
       taskList,
       getData,
+      onMounted
     };
   },
 });
