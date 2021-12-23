@@ -162,10 +162,13 @@ export default defineComponent({
               state.refreshing = false;
               // if (state.pageNo >= state.totalPage) state.finishedList = true;
               console.log(r, data);
-              state.title = listData.value[0].opDepartmentName
+              state.title = listData.value[0].opInfoDTO.opDepartmentName
                 ? listData.value[0].opInfoDTO.opDepartmentName +
+                  "-" +
                   listData.value[0].opInfoDTO.opRoomName
                 : "手术间";
+              console.log(data[0]);
+              console.log(state.title);
             }
           })
           .finally(() => {
