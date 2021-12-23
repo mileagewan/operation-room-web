@@ -11,7 +11,7 @@
           type: opTaskDTO.opInfoDTO.type,
           room: opTaskDTO.opInfoDTO.descName,
         }" :show-right="false">
-          <template #title-right>
+          <template #title-right v-if="opTaskDTO.totalOverTime">
             <span class="is-danger" >
               超时{{$filters.formatTime(opTaskDTO.totalOverTime)}}
             </span>
@@ -98,6 +98,7 @@ export default defineComponent({
       router.back();
     } else {
       isReady.value = true;
+      title.value = opTaskDTO.value.isClean ? '清洁消毒' : '手术详情';
     }
     return {
       title,
