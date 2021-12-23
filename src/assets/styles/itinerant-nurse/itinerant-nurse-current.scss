@@ -19,6 +19,35 @@
     line-height: 48px;
     margin-bottom: 24px;
   }
+
+  .broadcast-personal {
+    display: flex!important;
+    justify-content: flex-start;
+    align-items: center;
+
+    .broadcast-personal-name {
+      float: left;
+    }
+
+    .broadcast-personal-todo {
+      float: left;
+      margin-left: 12px;
+      .to-time {
+        height: 48px;
+        padding: 0 15px;
+        background: #f2fbfe;
+        border: 1px solid #00acf5;
+        border-radius: 25px;
+        min-width: 162px;
+        * {
+          color: #00ACF2;
+          font-size: var(--ihybrid--default-font-size);
+          height: 48px;
+          line-height: 48px;
+        }
+      }
+    }
+  }
 }
 
 .itinerant-nur-to-resuscitation {

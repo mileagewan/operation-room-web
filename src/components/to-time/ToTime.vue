@@ -1,7 +1,7 @@
 <template>
   <van-button
     round
-    class="default-button"
+    class="to-time"
     :disabled="disabledReal"
     color="rgba(0,172,242,0.05)"
     @click="broadcast"

@@ -43,6 +43,25 @@
           </template>
         </key-value-block>
       </template>
+      <template v-if="['7', '8', '9'].includes(taskView.opInfoDTO.opSectionCode)">
+        <key-value-block label="患者家属" clear>
+          <template #value>
+            <div class="broadcast-personal">
+              <span class="broadcast-personal-name">
+                {{`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`}}
+              </span>
+              <span class="broadcast-personal-todo">
+                  <ToTime :time="taskView.clickCountdownTime"
+                          @click="broadcast(taskView)">
+                    <IconFont icon="icon-guangbo"></IconFont>
+                    <span>广播家属</span>
+                  </ToTime>
+              </span>
+            </div>
+
+          </template>
+        </key-value-block>
+      </template>
       <template v-if="taskView.opInfoDTO.opSectionCode === '5'">
           <key-value-block
             label="交接人"
@@ -91,18 +110,6 @@
       </template>
       <template v-else-if="taskView.opInfoDTO.opSectionCode === '8'">
         <div class="ihybrid-button-group">
-<!--          <van-button-->
-<!--            round-->
-<!--            class="default-button"-->
-<!--            color="rgba(0,172,242,0.05)"-->
-<!--            @click="broadcast(taskView)"-->
-<!--          >-->
-<!--            广播家属-->
-<!--          </van-button>-->
-          <ToTime :time="taskView.clickCountdownTime"
-                  @click="broadcast(taskView)">
-            广播家属
-          </ToTime>
           <van-button
             class="btn-operation"
             @click="operationBegan(taskView)"
