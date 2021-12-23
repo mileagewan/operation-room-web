@@ -36,11 +36,23 @@
           :current-code="taskView.currentCode"
         />
       </div>
-      <key-value-block>
-        <template #value>
-          {{ taskView.description || "无" }}
-        </template>
-      </key-value-block>
+      <template v-if="taskView.opInfoDTO.opSectionCode !== '5'">
+        <key-value-block>
+          <template #value>
+            {{ taskView.description || "无" }}
+          </template>
+        </key-value-block>
+      </template>
+      <template v-if="taskView.opInfoDTO.opSectionCode === '5'">
+          <key-value-block
+            label="交接人"
+            clear
+          >
+            <template #value>
+              {{`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`}}
+            </template>
+          </key-value-block>
+      </template>
       <template v-if="taskView.opInfoDTO.opSectionCode === '6'">
         <div class="ihybrid-button-group">
           <van-button
@@ -132,7 +144,8 @@
           label="交接人"
           clear
           :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
-        ></key-value-block>
+        >
+        </key-value-block>
       </template>
       <template v-if="taskView.opInfoDTO.opSectionCode === '11'">
         <!-- <key-value label="交接人" value="复苏室护士"></key-value> -->
@@ -556,8 +569,8 @@ export default defineComponent({
 
     const resuscitationHandle = async (taskView: TaskItem) => {
       const ret: ReturnData = await Request.xhr('getIcuWardList', {
-        opInfoWardId: taskView.opPatientDTO.beforeDepartmentWardId
-      }, `opInfoWardId=${taskView.opPatientDTO.beforeDepartmentWardId}`);
+        departmentWardId: taskView.opPatientDTO.beforeDepartmentWardId
+      });
       const { data } = ret;
       resuscitationOverLay.roomList = data.map((d: { name: string, id: number }) => {
         return {

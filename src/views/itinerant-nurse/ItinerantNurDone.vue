@@ -21,7 +21,8 @@
           <span class="custom-title">清洁消毒</span>
         </template>
         <template #value>
-          <span class="info-plantime is-danger " v-if="!list.isClean">
+<!--          当前不是清洁消毒任务，并且存在超时时间才显示超时的状态-->
+          <span class="info-plantime is-danger " v-if="!list.isClean && list.totalOverTime">
             超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
           <span>查看详情</span>
@@ -73,6 +74,10 @@ export default defineComponent({
               label: '准时率',
               value: data.onTimeNum as any,
               total: data.patientNum as any,
+            },
+            {
+              label: '清洁消毒',
+              value: data.cleanNum as any,
             }
           ];
           pageData.completeList = [...data.completedOpTaskDetailsDTOList.map((d:any) => {

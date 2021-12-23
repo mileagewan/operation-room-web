@@ -88,10 +88,13 @@ import { ReturnData } from '@/types/interface-model';
 import RcoveryRoomSituationDTO from '@/types/RecoveryRoomSituationDTO';
 import RetData from '@/types/RetData';
 import OpRoomSituationDTO from '@/types/OpRoomSituationDTO';
+import useTimeInterval from '@/mixins/useTimeInterval';
 
 export default defineComponent({
   name: 'SurgicalSummary',
   setup() {
+    const { interval } = useTimeInterval();
+
     const router = useRouter();
     const store = useStore();
     const doList = ref([]);
@@ -164,6 +167,7 @@ export default defineComponent({
 
     onMounted(() => {
       getData();
+      interval(getData);
     });
     return {
       doList,

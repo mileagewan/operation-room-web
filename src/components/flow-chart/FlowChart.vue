@@ -23,7 +23,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { findIndex, isNumber } from 'lodash';
-import { iconMap as ICON_MAPS } from "@/components/flow-chart/iconMap";
+import { iconMap as ICON_MAPS } from '@/components/flow-chart/iconMap';
 
 export default defineComponent({
   name: 'FlowChart',
