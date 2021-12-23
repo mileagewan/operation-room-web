@@ -23,7 +23,7 @@
           <template v-if="active === 'UNDO'">
             <ClearCompletedCard
               v-for="(item, index) in listData"
-              :key="`${JSON.stringify(item)+index}`"
+              :key="`${JSON.stringify(item) + index}`"
               :data="item"
               @btnclick="doneBtn"
             />
@@ -32,7 +32,7 @@
             <ClearTaskCard
               class="clear-task-cards"
               v-for="(item, index) in listData"
-              :key="`${JSON.stringify(item)+index}`"
+              :key="`${JSON.stringify(item) + index}`"
               :data="item"
             />
           </template>
@@ -52,6 +52,7 @@ import {
   ref,
   toRefs,
   onBeforeMount,
+  onUnmounted,
   provide,
   readonly,
 } from "vue";
@@ -81,6 +82,7 @@ export default defineComponent({
       refreshing: false,
       loadingList: false,
       finishedList: true,
+      queryCleanTaskListSetTimeout: 0,
       options: [
         {
           label: "清洁数量",
@@ -141,7 +143,11 @@ export default defineComponent({
               }
               if (!getNum) {
                 if (type === "UNDO") {
+                  clearTimeout(state.queryCleanTaskListSetTimeout);
                   listData.value = data;
+                  state.queryCleanTaskListSetTimeout = setTimeout(() => {
+                    queryCleanTaskList(false, "UNDO", true);
+                  }, 30000);
                 } else if (type === "DONE") {
                   state.options[0].value = data?.cleanNum ?? 0;
                   state.options[1].value = data?.onTimeNum ?? 0;
@@ -207,6 +213,9 @@ export default defineComponent({
         Toast.clear();
       }
     };
+    onUnmounted(() => {
+      clearTimeout(state.queryCleanTaskListSetTimeout);
+    });
     return {
       onClickTab,
       listData,

@@ -17,7 +17,7 @@
         >
           <oprat-room-card
             v-for="(item, index) in listData"
-            :key="`${JSON.stringify(item)+index}`"
+            :key="`${JSON.stringify(item) + index}`"
             :dateTime="`${getMonthDayWeek(
               item.opInfoDTO.startTime
             )}${getOperatTime(
@@ -91,7 +91,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, onBeforeMount } from "vue";
+import { defineComponent, reactive, toRefs, onBeforeMount } from "vue";
 import OpratRoomCard from "./components/OpratRoomCard.vue";
 import Request from "@/service/request";
 import { ReturnData } from "@/types/interface-model";
@@ -107,14 +107,14 @@ import useMessageRead from "@/views/mobile/hooks/useMessageRead";
 interface dataType {
   title: string;
   active: string;
-  todayNum: number|string;
-  tomorrowNum: number|string;
+  todayNum: number | string;
+  tomorrowNum: number | string;
   refreshing: boolean;
   loadingList: boolean;
   finishedList: boolean;
-  totalPage: number|string;
-  pageNo: number|string;
-  pageSize: number|string;
+  totalPage: number | string;
+  pageNo: number | string;
+  pageSize: number | string;
   listData: any[];
 }
 export default defineComponent({
