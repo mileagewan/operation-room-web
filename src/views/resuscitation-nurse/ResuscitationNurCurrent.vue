@@ -69,11 +69,6 @@
       </template>
 
       <template v-if="taskView.opInfoDTO.opSectionCode === '12'">
-        <KeyValueBlock
-          clear
-          label="交接人"
-          :value="`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`"
-        />
         <div class="ihybrid-button-center">
           <van-button
             class="btn-operation"
