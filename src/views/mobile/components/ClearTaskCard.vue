@@ -83,7 +83,7 @@ export default defineComponent({
       const remainder: number = _parseInt % 60 >= 20 ? 1 : 0;
       const minutes = _parseInt + remainder;
       // console.log("---minutes---", minutes);
-      let time = minutes + "";
+      let time = minutes + "分";
       if (minutes > 60) {
         const min = minutes % 60;
         const hour = parseInt((minutes / 60).toString())

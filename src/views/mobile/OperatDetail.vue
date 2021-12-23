@@ -104,7 +104,7 @@ import {
   getOperatTime,
 } from "@/utils/date-formt";
 import JsToFlutter from "@/utils/js-to-flutter";
-import useMessageRead from "@/views/mobile/hooks/useMessageRead"
+import useMessageRead from "@/views/mobile/hooks/useMessageRead";
 
 export default defineComponent({
   name: "OperatDetail",
@@ -113,7 +113,7 @@ export default defineComponent({
     OpratInfo,
   },
   setup() {
-    useMessageRead()
+    useMessageRead();
     const router = useRouter();
     const route = useRoute();
     const state = reactive({
@@ -135,8 +135,11 @@ export default defineComponent({
         // const params = {
         //   opCode: id
         // }
-        const params = `opInfoId=${id}`;
-        await Request.xhr("getOperatDetail", {}, params).then(
+        const paramString = `opInfoId=${id}`;
+        const params = {
+          opInfoId: id,
+        };
+        await Request.xhr("getOperatDetail", params, paramString).then(
           (r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;

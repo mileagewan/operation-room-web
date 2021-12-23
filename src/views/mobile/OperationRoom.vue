@@ -17,7 +17,7 @@
         >
           <oprat-room-card
             v-for="(item, index) in listData"
-            :key="index"
+            :key="`${JSON.stringify(item)+index}`"
             :dateTime="`${getMonthDayWeek(
               item.opInfoDTO.startTime
             )}${getOperatTime(
@@ -104,7 +104,19 @@ import { useRouter, useRoute } from "vue-router";
 import JsToFlutter from "@/utils/js-to-flutter";
 import { Toast } from "vant";
 import useMessageRead from "@/views/mobile/hooks/useMessageRead";
-
+interface dataType {
+  title: string;
+  active: string;
+  todayNum: number|string;
+  tomorrowNum: number|string;
+  refreshing: boolean;
+  loadingList: boolean;
+  finishedList: boolean;
+  totalPage: number|string;
+  pageNo: number|string;
+  pageSize: number|string;
+  listData: any[];
+}
 export default defineComponent({
   name: "OperationRoom",
   components: {
@@ -114,7 +126,7 @@ export default defineComponent({
     useMessageRead();
     const router = useRouter();
     const route = useRoute();
-    const state = reactive({
+    const state = reactive<dataType>({
       title: "手术室",
       active: "TODAY",
       todayNum: 0,
@@ -125,8 +137,9 @@ export default defineComponent({
       totalPage: 0,
       pageNo: 1,
       pageSize: 5,
+      listData: [],
     });
-    const listData = ref<any[]>([]);
+    // const listData = ref<any[]>([]);
     // 返回
     const goBack = (): void => {
       JsToFlutter.goback();
@@ -178,8 +191,9 @@ export default defineComponent({
                 state.tomorrowNum = data.length;
               }
               if (!getNum) {
-                listData.value = data;
+                state.listData = data;
                 // state.finishedList = true;
+                console.log(state.listData);
               }
               state.refreshing = false;
               state.loadingList = false;
@@ -230,7 +244,7 @@ export default defineComponent({
       // onLoad,
       onRefresh,
       goBack,
-      listData,
+      // listData,
       ...toRefs(state),
       onClickTab,
       getMonthDay,

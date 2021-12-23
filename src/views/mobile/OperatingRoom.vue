@@ -12,7 +12,7 @@
         >
           <oprat-room-card
             v-for="(item, index) in listData"
-            :key="index"
+            :key="`${JSON.stringify(item) + index}`"
             :dateTime="`${getMonthDayWeek(
               item.opInfoDTO.startTime
             )} ${getOperatTime(
@@ -145,8 +145,11 @@ export default defineComponent({
             forbidClick: true,
           });
         }
-        const params = `opRoomId=${state.subRoomId}`;
-        await Request.xhr("getOperatingRoom", {}, params)
+        const paramString = `opRoomId=${state.subRoomId}`;
+        const params = {
+          opRoomId: state.subRoomId,
+        };
+        await Request.xhr("getOperatingRoom", params, paramString)
           .then((r: ReturnData) => {
             if (r.code === 200) {
               const data = r.data;
@@ -159,6 +162,10 @@ export default defineComponent({
               state.refreshing = false;
               // if (state.pageNo >= state.totalPage) state.finishedList = true;
               console.log(r, data);
+              state.title = listData.value[0].opDepartmentName
+                ? listData.value[0].opInfoDTO.opDepartmentName +
+                  listData.value[0].opInfoDTO.opRoomName
+                : "手术间";
             }
           })
           .finally(() => {

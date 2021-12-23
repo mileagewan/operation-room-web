@@ -23,7 +23,7 @@
           <template v-if="active === 'UNDO'">
             <ClearCompletedCard
               v-for="(item, index) in listData"
-              :key="index"
+              :key="`${JSON.stringify(item)+index}`"
               :data="item"
               @btnclick="doneBtn"
             />
@@ -32,7 +32,7 @@
             <ClearTaskCard
               class="clear-task-cards"
               v-for="(item, index) in listData"
-              :key="index"
+              :key="`${JSON.stringify(item)+index}`"
               :data="item"
             />
           </template>
