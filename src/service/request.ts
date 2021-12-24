@@ -89,9 +89,16 @@ class Request implements RequestQuery {
         queryParams.params = data;
         break;
     }
-    // if (Object.keys(data).length === 1 && !paramsQuery) {
-    //   paramsQuery = `${Object.keys(data)[0]}=${Object.values(data)[0]}`;
-    // }
+    if (paramsQuery) {
+      const paramsQueryTmp = paramsQuery;
+      const paramsQueryArray = paramsQueryTmp.split('&');
+      if (paramsQueryArray.length === 1) {
+        const [keys, values] = paramsQueryArray[0].split('=');
+        if (!Reflect.has(data, keys)) {
+          (data as any)[keys] = values
+        }
+      }
+    }
     queryParams = Object.assign(
       {
         url: `${this.BASE_URL}${cfgService.path}${path || ''
