@@ -52,7 +52,7 @@
               </span>
               <span class="broadcast-personal-todo">
                   <ToTime :time="taskView.clickCountdownTime"
-                          @click="broadcast(taskView)">
+                          @clickPublic="broadcast(taskView)">
                     <IconFont icon="icon-guangbo"></IconFont>
                     <span>广播家属</span>
                   </ToTime>
@@ -96,7 +96,7 @@
         </div>
       </template>
       <template v-else-if="taskView.opInfoDTO.opSectionCode === '7'">
-        <div class="ihybrid-button-group">
+        <div class="ihybrid-button-center">
           <van-button
             class="btn-operation"
             @click="thirdPartyConfirm(taskView)"
@@ -109,7 +109,7 @@
         </div>
       </template>
       <template v-else-if="taskView.opInfoDTO.opSectionCode === '8'">
-        <div class="ihybrid-button-group">
+        <div class="ihybrid-button-center">
           <van-button
             class="btn-operation"
             @click="operationBegan(taskView)"
@@ -208,6 +208,8 @@
     @ok="manualOk"
     v-model="handleOverLay.value"
   />
+
+  <!--  去复苏室-->
   <van-popup
     v-model:show="resuscitationOverLay.show"
     round
@@ -259,6 +261,8 @@
       </div>
     </div>
   </van-popup>
+
+  <!-- 广播通知 -->
   <van-popup
     v-model:show="broadcastOverLay.show"
     round
@@ -285,6 +289,7 @@
         <van-button
           round
           class="btn-operation"
+          :disabled="broadcastOverLay.disabled"
           @click="broadcastOverLayHandleOk"
           color="linear-gradient(to right, #00D6FA, #00ACF2)"
         >
@@ -356,6 +361,7 @@ import useTitleCount from '@/utils/useTitleCount';
 import { findNode } from '@/utils/utils';
 import RetData from '@/types/RetData';
 import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeOut from "@/mixins/useTimeOut";
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',
@@ -363,6 +369,7 @@ export default defineComponent({
     const { formatTask } = useTaskMixins();
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
     const { interval } = useTimeInterval();
+    const { latter } = useTimeOut();
 
     const handleOverLay = reactive({
       show: false,
@@ -389,6 +396,7 @@ export default defineComponent({
     });
     const broadcastOverLay = reactive({
       show: false,
+      disabled: false,
       roomList: [],
       active: 1,
       row: {},
@@ -519,6 +527,10 @@ export default defineComponent({
     };
 
     const broadcastOverLayHandleOk = async (): Promise<void> => {
+      if (broadcastOverLay.disabled) {
+        return
+      }
+      broadcastOverLay.disabled = true;
       const room = findNode(broadcastOverLay.roomList, (b: any) => {
         return b.goToPlaceCode === broadcastOverLay.active;
       });
@@ -536,6 +548,9 @@ export default defineComponent({
       } else {
         Toast(ret.msg as string);
       }
+      latter(() => {
+        broadcastOverLay.disabled = false;
+      })
     };
 
     const operationBegan = (taskView: TaskItem) => {

@@ -69,7 +69,7 @@ export default defineComponent({
 
     const Events = {
       broadcast: () => {
-        emit('click');
+        emit('clickPublic');
       },
     };
 
