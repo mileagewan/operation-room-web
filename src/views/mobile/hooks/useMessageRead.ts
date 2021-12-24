@@ -10,8 +10,11 @@ function useMessageRead(): string {
   })
   const msgReadApi = async () => {
     if (route.query?.msgid && route.query?.type === "app") {
-      const params = `id=${route.query?.msgid}`
-      await Request.xhr('appMsgRead', {}, params).then((r: ReturnData) => {
+      const paramString = `id=${route.query?.msgid}`
+      const params = {
+        id: route.query?.msgid
+      }
+      await Request.xhr('appMsgRead', params, paramString).then((r: ReturnData) => {
         if (r.code === 200) {
           console.log('消息已读')
           JsToFlutter.notifyFlutterRead(route.query.msgid as string);
