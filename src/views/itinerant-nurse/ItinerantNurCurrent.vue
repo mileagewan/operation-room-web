@@ -73,6 +73,14 @@
           </key-value-block>
       </template>
       <template v-if="taskView.opInfoDTO.opSectionCode === '6'">
+        <key-value-block
+          label="交接人"
+          clear
+        >
+          <template #value>
+            {{`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`}}
+          </template>
+        </key-value-block>
         <div class="ihybrid-button-group">
           <van-button
             round
