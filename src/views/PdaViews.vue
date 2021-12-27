@@ -196,7 +196,6 @@ export default defineComponent({
        * 外层工作台扫码进行交接
        */
       async scanByOut() {
-        console.log(componentsList)
         const ret: string = await JsToFlutter.getPatientIdByWorkspace();
         if (!ret) {
           return;

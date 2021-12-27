@@ -5,6 +5,7 @@
 <script lang="ts">
 import JsToFlutter from '@/utils/js-to-flutter';
 import { defineComponent, getCurrentInstance } from 'vue';
+import { Toast } from "vant";
 
 export default defineComponent({
   name: 'ScanQrCode',
@@ -14,6 +15,10 @@ export default defineComponent({
     const emitter: any = appContext.config.globalProperties.emitter;
     const openScanQRCode = () => {
       JsToFlutter.startScanQRCode().then((res) => {
+        if (!res) {
+          Toast('无效二维码');
+          return;
+        }
         emitter.emit('scan-code-success', res);
       });
     };

@@ -32,7 +32,7 @@
       </template>
       <template #content v-else>
        <div class="clean-task-title">
-         手术-01间-01台
+         {{opTaskDTO?.descName}}
        </div>
        <KeyValue label="清洁人员" :value="opTaskDTO.cleanExeUserName" />
        <KeyValue label="清洁开始时间" :value="opTaskDTO.cleanStartTime" />

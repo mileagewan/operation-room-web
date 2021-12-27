@@ -2,7 +2,7 @@
   <div class="patient-detail">
     <div class="patient-name">
       <div class="patient-name-left">
-        <span class="patient-pesonal-name">{{ option.name }}</span>
+        <span class="patient-pesonal-name">{{ formatUserName(option.name) }}</span>
         <span class="patient-pesonal-sex">{{
           option.sex === 1 ? "男" : "女"
         }}</span>
@@ -62,7 +62,21 @@ export default defineComponent({
   },
 
   setup() {
-    return {};
+    const events = {
+
+      formatUserName(name: string):string {
+        let tmpName = '';
+        if (/^[a-zA-Z]*$/.test(name)) {
+          tmpName = name.slice(0, 10);
+        } else {
+          tmpName = name;
+        }
+        return tmpName;
+      }
+    };
+    return {
+      ...events
+    };
   },
 });
 </script>

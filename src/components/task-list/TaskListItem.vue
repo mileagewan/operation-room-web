@@ -24,16 +24,20 @@
       </div>
       <div class="flex info">
         <div class="info-item">
-          <label>住院号</label>
+          <label class="hospital-code-item">住院号</label>
           <span>{{ task.opPatientDTO.hospitalCode }}</span>
         </div>
         <div class="info-item">
           <label>用时</label>
-          <span>{{ $filters.formatTime(task.exeTime) }}</span>
+          <span class="info-use-time">
+            <span>{{ $filters.formatTime(task.exeTime) }}</span>
+            <span class="info-plantime" v-if="task.totalOverTime">
+              超时{{ $filters.formatTime(task.totalOverTime) }}
+            </span>
+          </span>
+
         </div>
-        <div class="info-plantime" v-if="task.totalOverTime">
-          超时{{ $filters.formatTime(task.totalOverTime) }}
-        </div>
+
       </div>
     </div>
   </div>
@@ -95,23 +99,42 @@ export default defineComponent({
     color: #999;
   }
   .info {
+    display: block;
     margin-top: 48px;
     align-items: center;
+    height: 34px;
     .info-item {
+      float: left;
+      max-width: 50%;
+      display: flex;
+      .hospital-code-item {
+        width: 75px;
+      }
       label {
         margin-right: 24px;
+        width: 50px;
         color: #999999;
+        float: left;
+        white-space:nowrap;
       }
       + .info-item {
         margin-left: 102px;
       }
+      .info-use-time {
+        float: left;
+        span {
+          float: left;
+          margin-right: 8px;
+
+        }
+      }
+
     }
 
     .info-plantime {
       font-size: 24px;
       font-weight: var(--ihybrid--important-weight);
       color: #ff0000;
-      margin-left: 8px;
     }
   }
 }

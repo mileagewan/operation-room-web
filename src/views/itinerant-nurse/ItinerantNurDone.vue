@@ -25,7 +25,7 @@
           <span class="info-plantime is-danger " v-if="!list.isClean && list.totalOverTime">
             超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
-          <span>查看详情</span>
+          <span style="white-space:nowrap">查看详情</span>
         </template>
       </van-cell>
     </div>

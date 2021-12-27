@@ -48,7 +48,7 @@
           <template #value>
             <div class="broadcast-personal">
               <span class="broadcast-personal-name">
-                {{`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`}}
+                {{`${taskView.opPatientDTO.familyPhone}`}}
               </span>
               <span class="broadcast-personal-todo">
                   <ToTime :time="taskView.clickCountdownTime"
@@ -68,7 +68,7 @@
             clear
           >
             <template #value>
-              {{`${taskView.opTaskDTO.handUserName} ${taskView.opTaskDTO.handUserPhone}`}}
+              {{`${taskView.opTaskDTO.handUserName || '-'} ${taskView.opTaskDTO.handUserPhone || '-'}`}}
             </template>
           </key-value-block>
       </template>
@@ -548,13 +548,13 @@ export default defineComponent({
         goToPlace: room?.goToPlaceName,
         patientName: (broadcastOverLay as any)?.row?.opPatientDTO?.name
       });
-      const { code, data } = ret;
+      const { code, data, msg } = ret;
       if (code === 200 && data) {
-        Toast('已通知患者家属');
         broadcastOverLay.show = false;
         getData();
+        Toast(data.promptContent as string);
       } else {
-        Toast(ret.msg as string);
+        Toast(msg as string);
       }
       latter(() => {
         broadcastOverLay.disabled = false;
@@ -685,14 +685,16 @@ export default defineComponent({
             queryOpRoomNextOpDetailsList(opInfoIds),
             queryNotifyFamilyDetailsList(opInfoIds),
           ]);
-          // 获取当前通知的队列， 大于5，可以点击
           normalTask.data.forEach((d:any) => {
             const retFamilyNoity = findNode(retFamily.data, (ds: any) => {
               return ds.opInfoId === d.opInfoDTO?.id;
             });
             d.clickCountdownTime = retFamilyNoity?.clickCountdownTime || 0;
             d.currentMsgListQueueNum = retFamilyNoity?.currentMsgListQueueNum;
-
+            // 获取当前通知的队列， 大于5，可以点击
+            if (d.currentMsgListQueueNum > 5) {
+              d.clickCountdownTime = 0;
+            }
             const nextOpInfoDetail = findNode(retNext.data || [], (n:any) => {
               return n.lastOpInfoId === d.opInfoDTO?.id;
             }) || {};
