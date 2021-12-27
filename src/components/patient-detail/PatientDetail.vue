@@ -65,8 +65,8 @@ export default defineComponent({
     const events = {
 
       formatUserName(name: string):string {
-        let tmpName = '';
-        if (/^[a-zA-Z]*$/.test(name)) {
+        let tmpName = name.trim();
+        if (/^[A-Za-z\s]+$/.test(name)) {
           tmpName = name.slice(0, 10);
         } else {
           tmpName = name;

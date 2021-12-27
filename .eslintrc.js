@@ -21,6 +21,7 @@ module.exports = {
     'quotes':[0,'off'],
     'semi':'off',
     '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-explicit-any': 'off'
+    '@typescript-eslint/no-explicit-any': 'off',
+    ' @typescript-eslint/explicit-module-boundary-types': 'off'
   }
 }
