@@ -346,7 +346,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from 'vue';
+import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
 import { Dialog, Toast } from 'vant';
 import { TaskItem } from '@/types/CurrentTaskViews';
@@ -374,6 +374,7 @@ import useTimeOut from "@/mixins/useTimeOut";
 export default defineComponent({
   name: 'ItinerantNurCurrent',
   setup() {
+    const { ctx }: any = getCurrentInstance();
     const { formatTask } = useTaskMixins();
     const { updateTitleCount, updateCardCacheData } = useTitleCount();
     const { interval } = useTimeInterval();
@@ -752,10 +753,14 @@ export default defineComponent({
         } else {
           taskViewsList.value = [];
         }
-
-        console.log(taskViewsList.value);
         updateTitleCount(taskViewsList.value.length);
         updateCardCacheData(taskViewsList.value);
+
+        try {
+          ctx.$forceUpdate();
+        } catch (e) {
+          console.log(e);
+        }
       });
     };
     onMounted(() => {
