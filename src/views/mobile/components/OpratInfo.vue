@@ -4,17 +4,17 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, useSlots } from 'vue'
+import { defineComponent, useSlots } from "vue";
 
 export default defineComponent({
-  name: 'OpratInfo',
+  name: "OpratInfo",
   setup() {
     const slotTest = !!useSlots().header;
     return {
-      slotTest
-    }
+      slotTest,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .oprat-info-warp {
@@ -29,9 +29,10 @@ export default defineComponent({
     }
     .item {
       padding: 12px 0;
+      display: flex;
       .title {
         display: inline-block;
-        width: (96+2)px;
+        width: 98px;
         height: 24px;
         font-size: 24px;
         font-weight: 400;
@@ -40,11 +41,16 @@ export default defineComponent({
         margin-right: 24px;
       }
       .text {
-        height: 24px;
+        // height: 24px;
         font-size: 24px;
         font-weight: 400;
         color: #333333;
         line-height: 24px;
+      }
+    }
+    &:not(:nth-child(1)) {
+      .item .text {
+        max-width: 190px;
       }
     }
   }
