@@ -44,7 +44,9 @@
         </key-value-block>
       </template>
       <template v-if="['7', '8', '9'].includes(taskView.opInfoDTO.opSectionCode)">
-        <key-value-block label="患者家属" clear>
+        <key-value-block label="患者家属"
+                         clear
+                         class="broadcast-personal-key-value">
           <template #value>
             <div class="broadcast-personal">
               <span class="broadcast-personal-name">
@@ -552,13 +554,20 @@ export default defineComponent({
       const { code, data, msg } = ret;
       if (code === 200 && data) {
         broadcastOverLay.show = false;
-        getData();
+        await getData();
         Toast(data.promptContent as string);
       } else {
         Toast(msg as string);
       }
-      latter(() => {
-        broadcastOverLay.disabled = false;
+      await latter(() => {
+        try {
+          ctx.$nextTick(() => {
+            broadcastOverLay.disabled = false;
+          })
+        } catch (e) {
+          console.log(e)
+          broadcastOverLay.disabled = false;
+        }
       })
     };
 
