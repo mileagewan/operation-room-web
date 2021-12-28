@@ -27,18 +27,20 @@
               {{ item.label }}
             </template>
           </KeyValue>
-          <KeyValue label="状态节点">
+          <KeyValue label="状态节点" v-if="list.flowData && list.flowData.length">
             <template #value>
               <FlowChart :flow-data="list.flowData"
                          :current-code="list.currentCode" />
             </template>
           </KeyValue>
-          <KeyValue label="手术室接送护士"
+          <KeyValue :label="list.opTaskDTO?.roleName"
                     important
-                    :value="`${list.handoverPerson?.name || '-'} ${list.handoverPerson?.phone  || '-' }`" />
-          <KeyValue label="巡回护士电话"
+                    v-if="list.opTaskDTO"
+                    :value="`${list.opTaskDTO?.handUserName || '-'} ${list.opTaskDTO?.handUserPhone || '-'}`" />
+          <KeyValue :label="list.nextOpTaskDTO?.roleName"
+                    v-if="list.nextOpTaskDTO"
                     important
-                    :value="`${list.responsiblePerson?.name  || '-' } ${list.responsiblePerson?.phone  || '-' }`" />
+                    :value="`${list.nextOpTaskDTO?.handUserName || '-'} ${list.nextOpTaskDTO?.handUserPhone || '-'}`" />
           <template v-if="list.opInfoDTO.opSectionCode === '16'">
             <KeyValue label="患者返回"
                       :value="list.opPatientDTO.beforeDepartmentWardName" />
