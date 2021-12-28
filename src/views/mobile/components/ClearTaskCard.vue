@@ -39,7 +39,7 @@
             info.overTime > 0 ? `${getMinute(info.overTime)}` : ""
           }}</span> -->
           <span class="overTime">{{
-            info.overTime > 0 ? `超时${$filters.formatTime(info.overTime)}` : ""
+            Number(info.overTime) > 0 ? `超时${formatTime(info.overTime)}` : ""
           }}</span>
         </div>
       </div>
@@ -96,9 +96,13 @@ export default defineComponent({
       const divisible: string = (second / 60).toString();
       const minute: number = parseInt(divisible);
       const seconds: number = second % 60;
-      
+
       return "超时" + minute + "分" + seconds + "秒";
     };
+
+    const formatTime = (second:number) => {
+      return `${Math.ceil(second / 60)}分`
+    }
     return {
       dateTime,
       info,
