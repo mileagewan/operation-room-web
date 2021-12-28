@@ -270,7 +270,7 @@ export default defineComponent({
     padding-top: 12px;
     overflow-y: scroll;
     :deep(.operat-room-card) {
-      margin-bottom: 12px;
+      margin-bottom: 24px;
       margin-top: 12px;
     }
     .van-pull-refresh {
