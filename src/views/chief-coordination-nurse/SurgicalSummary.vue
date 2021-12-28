@@ -135,6 +135,7 @@ export default defineComponent({
           return {
             name: r.recoveryRoomName,
             id: r.recoveryRoomId,
+            type: 1,
             ...r
           };
         })
