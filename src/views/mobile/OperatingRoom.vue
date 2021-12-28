@@ -13,6 +13,7 @@
           <oprat-room-card
             v-for="(item, index) in listData"
             :key="`${JSON.stringify(item) + index}`"
+            :opTimeUpdate="item.opTimeUpdate"
             :dateTime="`${getMonthDayWeek(
               item.opInfoDTO.startTime
             )} ${getOperatTime(

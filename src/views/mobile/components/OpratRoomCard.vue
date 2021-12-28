@@ -1,6 +1,6 @@
 <template>
   <div class="operat-room-card">
-    <div class="container" :class="[hasFooter ? 'hasFooter' : '']">
+    <div class="container" :class="[opTimeUpdate ? 'hasFooter' : '']">
       <div class="title-warp">
         <div class="title" @click.prevent="clickTitle">
           <span class="time">{{ time }}</span>
@@ -14,52 +14,56 @@
         <slot name="content" />
       </oprat-info>
     </div>
-    <div class="footer" v-if="hasFooter">
+    <div class="footer" v-if="opTimeUpdate === 1 || opTimeUpdate === 2">
       <div class="title">时间更新</div>
-      <div class="text">手术预计结束时间更新</div>
+      <div class="text">{{opTimeUpdate==1?'手术预计开始时间更新':(opTimeUpdate==2?'手术预计结束时间更新':'')}}</div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue'
-import OpratInfo from './OpratInfo.vue'
+import { defineComponent, reactive, toRefs } from "vue";
+import OpratInfo from "./OpratInfo.vue";
 export default defineComponent({
-  name: 'OpratRoomCard',
+  name: "OpratRoomCard",
   components: {
-    OpratInfo
+    OpratInfo,
   },
   props: {
     dateTime: {
       type: String,
-      default: ''
+      default: "",
     },
     name: {
       type: String,
-      default: ''
+      default: "",
     },
     tagCode: {
       type: [String, Number],
-      default: ''
-    }
+      default: "",
+    },
+    opTimeUpdate: {
+      type: [String, Number],
+      default: "",
+    },
   },
-  emits: ['clickTitle'],
+  emits: ["clickTitle"],
   setup(props, ctx) {
     const data = reactive({
       time: props.dateTime,
       name: props.name,
       state: 3,
       tagStatus: props.tagCode,
-      hasFooter: false
-    })
+      hasFooter: false,
+    });
     const clickTitle = () => {
-      ctx.emit('clickTitle')
-    }
+      ctx.emit("clickTitle");
+    };
     return {
       ...toRefs(data),
-      clickTitle
-    }
+      clickTitle,
+    };
   },
-})
+});
 </script>
 <style lang="scss" scoped>
 .operat-room-card {
@@ -71,7 +75,7 @@ export default defineComponent({
   .container {
     padding: 30px 24px 36px 24px;
     &.hasFooter {
-      padding-bottom: 12px;
+      padding-bottom: 18px;
     }
     .title-warp {
       display: flex;
@@ -105,7 +109,6 @@ export default defineComponent({
       background: rgba(255, 0, 0, 0.05);
 
       font-size: 24px;
-      // font-family: PingFangSC, PingFangSC-Medium;
       font-weight: 500;
       color: #ff0000;
     }
@@ -117,7 +120,6 @@ export default defineComponent({
       height: inherit;
       padding-left: 16px;
       font-size: 24px;
-      // font-family: PingFangSC, PingFangSC-Regular;
       font-weight: 400;
       color: #ff0000;
     }
