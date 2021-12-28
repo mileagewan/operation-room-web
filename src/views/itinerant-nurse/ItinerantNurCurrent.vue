@@ -553,22 +553,23 @@ export default defineComponent({
       });
       const { code, data, msg } = ret;
       if (code === 200 && data) {
-        broadcastOverLay.show = false;
         await getData();
         Toast(data.promptContent as string);
       } else {
         Toast(msg as string);
       }
       await latter(() => {
+        // 手机端更新存在不稳定的异常
         try {
           ctx.$nextTick(() => {
+            broadcastOverLay.show = false;
             broadcastOverLay.disabled = false;
           })
         } catch (e) {
-          console.log(e)
+          broadcastOverLay.show = false;
           broadcastOverLay.disabled = false;
         }
-      })
+      }, 500)
     };
 
     const operationBegan = (taskView: TaskItem) => {
