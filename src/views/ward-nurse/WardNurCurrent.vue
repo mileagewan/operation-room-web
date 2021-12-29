@@ -36,7 +36,7 @@
           {{ task.description || '无' }}
         </template>
       </KeyValueBlock>
-      <template v-if="task.opTaskDTO.opSectionCode === '3'">
+      <template v-if="task.opInfoDTO?.opSectionCode === '3'">
         <div class="ihybrid-button-center">
           <van-button
             round
