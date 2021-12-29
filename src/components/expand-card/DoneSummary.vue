@@ -6,10 +6,9 @@
     <div class="done-summary-list">
       <div v-for="(option, i) in options" :key="i">
         <span>
-          <span class="_value" :style="{
-            color: !Reflect.has(option,'total') ? '#333': '#3bdc37'
-          }">{{option.value}}</span>
+          <span class="_value">{{option.value}}</span>
           <span class="_total"
+                style="color: #999"
                 v-if="Reflect.has(option,'total')">/{{option.total || 0}}</span>
         </span>
         <span class="_label">{{option.label}}</span>

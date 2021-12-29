@@ -34,7 +34,7 @@
             'surgical-summary-item_msg_danger': !!room.overTime,
           }">
             {{room.currentOpSectionName || '正常'}}
-            {{room.overTime ? '超时' +  $filters.formatTime(room.overTime) : ''}}
+            {{room.overTime ? '超时' +  $filters.formatTimeMin(room.overTime) : ''}}
           </div>
 
         </div>
