@@ -112,6 +112,7 @@ export default defineComponent({
       getOperatTime,
       getMinuteCeil,
       getMinute,
+      formatTime
     };
   },
 });
