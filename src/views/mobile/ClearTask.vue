@@ -149,6 +149,7 @@ export default defineComponent({
                     queryCleanTaskList(false, "UNDO", true);
                   }, 30000);
                 } else if (type === "DONE") {
+                  clearTimeout(state.queryCleanTaskListSetTimeout);
                   state.options[0].value = data?.cleanNum ?? 0;
                   state.options[1].value = data?.onTimeNum ?? 0;
                   state.options[1].total = data?.cleanTaskDTOList.length ?? 0;
