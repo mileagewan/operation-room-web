@@ -36,11 +36,11 @@
           <KeyValue :label="list.opTaskDTO?.roleName"
                     important
                     v-if="list.opTaskDTO"
-                    :value="`${list.opTaskDTO?.handUserName || '-'} ${list.opTaskDTO?.handUserPhone || '-'}`" />
+                    :value="`${list.opTaskDTO?.exeUserName || '-'} ${list.opTaskDTO?.exeUserPhone || '-'}`" />
           <KeyValue :label="list.nextOpTaskDTO?.roleName"
                     v-if="list.nextOpTaskDTO"
                     important
-                    :value="`${list.nextOpTaskDTO?.handUserName || '-'} ${list.nextOpTaskDTO?.handUserPhone || '-'}`" />
+                    :value="`${list.nextOpTaskDTO?.exeUserName || '-'} ${list.nextOpTaskDTO?.exeUserPhone || '-'}`" />
           <template v-if="list.opInfoDTO.opSectionCode === '16'">
             <KeyValue label="患者返回"
                       :value="list.opPatientDTO.beforeDepartmentWardName" />

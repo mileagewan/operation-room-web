@@ -34,11 +34,11 @@
       </KeyValue>
       <KeyValue :label="taskView.opTaskDTO.roleName"
                 important
-                :value="`${taskView.opTaskDTO?.handUserName || '-'} ${taskView.opTaskDTO?.handUserPhone || '-'}`" />
+                :value="`${taskView.opTaskDTO?.exeUserName || '-'} ${taskView.opTaskDTO?.exeUserPhone || '-'}`" />
       <KeyValue :label="taskView.nextOpTaskDTO?.roleName"
                 v-if="taskView.nextOpTaskDTO"
                 important
-                :value="`${taskView.nextOpTaskDTO?.handUserName || '-'} ${taskView.nextOpTaskDTO?.handUserPhone || '-'}`" />
+                :value="`${taskView.nextOpTaskDTO?.exeUserName || '-'} ${taskView.nextOpTaskDTO?.exeUserPhone || '-'}`" />
     </template>
   </TaskView>
   <EmptyPage message="当前暂无任务" v-if="!taskViewsList.length" />
