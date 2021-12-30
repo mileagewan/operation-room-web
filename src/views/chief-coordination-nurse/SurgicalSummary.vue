@@ -20,6 +20,7 @@
           <div class="surgical-summary-item_status">
             <van-tag
               round
+              v-if="room.currentOpType"
               class="opration-tag"
               type="primary"
               :class="[room.currentOpType === 2 ? 'emergency' : 'normal']"
@@ -36,7 +37,6 @@
             {{room.currentOpSectionName || '正常'}}
             {{room.overTime ? '超时' +  $filters.formatTimeMin(room.overTime) : ''}}
           </div>
-
         </div>
 
       </template>
