@@ -23,7 +23,7 @@
         <div class="title">清洁护工</div>
         <div class="text">{{ info.exeUserName }}</div>
       </div>
-      <div class="item" v-if="tabsActive.active == 'UNDO'">
+      <div class="item" v-if="tabsActive.active == 'UNDO' && info.overTime">
         <div class="title">状态</div>
         <div class="text time-out">
           {{ info.overTime > 0 ? `超时${getMinuteCeil(info.overTime)}` : "" }}

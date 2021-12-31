@@ -17,6 +17,9 @@
   display: flex;
   flex-direction: column;
   .nab-bar {
+    overflow: hidden;
+    height: 98px;
+    display: block;
     .van-nav-bar .van-icon {
       color: var(--ihybrid--default-color);
     }
@@ -28,7 +31,7 @@
 
   .van-tabs {
     display: flex;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 98px);
     flex-direction: column;
 
     .van-tabs__content {

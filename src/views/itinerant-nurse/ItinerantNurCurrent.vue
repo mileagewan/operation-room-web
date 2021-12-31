@@ -68,11 +68,13 @@
           <key-value-block
             label="交接人"
             clear
+            v-if="taskView.opTaskDTO.handUserName"
           >
             <template #value>
               {{`${taskView.opTaskDTO.handUserName || '-'} ${taskView.opTaskDTO.handUserPhone || '-'}`}}
             </template>
           </key-value-block>
+        <div class="key-value-block-empty" v-else></div>
       </template>
       <template v-if="taskView.opInfoDTO.opSectionCode === '6'">
         <key-value-block
@@ -177,12 +179,23 @@
       <div class="clean-task-title">
         {{ taskView.descName }}
       </div>
-      <KeyValue label="清洁开始时间"
-                v-if="taskView.cleanStartTime"
-                :value="taskView.cleanStartTime"/>
-      <KeyValue label="清洁结束时间"
-                v-if="taskView.cleanEndTime"
-                :value="taskView.cleanEndTime"/>
+      <template v-if="[1,2].includes(taskView.cleanDisinfectStatus)">
+        <KeyValue label="清洁开始时间"
+                  v-if="taskView.cleanStartTime"
+                  :value="taskView.cleanStartTime"/>
+        <KeyValue label="清洁结束时间"
+                  v-if="taskView.cleanEndTime"
+                  :value="taskView.cleanEndTime"/>
+      </template>
+      <template v-if="[3,4].includes(taskView.cleanDisinfectStatus)">
+        <KeyValue label="层流净化开始时间"
+                  v-if="taskView.disinfectStartTime"
+                  :value="taskView.disinfectStartTime"/>
+        <KeyValue label="净化结束时间"
+                  v-if="taskView.disinfectEndTime"
+                  :value="taskView.disinfectEndTime"/>
+      </template>
+
       <div class="itinerant-flow-chart">
         <FlowChart :flow-data="taskView.flowDatas"
                    :current-code="taskView.currentCode"/>
@@ -308,6 +321,8 @@
       </div>
     </div>
   </van-popup>
+
+  <!--  消毒时间选择-->
   <van-popup
     v-model:show="disinfectOverLay.show"
     round

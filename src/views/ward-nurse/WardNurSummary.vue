@@ -9,6 +9,7 @@
     class="page-padding list"
   >
     <van-cell v-for="(task, index) in taskList" :key="index">
+      <a href="" :id="`_${task.opPatientDTO.hospitalCode}`"></a>
       <ExpandCard
         :option="{
           status: task.opInfoDTO.opSectionCode,
@@ -30,7 +31,6 @@
           </template>
         </KeyValue>
       </ExpandCard>
-      <a href="" :id="`_${task.opPatientDTO.hospitalCode}`"></a>
     </van-cell>
   </van-list>
 </template>

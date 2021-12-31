@@ -113,10 +113,10 @@ export default defineComponent({
         if (!datas) {
           continue;
         }
-        if (datas.some((d: any) => String(d.opPatientDTO.hospitalCode) === String(id))) {
+        if (datas.some((d: any) => String(d.opPatientDTO?.hospitalCode) === String(id))) {
           active = i;
           data = findNode(datas, (d: any) => {
-            return d.opPatientDTO.hospitalCode === String(id);
+            return d.opPatientDTO?.hospitalCode === String(id);
           });
         }
 
@@ -188,7 +188,7 @@ export default defineComponent({
             console.log(data);
             returnEle.scrollIntoView({
               behavior: 'smooth',
-              block: 'end',
+              block: 'start',
               inline: 'nearest'
             });
             itemRefs.map((component: any) => component.$forceUpdate());
