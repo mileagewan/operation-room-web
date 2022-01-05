@@ -165,6 +165,7 @@ export default defineComponent({
         );
         if (ret.code !== 200) {
           Toast(ret.msg);
+          return;
         }
 
         try {
