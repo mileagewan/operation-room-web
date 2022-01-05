@@ -165,34 +165,38 @@ export default defineComponent({
         );
         if (ret.code !== 200) {
           Toast(ret.msg);
-          return;
         }
-        const { data, index } = findSanCodeDataIndex(id);
-        if (index === undefined) {
-          Toast('未查询到该患者的今日手术信息');
-          return;
-        }
-        active.value = index;
-        const returnEle: any = document.querySelector('#_' + id);
-        if (returnEle) {
-          if (returnEle.parentElement.querySelector('.van-icon-scan')) {
-            // 如果是有扫码的按钮的话，代表接口是存在交接的
-            const refComponent: any = itemRefs[index];
-            ToastCountdown({
-              message: '患者匹配成功，交接完成',
-              seconds: 3
-            });
-            refComponent.getData();
+
+        try {
+          const { data, index } = findSanCodeDataIndex(id);
+          if (index === undefined) {
+            Toast('未查询到该患者的今日手术信息');
+            return;
           }
-          setTimeout(() => {
-            console.log(data);
-            returnEle.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-              inline: 'nearest'
-            });
-            itemRefs.map((component: any) => component.$forceUpdate());
-          }, 500);
+          active.value = index;
+          const returnEle: any = document.querySelector('#_' + id);
+          if (returnEle) {
+            if (returnEle.parentElement.querySelector('.van-icon-scan')) {
+              // 如果是有扫码的按钮的话，代表接口是存在交接的
+              const refComponent: any = itemRefs[index];
+              ToastCountdown({
+                message: '患者匹配成功，交接完成',
+                seconds: 3
+              });
+              refComponent.getData();
+            }
+            setTimeout(() => {
+              console.log(data);
+              returnEle.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest'
+              });
+              itemRefs.map((component: any) => component.$forceUpdate());
+            }, 500);
+          }
+        } catch (e) {
+          console.log(e);
         }
       },
 

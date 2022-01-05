@@ -517,7 +517,7 @@ export default defineComponent({
           }
         }, 1000);
       } else {
-        Toast('扫码交接失败');
+        Toast(data.msg as string);
       }
     };
 
