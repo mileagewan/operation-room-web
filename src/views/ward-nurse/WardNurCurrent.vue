@@ -190,7 +190,8 @@ export default defineComponent({
         const data = {
           opInfoId: currentTask.opTaskDTO.id,
           hospitalCode: res,
-          opTaskId: currentTask.opTaskDTO.id
+          opTaskId: currentTask.opTaskDTO.id,
+          stepFlag: 1
         };
         next(data, 'flowReverScanNext');
       }

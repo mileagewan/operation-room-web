@@ -155,12 +155,26 @@ export default defineComponent({
        * 跳转到指定卡片
        * @param id 住院号
        */
-      async jumpTargetCard(id:string) {
+      async jumpTargetCard(id: string) {
+        let stepFlag = 0;
+        const returnEle: any = document.querySelector('#_' + id);
+        const vanIconScan: any = returnEle.parentElement.querySelector('.van-icon-scan');
+        try {
+          const { index } = findSanCodeDataIndex(id);
+          if (index !== undefined) {
+            if (returnEle && vanIconScan) {
+              stepFlag = 1
+            }
+          }
+        } catch (e) {
+          console.log(e)
+        }
         const ret: RetData<any> = await Request.xhr(
           'flowReverScanNext',
           {
             hospitalCode: id,
-            opTaskId: 0
+            opTaskId: 0,
+            stepFlag,
           }
         );
         if (ret.code !== 200) {

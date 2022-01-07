@@ -497,6 +497,7 @@ export default defineComponent({
         opInfoId: row.opInfoDTO.id || '',
         opTaskId: row.opTaskDTO.id || '',
         hospitalCode: ret,
+        stepFlag: 1,
       });
       if (data.code === 200) {
         const toast = Toast({

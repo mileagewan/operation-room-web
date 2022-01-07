@@ -180,6 +180,7 @@ export default defineComponent({
           opInfoId: row.opInfoDTO.id,
           hospitalCode: ret,
           opTaskId: row.opTaskDTO.id,
+          stepFlag: 1,
         }
       );
       if (data.code === 200) {

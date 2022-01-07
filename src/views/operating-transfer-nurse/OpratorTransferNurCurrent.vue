@@ -166,6 +166,7 @@ export default defineComponent({
           opInfoId: currentTask.opInfoDTO.id,
           hospitalCode: res,
           opTaskId: currentTask.opTaskDTO.id,
+          stepFlag: 1,
         }
         next(data, 'flowReverScanNext');
       }
