@@ -157,9 +157,9 @@ export default defineComponent({
        */
       async jumpTargetCard(id: string) {
         let stepFlag = 0;
-        const returnEle: any = document.querySelector('#_' + id);
-        const vanIconScan: any = returnEle.parentElement.querySelector('.van-icon-scan');
         try {
+          const returnEle: any = document.querySelector('#_' + id);
+          const vanIconScan: any = returnEle.parentElement.querySelector('.van-icon-scan');
           const { index } = findSanCodeDataIndex(id);
           if (index !== undefined) {
             if (returnEle && vanIconScan) {
