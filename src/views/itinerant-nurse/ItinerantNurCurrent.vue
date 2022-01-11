@@ -1,4 +1,4 @@
-<template>
+<template v-if="isReady">
   <TaskView
     class="itinerant-nur-current"
     v-for="(taskView, index) in taskViewsList"
@@ -363,7 +363,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, onMounted, reactive, ref } from 'vue';
+import { defineComponent, getCurrentInstance, onMounted, reactive, ref, nextTick } from 'vue';
 import Request from '@/service/request';
 import { Dialog, Toast } from 'vant';
 import { TaskItem } from '@/types/CurrentTaskViews';
@@ -397,6 +397,7 @@ export default defineComponent({
     const { interval } = useTimeInterval();
     const { latter } = useTimeOut();
 
+    const isReady = ref(true);
     const handleOverLay = reactive({
       show: false,
       value: '',
@@ -658,7 +659,11 @@ export default defineComponent({
       if (ret.code === 200) {
         Toast('手术完成');
         resuscitationOverLay.show = false;
-        getData();
+        await getData();
+        isReady.value = false;
+        nextTick(() => {
+          isReady.value = true;
+        })
       } else {
         Toast(ret.msg as string);
       }
@@ -794,6 +799,7 @@ export default defineComponent({
       interval(getData);
     });
     return {
+      isReady,
       handleOverLay,
       resuscitationOverLay,
       broadcastOverLay,
