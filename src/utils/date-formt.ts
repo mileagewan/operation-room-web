@@ -101,8 +101,9 @@ export const getMonthDayWeek = (date: string): string => {
  */
 export const getMonthDay_ = (date: string): string => {
   if (!date) return "";
-  const month = dayjs(date).month();
-  const day = dayjs(date).date();
+  let month = '00' + (dayjs(date).month() + 1);
+  month = month.slice(-2);
+  const day = ('00' + String(dayjs(date).date())).slice(-2);
   return month + "-" + day
 }
 /*

@@ -49,7 +49,7 @@
           </van-button>
         </div>
       </template>
-      <template v-if="['4', '5'].includes(task.opTaskDTO.opSectionCode)">
+      <template v-if="['4', '15'].includes(task.opTaskDTO.opSectionCode)">
         <KeyValueBlock
           clear
           label="交接人"

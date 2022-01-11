@@ -29,6 +29,11 @@ export default defineComponent({
         label: '接病人',
         value: 0,
       },
+      {
+        label: '准时率',
+        value: 0,
+        total: 0
+      }
     ]);
     const taskList: any = ref([]);
     const loading = ref(false);
@@ -40,10 +45,14 @@ export default defineComponent({
             const { data }: any = r;
             options[0].value = data.sendPatientNum;
             options[1].value = data.receivePatientNum;
+            options[2].value = data.onTimeNum;
+            options[2].total = data.patientNum;
             taskList.value = data.completedOpTaskDetailsDTOList || [];
           } else {
             options[0].value = 0;
             options[1].value = 0;
+            options[2].value = 0;
+            options[2].total = 0;
             taskList.value = [];
           }
           updateTitleCount(taskList.value.length);
