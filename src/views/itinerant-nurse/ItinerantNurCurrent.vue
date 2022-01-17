@@ -615,6 +615,7 @@ export default defineComponent({
         'nextOpInfo',
         {
           opInfoId: taskView.nextOpInfoId,
+          opTaskId: taskView.opTaskDTO?.id,
         },
       );
       if (ret.code === 200) {
@@ -786,6 +787,7 @@ export default defineComponent({
         }
         updateTitleCount(taskViewsList.value.length);
         updateCardCacheData(taskViewsList.value);
+        console.log(taskViewsList.value)
 
         try {
           ctx.$forceUpdate();

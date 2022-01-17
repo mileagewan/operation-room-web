@@ -8,7 +8,7 @@
   />
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, nextTick, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { SET_USER_INFO_ACTION } from '@/store/action-types';
 import Request from '@/service/request';
@@ -33,9 +33,17 @@ export default defineComponent({
           console.log(event);
           const { detail } = event;
           switch (detail.handleName) {
-            case 'or/refreshContent':
+            case 'or/refreshContent': // 消息推送时候
               isReady.value = false;
               beforeEach();
+              break;
+            case 'common/appLifecycle': // 亮屏或者后台进入前台
+              if (detail.data === 'AppLifecycleState.resumed') {
+                isReady.value = false;
+                nextTick(() => {
+                  isReady.value = true;
+                })
+              }
               break;
             default:
               console.log('default');
@@ -44,7 +52,8 @@ export default defineComponent({
         },
         false
       );
-      if (process.env.NODE_ENV !== 'development' && window.flutter_inappwebview) {
+      // flutter环境
+      if (window.flutter_inappwebview) {
         window.addEventListener('flutterInAppWebViewPlatformReady',
           async () => {
             beforeEach();

@@ -64,10 +64,20 @@ export default defineComponent({
           }
           disabledReal.value = showTime.value;
         }, 1000);
+      } else if (String(props.time) === '0') {
+        clearInterval(timer);
+        showTime.value = false;
+        disabledReal.value = showTime.value;
       }
     };
 
-    const Events = {
+    const CmpDatas = {
+      disabledReal,
+      toTime,
+      showTime
+    }
+
+    const CmpEvents = {
       broadcast: () => {
         emit('clickPublic');
       },
@@ -80,10 +90,8 @@ export default defineComponent({
       clearInterval(timer);
     });
     return {
-      disabledReal,
-      toTime,
-      showTime,
-      ...Events,
+      ...CmpDatas,
+      ...CmpEvents,
       onMounted,
       onUnmounted,
     };
