@@ -54,6 +54,7 @@
               </span>
               <span class="broadcast-personal-todo">
                   <ToTime :time="taskView.clickCountdownTime"
+                          :id="taskView.opTaskDTO?.id"
                           @clickPublic="broadcast(taskView)">
                     <IconFont icon="icon-guangbo"></IconFont>
                     <span>广播家属</span>
