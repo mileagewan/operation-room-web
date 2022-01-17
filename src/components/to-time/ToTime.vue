@@ -52,10 +52,24 @@ export default defineComponent({
     let timer: number;
     const toTime = ref('');
     let s = 0;
+
+    /**
+     * 格式化时间为 xx：xx
+     *
+     * @param s
+     */
+    function formatToTimeLoading(s:number) {
+      const min = Math.floor(s / 60);
+      const second = s % 60;
+      toTime.value = `${min}:${second < 10 ? `0${second}` : second}`;
+      showTime.value = true;
+    }
+
     const formatToTimeInterval = (): void => {
       s = s || props.time;
       if (s) {
         clearInterval(timer);
+        formatToTimeLoading(s);
         timer = setInterval(() => {
           s--;
           if (s === 0) {
@@ -63,10 +77,7 @@ export default defineComponent({
             showTime.value = false;
             localStorage.removeItem(String(props.id));
           } else {
-            const min = Math.floor(s / 60);
-            const second = s % 60;
-            toTime.value = `${min}:${second < 10 ? `0${second}` : second}`;
-            showTime.value = true;
+            formatToTimeLoading(s);
             // 将当前倒计时的时间存在本地，后续刷新或者进入的时候，取当前的时间来进行倒计时
             const curTime = new Date().getTime();
             localStorage.setItem(String(props.id), String(curTime + s * 1000));
@@ -78,12 +89,13 @@ export default defineComponent({
         const curTime = new Date().getTime();
         if (curTime < casheCurTime) {
           s = Math.ceil((casheCurTime - curTime) / 1000);
+          formatToTimeLoading(s);
           formatToTimeInterval()
         } else {
           clearInterval(timer);
           showTime.value = false;
-          disabledReal.value = showTime.value;
         }
+        disabledReal.value = showTime.value;
       }
     };
 
