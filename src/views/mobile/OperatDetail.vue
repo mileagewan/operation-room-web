@@ -177,7 +177,7 @@ export default defineComponent({
     };
     // 下拉刷新
     const onRefresh = async () => {
-      await loadData(route.query.id);
+      await loadData(route.query.opInfoId);
       state.loadingRefresh = false;
     };
     return {
