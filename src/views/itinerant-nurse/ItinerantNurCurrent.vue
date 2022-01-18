@@ -209,6 +209,7 @@
       <key-value-block
         label="清洁工"
         clear
+        v-if="taskView.cleanDisinfectStatus <= 2"
         :value="`${taskView.cleanExeUserName} ${taskView.cleanExeUserPhone}`"
       ></key-value-block>
       <template v-if="taskView.cleanDisinfectStatus === 2">
