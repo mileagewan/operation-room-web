@@ -38,4 +38,9 @@ export default interface OpRoomSituationDTO {
    *   手术间ID
    */
   opRoomId: number;
+
+  /**
+   * 手术间全名称名称
+   */
+  opRoomNameAll: string;
 }

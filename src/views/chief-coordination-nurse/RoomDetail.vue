@@ -132,7 +132,7 @@ export default defineComponent({
       },
 
       setTitle: () => {
-        row.value.title = String(room.value.name);
+        row.value.title = String(room.value.nameAll);
       },
 
       getData: async () => {

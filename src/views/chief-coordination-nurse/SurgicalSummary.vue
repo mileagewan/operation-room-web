@@ -126,6 +126,7 @@ export default defineComponent({
         ...opRoomSituationDTOList.map(o => {
           return {
             name: o.opRoomName,
+            nameAll: o.opRoomNameAll,
             type: 0,
             id: o.opRoomId,
             ...o
@@ -134,6 +135,7 @@ export default defineComponent({
         ...recoveryRoomSituationDTOList.map(r => {
           return {
             name: r.recoveryRoomName,
+            nameAll: r.recoveryRoomName,
             id: r.recoveryRoomId,
             type: 1,
             ...r

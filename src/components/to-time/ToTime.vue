@@ -43,10 +43,10 @@ export default defineComponent({
     );
 
     watch(
-      () => props.time,
+      () => props.time || 0,
       () => {
         formatToTimeInterval();
-      }
+      },
     );
 
     let timer: number;
@@ -67,9 +67,14 @@ export default defineComponent({
 
     const formatToTimeInterval = (): void => {
       s = s || props.time;
+      console.log(s);
       if (s) {
         clearInterval(timer);
         formatToTimeLoading(s);
+        // 将当前倒计时的时间存在本地，后续刷新或者进入的时候，取当前的时间来进行倒计时
+        const curTime = new Date().getTime();
+        localStorage.setItem(String(props.id), String(curTime + s * 1000));
+
         timer = setInterval(() => {
           s--;
           if (s === 0) {
@@ -78,9 +83,6 @@ export default defineComponent({
             localStorage.removeItem(String(props.id));
           } else {
             formatToTimeLoading(s);
-            // 将当前倒计时的时间存在本地，后续刷新或者进入的时候，取当前的时间来进行倒计时
-            const curTime = new Date().getTime();
-            localStorage.setItem(String(props.id), String(curTime + s * 1000));
           }
           disabledReal.value = showTime.value;
         }, 1000);
