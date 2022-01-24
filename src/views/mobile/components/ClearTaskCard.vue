@@ -24,9 +24,9 @@
         <div class="text">{{ info.exeUserName }}</div>
       </div>
       <div class="item" v-if="tabsActive.active == 'UNDO' && info.overTime">
-        <div class="title">状态</div>
-        <div class="text time-out">
-          {{ info.overTime > 0 ? `超时${getMinuteCeil(info.overTime)}` : "" }}
+        <div class="title" v-if="info.overTime">状态</div>
+        <div class="text time-out" v-if="info.overTime">
+          超时{{ $filters.formatTime(info.overTime) }}
         </div>
       </div>
       <div class="item" v-if="tabsActive.active == 'DONE'">
@@ -39,7 +39,7 @@
             info.overTime > 0 ? `${getMinute(info.overTime)}` : ""
           }}</span> -->
           <span class="overTime">{{
-            Number(info.overTime) > 0 ? `超时${formatTime(info.overTime)}` : ""
+            Number(info.overTime) > 0 ? `超时${$filters.formatTime(info.overTime)}` : ""
           }}</span>
         </div>
       </div>
