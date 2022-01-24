@@ -12,7 +12,7 @@
         <!-- 使用 title 插槽来自定义标题 -->
         <template #title v-if="!list.isClean">
           <a href="" :id="`_${list.opPatientDTO.hospitalCode}`"></a>
-          <span class="custom-title">{{list.opPatientDTO.name}}</span>
+          <span class="custom-title">{{formatUserName(list.opPatientDTO.name)}}</span>
           <span class="custom-sex">{{list.opPatientDTO.sex === 1 ? '男' : '女'}}</span>
           <span class="custom-age">{{list.opPatientDTO.age}}岁</span>
         </template>
@@ -25,7 +25,7 @@
           <span class="info-plantime is-danger " v-if="!list.isClean && list.totalOverTime">
             超时{{ $filters.formatTime(list.totalOverTime) }}
           </span>
-          <span style="white-space:nowrap">查看详情</span>
+<!--          <span style="white-space:nowrap">查看详情</span>-->
         </template>
       </van-cell>
     </div>
@@ -104,6 +104,18 @@ export default defineComponent({
       });
     };
 
+    const events = {
+
+      formatUserName(name: string):string {
+        let tmpName = name.trim();
+        if (/^[A-Za-z\s]+$/.test(name)) {
+          tmpName = name.slice(0, 10);
+        } else {
+          tmpName = name;
+        }
+        return tmpName;
+      }
+    };
     onMounted(() => {
       getData();
       interval(getData);
@@ -111,6 +123,7 @@ export default defineComponent({
     return {
       next,
       pageData,
+      ...events,
       getData,
       onMounted
     };
