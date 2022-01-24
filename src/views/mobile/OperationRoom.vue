@@ -228,7 +228,7 @@ export default defineComponent({
       let path = "/operatDetail";
       let id = item?.opInfoDTO?.id ?? "";
       const _opSectionCode: any = item?.opInfoDTO?.opSectionCode;
-      if (_opSectionCode === "1" || _opSectionCode === "2" || _opSectionCode === "3") {
+      if (_opSectionCode === "1" || _opSectionCode === "2") {
         path = "/operatingRoom";
         id = item?.opInfoDTO?.opRoomId;
       }
