@@ -1,5 +1,5 @@
 <template>
-  <EmptyPage message="当前暂无任务" v-if="!taskList.length && !loading" />
+  <EmptyPage message="当前暂无任务" v-if="!taskList.length && !loading"/>
   <TaskView
     class="itinerant-nur-current"
     v-for="(task, index) in taskList"
@@ -44,7 +44,7 @@
             class="btn-operation"
             color="linear-gradient(to right, #00D6FA, #00ACF2)"
           >
-            <IconFont icon="icon-hujiao" />
+            <IconFont icon="icon-hujiao"/>
             呼叫护工
           </van-button>
         </div>
@@ -121,6 +121,8 @@ export default defineComponent({
 
     const taskList: any = ref([]);
     const loading = ref(false);
+
+    const preLoading = ref<Promise<boolean>>(Promise.resolve(true));
 
     const infoItems = [
       opInfoCode(),
@@ -216,12 +218,20 @@ export default defineComponent({
       const data = {
         opTaskId: task.opTaskDTO.id
       };
-      Request.xhr('flowReverNormalNext', data).then((res: any) => {
-        if (res.code === 200) {
-          Toast('呼叫护工成功');
-          getData();
+      preLoading.value.then((r:boolean) => {
+        if (!r) {
+          return
         }
-      });
+        preLoading.value = Promise.resolve(false);
+        Request.xhr('flowReverNormalNext', data).then((res: any) => {
+          if (res.code === 200) {
+            Toast('呼叫护工成功');
+            getData();
+          }
+        }).finally(() => {
+          preLoading.value = Promise.resolve(true);
+        });
+      })
     };
 
     getData();

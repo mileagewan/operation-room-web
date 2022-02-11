@@ -148,6 +148,9 @@ export default defineComponent({
       beforeDiseaseName(),
     ];
     const taskViewsList = ref([]);
+
+    const preLoading = ref<Promise<boolean>>(Promise.resolve(true));
+
     const manualHandle = (taskView: any) => {
       handleOverLay.show = true;
       handleOverLay.row = taskView;
@@ -207,13 +210,22 @@ export default defineComponent({
     };
 
     const callNurse = async (row: any) => {
-      const ret: ReturnData = await Request.xhr('flowReverNormalNext', {
-        opTaskId: row.opTaskDTO.id || '',
-      });
-      if (ret.code === 200) {
-        Toast('呼叫护工成功');
-        getData();
+      const r: boolean = await preLoading.value;
+      if (!r) {
+        return;
       }
+      preLoading.value = Promise.resolve(false);
+      Request.xhr('flowReverNormalNext', {
+        opTaskId: row.opTaskDTO.id || '',
+      }).then(async (ret: ReturnData) => {
+        if (ret.code === 200) {
+          Toast('呼叫护工成功');
+          await getData();
+        }
+        preLoading.value = Promise.resolve(true);
+      }).catch(() => {
+        preLoading.value = Promise.resolve(true);
+      })
     };
     const getData = (): Promise<any> => {
       return Request.xhr('queryCurrentOpTaskList')
