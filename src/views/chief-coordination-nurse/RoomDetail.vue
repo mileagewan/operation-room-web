@@ -75,7 +75,7 @@ import OpPatientDTO from '@/types/OpPatientDTO';
 import OpTaskDTO from '@/types/OpTaskDTO';
 import Request from '@/service/request';
 import { iconMaps } from '@/views/chief-coordination-nurse/iconMaps';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 import { findNode } from '@/utils/utils';
 
 interface ListItem {

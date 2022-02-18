@@ -60,10 +60,10 @@ import useTaskMixins, {
 } from '../../utils/task-mixins';
 import { Task } from '@/types/interface-model';
 import Request from '../../service/request';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { iconMaps } from '@/views/chief-coordination-nurse/iconMaps';
 import { findNode } from '@/utils/utils';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 
 export default defineComponent({
   name: 'ChiefNurCurrent',

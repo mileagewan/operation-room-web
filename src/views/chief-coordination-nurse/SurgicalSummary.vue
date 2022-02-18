@@ -83,12 +83,12 @@ import { Dialog, Toast } from 'vant';
 import { useRouter } from 'vue-router';
 import Request from '@/service/request';
 import { useStore } from 'vuex';
-import { SET_ROOM_ACTION } from '@/store/action-types';
+import { SET_ROOM_ACTION } from '@/store/types/action-types';
 import { ReturnData } from '@/types/interface-model';
 import RcoveryRoomSituationDTO from '@/types/RecoveryRoomSituationDTO';
 import RetData from '@/types/RetData';
 import OpRoomSituationDTO from '@/types/OpRoomSituationDTO';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 
 export default defineComponent({
   name: 'SurgicalSummary',

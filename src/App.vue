@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
-import { SET_USER_INFO_ACTION } from '@/store/action-types';
+import { SET_USER_INFO_ACTION } from '@/store/types/action-types';
 import Request from '@/service/request';
 
 export default defineComponent({

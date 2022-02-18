@@ -21,12 +21,12 @@ import { useStore } from 'vuex';
 import { components, RoleModuleInject } from '@/views/role-module-inject';
 import { RoleModuleItem } from '@/types/interface-model';
 import JsToFlutter from '@/utils/js-to-flutter';
-import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
+import { SET_ACTIVE_MUTATION } from '@/store/types/mutation-types';
 import { Toast } from 'vant';
 import RetData from '@/types/RetData';
 import Request from '@/service/request';
 import { findNode } from '@/utils/utils';
-import useNotifyFlutter from '@/mixins/useNotifyFlutter';
+import useNotifyFlutter from '@/hooks/useNotifyFlutter';
 import ToastCountdown from "@/utils/toast-countdown";
 
 export default defineComponent({

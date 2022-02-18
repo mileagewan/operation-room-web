@@ -4,11 +4,11 @@ import {
   SET_TITLE_COUNT_MUTATION,
   SET_TOKEN_MUTATION,
   SET_USER_INFO_MUTATION
-} from '@/store/mutation-types';
-import { SET_TOKEN_ACTION, SET_USER_INFO_ACTION } from '@/store/action-types';
-import { itinerantNur } from '@/store/itinerant-nur';
-import { chiefNur } from '@/store/chief-nur';
-import { task } from '@/store/task';
+} from '@/store/types/mutation-types';
+import { SET_TOKEN_ACTION, SET_USER_INFO_ACTION } from '@/store/types/action-types';
+import { itinerantNur } from '@/store/modules/itinerant-nur';
+import { chiefNur } from '@/store/modules/chief-nur';
+import { task } from '@/store/modules/task';
 
 export default createStore({
   state: {

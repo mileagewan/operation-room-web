@@ -384,11 +384,11 @@ import useTaskMixins, {
 import { ReturnData, Task } from '@/types/interface-model';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { findNode } from '@/utils/utils';
 import RetData from '@/types/RetData';
-import useTimeInterval from '@/mixins/useTimeInterval';
-import useTimeOut from "@/mixins/useTimeOut";
+import useTimeInterval from '@/hooks/useTimeInterval';
+import useTimeOut from "@/hooks/useTimeOut";
 
 export default defineComponent({
   name: 'ItinerantNurCurrent',

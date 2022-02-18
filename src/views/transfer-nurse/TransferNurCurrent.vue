@@ -109,9 +109,9 @@ import useTaskMixins, {
 } from '../../utils/task-mixins';
 import ToastCountdown from '@/utils/toast-countdown';
 import JsToFlutter from '@/utils/js-to-flutter';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { findNode } from '@/utils/utils';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 export default defineComponent({
   name: 'TransferNurCurrent',
   setup() {

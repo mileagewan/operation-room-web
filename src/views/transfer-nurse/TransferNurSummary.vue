@@ -71,8 +71,8 @@ import useTaskMixins, {
   opInfoCode,
 } from '../../utils/task-mixins';
 import { useStore } from 'vuex';
-import { SET_ACTIVE_MUTATION } from '@/store/mutation-types';
-import useTitleCount from '@/utils/useTitleCount';
+import { SET_ACTIVE_MUTATION } from '@/store/types/mutation-types';
+import useTitleCount from '@/hooks/useTitleCount';
 export default defineComponent({
   name: 'TransferNurSummary',
   setup() {

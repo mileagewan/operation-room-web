@@ -39,10 +39,10 @@
 import { defineComponent, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { SET_OP_TASK_DTO_MUTATION } from '@/store/mutation-types';
+import { SET_OP_TASK_DTO_MUTATION } from '@/store/types/mutation-types';
 import Request from '@/service/request';
-import useTitleCount from '@/utils/useTitleCount';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTitleCount from '@/hooks/useTitleCount';
+import useTimeInterval from '@/hooks/useTimeInterval';
 export default defineComponent({
   name: 'ItinerantNurDone',
   setup() {

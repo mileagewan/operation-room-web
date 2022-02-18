@@ -108,9 +108,9 @@ import useTaskMixins, {
   opInfoName,
   surgeonName
 } from '../../utils/task-mixins';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { findNode } from '@/utils/utils';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 
 export default defineComponent({
   name: 'WardNurCurrent',

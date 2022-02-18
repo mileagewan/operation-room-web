@@ -10,9 +10,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import Request from '@/service/request';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { CurrentComplete } from '@/types/CurrentTaskViews';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
 export default defineComponent({
   name: 'OpratorTransferNurDone',
   setup() {

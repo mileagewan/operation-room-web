@@ -1,6 +1,5 @@
 export default (code: string): string => {
   let result = '';
-  // const codeMap = {}
   const codeMap: any = {
     1: '手术排台',
     2: '未开始',

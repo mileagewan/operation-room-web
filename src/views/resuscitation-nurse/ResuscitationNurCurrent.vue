@@ -119,9 +119,10 @@ import useTaskMixins, {
 import JsToFlutter from '@/utils/js-to-flutter';
 import { CurrentTaskViews } from '@/types/CurrentTaskViews';
 import ToastCountdown from '@/utils/toast-countdown';
-import useTitleCount from '@/utils/useTitleCount';
+import useTitleCount from '@/hooks/useTitleCount';
 import { findNode } from '@/utils/utils';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTimeInterval from '@/hooks/useTimeInterval';
+
 export default defineComponent({
   name: 'ResuscitationNurCurrent',
   setup() {

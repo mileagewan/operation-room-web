@@ -11,8 +11,8 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue';
 import { CurrentComplete } from '@/types/CurrentTaskViews';
 import Request from '@/service/request';
-import useTitleCount from '@/utils/useTitleCount';
-import useTimeInterval from '@/mixins/useTimeInterval';
+import useTitleCount from '@/hooks/useTitleCount';
+import useTimeInterval from '@/hooks/useTimeInterval';
 
 export default defineComponent({
   name: 'WardNurDone',
